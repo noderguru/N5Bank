@@ -1,0 +1,62 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.yarn/
+
+# Next.js
+.next/
+out/
+build/
+dist/
+next-env.d.ts
+
+# Environment
+.env
+.env*.local
+.env.production
+
+# Database
+*.db
+*.db-journal
+prisma/*.db*
+
+# Testing
+coverage/
+test-results/
+playwright-report/
+blob-report/
+.playwright/
+
+# Editor / OS
+.DS_Store
+*.pem
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.idea/
+.vscode/
+
+# Vercel / build tooling
+.vercel
+*.tsbuildinfo
+
+# --- Internal working files: never publish ---
+# AI agent harness
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+.cursorrules
+.cursor/
+.agent/
+.agents/
+.claude/
+.github/copilot-instructions.md
+skills-lock.json
+
+# Private notes, assignment brief, scratch
+N5Bank_test_task.txt
+notes/
+scratch/
+_private/
