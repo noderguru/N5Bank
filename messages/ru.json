@@ -289,7 +289,7 @@
   "enums": {
     "licenseType": {
       "BANKING": "Банковская",
-      "E_MONEY": "Электронные деньги / EMI",
+      "E_MONEY": "Э-деньги / EMI",
       "PAYMENT": "Платёжная (PI)",
       "CRYPTO": "Крипто / VASP",
       "BROKERAGE": "Брокерская",

@@ -81,7 +81,7 @@ export function AssetCard({
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1.5 border border-hairline px-2 py-0.5 eyebrow text-ink">
               <Globe2 className="size-3.5 shrink-0" />
-              <span className="truncate max-w-[120px]">{country}</span>
+              <span className="max-w-[160px] truncate">{country}</span>
             </span>
 
             {validated && (
@@ -118,44 +118,45 @@ export function AssetCard({
         </div>
 
         {/* Spec Grid: Signature 4-cell layout */}
-        <div className="grid grid-cols-2 gap-y-3 border-y border-hairline py-3 sm:grid-cols-4">
+        {/* Two columns, not four: at three cards per row a quarter-width cell cannot hold the ru/uk labels without truncating them. */}
+        <div className="grid grid-cols-2 gap-x-4 gap-y-3 border-y border-hairline py-3">
           <div className="space-y-0.5">
             <span className="eyebrow text-muted-foreground">
               {tCommon("country")}
             </span>
-            <div className="truncate text-xs font-medium text-ink" title={country}>
+            <div className="text-xs font-medium break-words text-ink" title={country}>
               {country}
             </div>
             {regulator && (
-              <div className="text-[10px] text-muted-foreground truncate" title={regulator}>
+              <div className="text-[10px] break-words text-muted-foreground" title={regulator}>
                 {regulator}
               </div>
             )}
           </div>
 
-          <div className="space-y-0.5 border-l border-hairline/60 pl-2">
+          <div className="space-y-0.5">
             <span className="eyebrow text-muted-foreground">
               {t("licenseType")}
             </span>
-            <div className="truncate text-xs font-medium text-ink">
+            <div className="text-xs font-medium break-words text-ink">
               {enumLabel("licenseType", licenseType)}
             </div>
           </div>
 
-          <div className="space-y-0.5 border-l border-hairline/60 pl-2">
+          <div className="space-y-0.5">
             <span className="eyebrow text-muted-foreground">
               {t("businessType")}
             </span>
-            <div className="truncate text-xs font-medium text-ink">
+            <div className="text-xs font-medium break-words text-ink">
               {enumLabel("businessType", businessType)}
             </div>
           </div>
 
-          <div className="space-y-0.5 border-l border-hairline/60 pl-2">
+          <div className="space-y-0.5">
             <span className="eyebrow text-muted-foreground">
               {tCommon("status")}
             </span>
-            <div className="truncate text-xs font-medium text-ink">
+            <div className="text-xs font-medium break-words text-ink">
               {enumLabel("businessStatus", businessStatus)}
             </div>
           </div>
