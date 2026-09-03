@@ -58,7 +58,7 @@ export function MatchedAssetCard({ item, isFavorite }: MatchedAssetCardProps) {
             ) : (
               <span className="inline-flex items-center gap-1 rounded-full bg-slate-500/10 px-2 py-0.5 text-[11px] font-semibold text-slate-700 border border-slate-500/20">
                 <ShieldCheck className="size-3" />
-                <span>Algorithmic</span>
+                <span>Algorithmic Match</span>
               </span>
             )}
           </div>
