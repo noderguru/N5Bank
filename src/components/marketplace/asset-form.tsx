@@ -1,0 +1,649 @@
+"use client";
+
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { ArrowLeft, Check, Info, Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { createAssetAction, updateAssetAction } from "@/app/actions/assets";
+
+export type AssetFormData = {
+  id?: string;
+  title: string;
+  summary: string;
+  description: string;
+  country: string;
+  licenseType: string;
+  businessType: string;
+  businessStatus: string;
+  priceMode: "FIXED" | "ON_LOI" | "NDA";
+  askingPrice?: number | string | null;
+  currency: string;
+  yearOfIssue?: number | string | null;
+  employees?: number | string | null;
+  regulator?: string | null;
+  features?: string[] | string;
+  status?: "DRAFT" | "PUBLISHED";
+};
+
+type AssetFormProps = {
+  initialData?: Partial<AssetFormData>;
+  isEdit?: boolean;
+};
+
+const LICENSE_TYPES = [
+  { value: "BANKING", label: "Banking" },
+  { value: "E_MONEY", label: "Electronic Money Institution (EMI)" },
+  { value: "PAYMENT", label: "Payment Institution (PI)" },
+  { value: "CRYPTO", label: "Crypto / VASP" },
+  { value: "BROKERAGE", label: "Brokerage / Investment" },
+  { value: "INSURANCE", label: "Insurance" },
+  { value: "OTHER", label: "Other Financial License" },
+];
+
+const BUSINESS_TYPES = [
+  { value: "BANK", label: "Bank" },
+  { value: "FINTECH", label: "Fintech Platform" },
+  { value: "PAYMENT_INSTITUTION", label: "Payment Institution" },
+  { value: "CRYPTO_BUSINESS", label: "Crypto / Web3 Entity" },
+  { value: "BROKERAGE", label: "Brokerage" },
+  { value: "INSURANCE_COMPANY", label: "Insurance Company" },
+  { value: "OTHER", label: "Other Entity" },
+];
+
+const BUSINESS_STATUSES = [
+  { value: "OPERATING", label: "Fully Operating" },
+  { value: "PRE_LAUNCH", label: "Pre-launch / Ready to launch" },
+  { value: "DORMANT", label: "Dormant / Inactive" },
+  { value: "DISTRESSED", label: "Distressed / Restructuring" },
+];
+
+const PRICE_MODES = [
+  {
+    value: "FIXED",
+    label: "Fixed Asking Price",
+    description: "Publicly visible price in the catalogue",
+  },
+  {
+    value: "ON_LOI",
+    label: "Upon LOI",
+    description: "Disclosed upon Letter of Intent",
+  },
+  {
+    value: "NDA",
+    label: "Under NDA",
+    description: "Price and sensitive data protected by NDA",
+  },
+] as const;
+
+export function AssetForm({ initialData, isEdit = false }: AssetFormProps) {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+
+  const [title, setTitle] = useState(initialData?.title ?? "");
+  const [summary, setSummary] = useState(initialData?.summary ?? "");
+  const [description, setDescription] = useState(initialData?.description ?? "");
+  const [country, setCountry] = useState(initialData?.country ?? "");
+  const [licenseType, setLicenseType] = useState(initialData?.licenseType ?? "E_MONEY");
+  const [businessType, setBusinessType] = useState(initialData?.businessType ?? "FINTECH");
+  const [businessStatus, setBusinessStatus] = useState(
+    initialData?.businessStatus ?? "OPERATING"
+  );
+  const [priceMode, setPriceMode] = useState<"FIXED" | "ON_LOI" | "NDA">(
+    initialData?.priceMode ?? "FIXED"
+  );
+  const [askingPrice, setAskingPrice] = useState(
+    initialData?.askingPrice !== null && initialData?.askingPrice !== undefined
+      ? String(initialData.askingPrice)
+      : ""
+  );
+  const [currency, setCurrency] = useState(initialData?.currency ?? "USD");
+  const [yearOfIssue, setYearOfIssue] = useState(
+    initialData?.yearOfIssue !== null && initialData?.yearOfIssue !== undefined
+      ? String(initialData.yearOfIssue)
+      : ""
+  );
+  const [employees, setEmployees] = useState(
+    initialData?.employees !== null && initialData?.employees !== undefined
+      ? String(initialData.employees)
+      : ""
+  );
+  const [regulator, setRegulator] = useState(initialData?.regulator ?? "");
+  const [features, setFeatures] = useState(
+    Array.isArray(initialData?.features)
+      ? initialData.features.join(", ")
+      : typeof initialData?.features === "string"
+      ? initialData.features
+      : ""
+  );
+
+  const [errors, setErrors] = useState<Record<string, string[]>>({});
+
+  const handleSubmit = (targetStatus: "DRAFT" | "PUBLISHED") => {
+    setErrors({});
+
+    const formData = new FormData();
+    formData.set("title", title);
+    formData.set("summary", summary);
+    formData.set("description", description);
+    formData.set("country", country);
+    formData.set("licenseType", licenseType);
+    formData.set("businessType", businessType);
+    formData.set("businessStatus", businessStatus);
+    formData.set("priceMode", priceMode);
+    if (priceMode === "FIXED") {
+      formData.set("askingPrice", askingPrice);
+      formData.set("currency", currency);
+    } else {
+      formData.set("askingPrice", "");
+      formData.set("currency", currency || "USD");
+    }
+    formData.set("yearOfIssue", yearOfIssue);
+    formData.set("employees", employees);
+    formData.set("regulator", regulator);
+    formData.set("features", features);
+    formData.set("status", targetStatus);
+
+    startTransition(async () => {
+      try {
+        const result = isEdit && initialData?.id
+          ? await updateAssetAction(initialData.id, null, formData)
+          : await createAssetAction(null, formData);
+
+        if (!result.success) {
+          if (result.errors) {
+            setErrors(result.errors);
+            toast.error("Please resolve the validation errors below.");
+          } else {
+            toast.error(result.message || "Failed to save listing");
+          }
+          return;
+        }
+
+        toast.success(
+          result.message ||
+            (targetStatus === "PUBLISHED"
+              ? "Listing published successfully"
+              : "Draft saved successfully")
+        );
+        router.push("/seller/assets");
+        router.refresh();
+      } catch (err: unknown) {
+        toast.error(err instanceof Error ? err.message : "An unexpected error occurred");
+      }
+    });
+  };
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSubmit("PUBLISHED");
+      }}
+      className="space-y-8"
+      noValidate
+    >
+      {errors._form && errors._form.length > 0 && (
+        <div
+          role="alert"
+          className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm font-medium text-rose-800"
+        >
+          {errors._form.map((msg, i) => (
+            <p key={i}>{msg}</p>
+          ))}
+        </div>
+      )}
+
+      {/* Section 1: Overview */}
+      <div className="rounded-[24px] border border-[#D9D9D9] bg-white p-6 sm:p-8 space-y-6">
+        <div>
+          <h2 className="text-xl font-semibold text-black tracking-tight">
+            Listing Overview
+          </h2>
+          <p className="text-sm text-neutral-500 mt-1">
+            Specify the core asset proposition and regulatory classification.
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          <div>
+            <Label htmlFor="title" className="text-sm font-medium text-neutral-800">
+              Listing Title <span className="text-rose-500">*</span>
+            </Label>
+            <Input
+              id="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="e.g. Operational Electronic Money Institution (EMI)"
+              className="mt-1.5 h-11 rounded-xl"
+              disabled={isPending}
+              aria-invalid={Boolean(errors.title)}
+              aria-describedby={errors.title ? "title-error" : undefined}
+            />
+            {errors.title && (
+              <p id="title-error" className="mt-1 text-xs text-rose-600">
+                {errors.title[0]}
+              </p>
+            )}
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="country" className="text-sm font-medium text-neutral-800">
+                Jurisdiction / Country <span className="text-rose-500">*</span>
+              </Label>
+              <Input
+                id="country"
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+                placeholder="e.g. Lithuania, United Kingdom, Cyprus"
+                className="mt-1.5 h-11 rounded-xl"
+                disabled={isPending}
+                aria-invalid={Boolean(errors.country)}
+                aria-describedby={errors.country ? "country-error" : undefined}
+              />
+              {errors.country && (
+                <p id="country-error" className="mt-1 text-xs text-rose-600">
+                  {errors.country[0]}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <Label htmlFor="licenseType" className="text-sm font-medium text-neutral-800">
+                License Type <span className="text-rose-500">*</span>
+              </Label>
+              <select
+                id="licenseType"
+                value={licenseType}
+                onChange={(e) => setLicenseType(e.target.value)}
+                className="mt-1.5 flex h-11 w-full rounded-xl border border-input bg-transparent px-3 py-2 text-sm shadow-xs transition-colors focus-visible:border-ring focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                disabled={isPending}
+              >
+                {LICENSE_TYPES.map((l) => (
+                  <option key={l.value} value={l.value}>
+                    {l.label}
+                  </option>
+                ))}
+              </select>
+              {errors.licenseType && (
+                <p className="mt-1 text-xs text-rose-600">
+                  {errors.licenseType[0]}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="businessType" className="text-sm font-medium text-neutral-800">
+                Business Type <span className="text-rose-500">*</span>
+              </Label>
+              <select
+                id="businessType"
+                value={businessType}
+                onChange={(e) => setBusinessType(e.target.value)}
+                className="mt-1.5 flex h-11 w-full rounded-xl border border-input bg-transparent px-3 py-2 text-sm shadow-xs transition-colors focus-visible:border-ring focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                disabled={isPending}
+              >
+                {BUSINESS_TYPES.map((b) => (
+                  <option key={b.value} value={b.value}>
+                    {b.label}
+                  </option>
+                ))}
+              </select>
+              {errors.businessType && (
+                <p className="mt-1 text-xs text-rose-600">
+                  {errors.businessType[0]}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <Label htmlFor="businessStatus" className="text-sm font-medium text-neutral-800">
+                Operational Status <span className="text-rose-500">*</span>
+              </Label>
+              <select
+                id="businessStatus"
+                value={businessStatus}
+                onChange={(e) => setBusinessStatus(e.target.value)}
+                className="mt-1.5 flex h-11 w-full rounded-xl border border-input bg-transparent px-3 py-2 text-sm shadow-xs transition-colors focus-visible:border-ring focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                disabled={isPending}
+              >
+                {BUSINESS_STATUSES.map((s) => (
+                  <option key={s.value} value={s.value}>
+                    {s.label}
+                  </option>
+                ))}
+              </select>
+              {errors.businessStatus && (
+                <p className="mt-1 text-xs text-rose-600">
+                  {errors.businessStatus[0]}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Section 2: Valuation & Price Structure */}
+      <div className="rounded-[24px] border border-[#D9D9D9] bg-white p-6 sm:p-8 space-y-6">
+        <div>
+          <h2 className="text-xl font-semibold text-black tracking-tight">
+            Valuation & Price Structure
+          </h2>
+          <p className="text-sm text-neutral-500 mt-1">
+            Choose whether to publish a transparent asking price or protect valuation behind NDA/LOI.
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          <Label className="text-sm font-medium text-neutral-800">
+            Price Disclosure Mode <span className="text-rose-500">*</span>
+          </Label>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {PRICE_MODES.map((pm) => {
+              const isSelected = priceMode === pm.value;
+              return (
+                <button
+                  key={pm.value}
+                  type="button"
+                  onClick={() => {
+                    setPriceMode(pm.value);
+                    if (pm.value !== "FIXED") {
+                      setAskingPrice("");
+                    }
+                  }}
+                  disabled={isPending}
+                  className={`flex flex-col items-start p-4 rounded-xl border text-left transition-all ${
+                    isSelected
+                      ? "border-[#383BFE] bg-[#F4F9FF] ring-2 ring-[#383BFE]/20"
+                      : "border-[#D9D9D9] hover:border-neutral-400 bg-white"
+                  }`}
+                >
+                  <div className="flex w-full items-center justify-between">
+                    <span
+                      className={`text-sm font-semibold ${
+                        isSelected ? "text-[#383BFE]" : "text-neutral-900"
+                      }`}
+                    >
+                      {pm.label}
+                    </span>
+                    {isSelected && (
+                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#383BFE] text-white">
+                        <Check className="h-3 w-3" />
+                      </span>
+                    )}
+                  </div>
+                  <span className="mt-1 text-xs text-neutral-500">
+                    {pm.description}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+          {errors.priceMode && (
+            <p className="mt-1 text-xs text-rose-600">{errors.priceMode[0]}</p>
+          )}
+
+          {priceMode === "FIXED" ? (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+              <div className="sm:col-span-2">
+                <Label htmlFor="askingPrice" className="text-sm font-medium text-neutral-800">
+                  Asking Price <span className="text-rose-500">*</span>
+                </Label>
+                <div className="relative mt-1.5">
+                  <Input
+                    id="askingPrice"
+                    type="number"
+                    min="1"
+                    step="any"
+                    value={askingPrice}
+                    onChange={(e) => setAskingPrice(e.target.value)}
+                    placeholder="e.g. 2500000"
+                    className="h-11 rounded-xl pr-14"
+                    disabled={isPending}
+                    aria-invalid={Boolean(errors.askingPrice)}
+                    aria-describedby={errors.askingPrice ? "price-error" : undefined}
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-xs font-semibold text-neutral-400">
+                    {currency}
+                  </div>
+                </div>
+                {errors.askingPrice && (
+                  <p id="price-error" className="mt-1 text-xs text-rose-600">
+                    {errors.askingPrice[0]}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Label htmlFor="currency" className="text-sm font-medium text-neutral-800">
+                  Currency <span className="text-rose-500">*</span>
+                </Label>
+                <select
+                  id="currency"
+                  value={currency}
+                  onChange={(e) => setCurrency(e.target.value.toUpperCase())}
+                  className="mt-1.5 flex h-11 w-full rounded-xl border border-input bg-transparent px-3 py-2 text-sm shadow-xs transition-colors focus-visible:border-ring focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                  disabled={isPending}
+                >
+                  <option value="USD">USD ($)</option>
+                  <option value="EUR">EUR (€)</option>
+                  <option value="GBP">GBP (£)</option>
+                  <option value="CHF">CHF (Fr)</option>
+                  <option value="SGD">SGD (S$)</option>
+                </select>
+                {errors.currency && (
+                  <p className="mt-1 text-xs text-rose-600">{errors.currency[0]}</p>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center gap-3 rounded-xl bg-[#F4F9FF] p-4 text-xs text-neutral-700 border border-[#E7F3FF]">
+              <Info className="h-4 w-4 text-[#383BFE] shrink-0" />
+              <span>
+                Valuation will be shown as <strong>{priceMode === "ON_LOI" ? "Upon LOI" : "Under NDA"}</strong> in the marketplace catalogue. Counterparties can inquire or submit indicative proposals directly.
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Section 3: Summary and Description */}
+      <div className="rounded-[24px] border border-[#D9D9D9] bg-white p-6 sm:p-8 space-y-6">
+        <div>
+          <h2 className="text-xl font-semibold text-black tracking-tight">
+            Detailed Presentation
+          </h2>
+          <p className="text-sm text-neutral-500 mt-1">
+            Provide succinct pitch details for catalogue cards and deep technical context for detail views.
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          <div>
+            <div className="flex justify-between items-center">
+              <Label htmlFor="summary" className="text-sm font-medium text-neutral-800">
+                Short Summary <span className="text-rose-500">*</span>
+              </Label>
+              <span className="text-xs text-neutral-400">
+                {summary.length}/300
+              </span>
+            </div>
+            <Input
+              id="summary"
+              value={summary}
+              onChange={(e) => setSummary(e.target.value)}
+              placeholder="e.g. Fully operational European EMI with SEPA Instant integration and 12 staff members."
+              maxLength={300}
+              className="mt-1.5 h-11 rounded-xl"
+              disabled={isPending}
+              aria-invalid={Boolean(errors.summary)}
+              aria-describedby={errors.summary ? "summary-error" : undefined}
+            />
+            {errors.summary && (
+              <p id="summary-error" className="mt-1 text-xs text-rose-600">
+                {errors.summary[0]}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <Label htmlFor="description" className="text-sm font-medium text-neutral-800">
+              Full Description & Tech Stack <span className="text-rose-500">*</span>
+            </Label>
+            <Textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Detail the operational history, core banking rails, licenses, clean compliance record, active customers, software stack, and terms of transfer..."
+              rows={5}
+              className="mt-1.5 rounded-xl resize-y"
+              disabled={isPending}
+              aria-invalid={Boolean(errors.description)}
+              aria-describedby={errors.description ? "desc-error" : undefined}
+            />
+            {errors.description && (
+              <p id="desc-error" className="mt-1 text-xs text-rose-600">
+                {errors.description[0]}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <Label htmlFor="features" className="text-sm font-medium text-neutral-800">
+              Key Features / Tags (comma-separated)
+            </Label>
+            <Input
+              id="features"
+              value={features}
+              onChange={(e) => setFeatures(e.target.value)}
+              placeholder="e.g. SEPA Instant, Tier 1 Banking, Mastercard Principal, API-first"
+              className="mt-1.5 h-11 rounded-xl"
+              disabled={isPending}
+            />
+            <p className="mt-1 text-xs text-neutral-400">
+              Separated by commas. Displayed as highlights on the listing spec grid.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Section 4: Operational Metrics */}
+      <div className="rounded-[24px] border border-[#D9D9D9] bg-white p-6 sm:p-8 space-y-6">
+        <div>
+          <h2 className="text-xl font-semibold text-black tracking-tight">
+            Operational Metrics
+          </h2>
+          <p className="text-sm text-neutral-500 mt-1">
+            Structured data points that feed institutional buyer filter criteria.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <Label htmlFor="yearOfIssue" className="text-sm font-medium text-neutral-800">
+              Year of License Issue
+            </Label>
+            <Input
+              id="yearOfIssue"
+              type="number"
+              min="1900"
+              max={new Date().getFullYear() + 1}
+              value={yearOfIssue}
+              onChange={(e) => setYearOfIssue(e.target.value)}
+              placeholder="e.g. 2021"
+              className="mt-1.5 h-11 rounded-xl"
+              disabled={isPending}
+            />
+            {errors.yearOfIssue && (
+              <p className="mt-1 text-xs text-rose-600">
+                {errors.yearOfIssue[0]}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <Label htmlFor="employees" className="text-sm font-medium text-neutral-800">
+              Staff / Employees
+            </Label>
+            <Input
+              id="employees"
+              type="number"
+              min="0"
+              value={employees}
+              onChange={(e) => setEmployees(e.target.value)}
+              placeholder="e.g. 15"
+              className="mt-1.5 h-11 rounded-xl"
+              disabled={isPending}
+            />
+            {errors.employees && (
+              <p className="mt-1 text-xs text-rose-600">
+                {errors.employees[0]}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <Label htmlFor="regulator" className="text-sm font-medium text-neutral-800">
+              Supervisory Authority
+            </Label>
+            <Input
+              id="regulator"
+              value={regulator}
+              onChange={(e) => setRegulator(e.target.value)}
+              placeholder="e.g. Bank of Lithuania"
+              className="mt-1.5 h-11 rounded-xl"
+              disabled={isPending}
+            />
+            {errors.regulator && (
+              <p className="mt-1 text-xs text-rose-600">
+                {errors.regulator[0]}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Sticky Bottom Actions Bar */}
+      <div className="sticky bottom-4 z-20 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-2xl border border-[#D9D9D9] bg-white/95 p-4 shadow-lg backdrop-blur-md">
+        <Link
+          href="/seller/assets"
+          className="inline-flex items-center text-sm font-medium text-neutral-600 hover:text-black transition-colors"
+        >
+          <ArrowLeft className="mr-1.5 h-4 w-4" />
+          Cancel and return
+        </Link>
+
+        <div className="flex w-full sm:w-auto items-center gap-3">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => handleSubmit("DRAFT")}
+            disabled={isPending}
+            className="flex-1 sm:flex-initial h-11 px-5 rounded-xl border-[#D9D9D9] hover:bg-neutral-50 font-medium"
+          >
+            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            Save Draft
+          </Button>
+
+          <Button
+            type="button"
+            onClick={() => handleSubmit("PUBLISHED")}
+            disabled={isPending}
+            className="flex-1 sm:flex-initial h-11 px-6 rounded-xl bg-[#383BFE] hover:bg-[#2d30e0] text-white font-medium shadow-sm transition-all"
+          >
+            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {isEdit ? "Update Listing" : "Publish Listing"}
+          </Button>
+        </div>
+      </div>
+    </form>
+  );
+}
