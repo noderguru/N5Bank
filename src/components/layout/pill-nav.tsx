@@ -79,7 +79,7 @@ export function PillNav({ user, unreadCount = 0 }: PillNavProps) {
                   Deal
                 </span>
                 <span className="hidden sm:inline-block font-lausanne text-[10px] uppercase tracking-widest text-muted-ink border-l border-hairline pl-2">
-                  Marketplace
+                  {tNav("marketplaceSection")}
                 </span>
               </div>
             </Link>
@@ -227,7 +227,7 @@ export function PillNav({ user, unreadCount = 0 }: PillNavProps) {
               aria-label={tNav("openMobileNav")}
             >
               <span className="hidden sm:inline font-lausanne text-[11px] font-semibold uppercase tracking-widest text-ink">
-                Menu
+                {tNav("menu")}
               </span>
               <Candlestick active={sideNavOpen} />
             </button>

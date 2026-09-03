@@ -116,6 +116,17 @@ export default async function Home() {
           proofValidated: t("proofValidated"),
           proofNda: t("proofNda"),
           proofConfidential: t("proofConfidential"),
+          heroLine1: t("heroLine1"),
+          heroLine2: t("heroLine2"),
+          heroLine3: t("heroLine3"),
+          heroLine4: t("heroLine4"),
+          platformVolumeLabel: t("platformVolumeLabel"),
+          platformVolumeSub: t("platformVolumeSub"),
+          globalReachLabel: t("globalReachLabel"),
+          globalReachSub: t("globalReachSub"),
+          verificationLabel: t("verificationLabel"),
+          confidentialityLabel: t("confidentialityLabel"),
+          viewBuyerDirectory: t("viewBuyerDirectory"),
         }}
       />
 

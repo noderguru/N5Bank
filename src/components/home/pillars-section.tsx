@@ -1,10 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { PixelArrow } from "@/components/layout/candlestick";
-import { Check, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Pillar {
@@ -17,58 +16,41 @@ interface Pillar {
   bgImage: string;
 }
 
-const PILLARS: Pillar[] = [
-  {
-    id: "banking",
-    number: "01",
-    tag: "Finance",
-    title: "Financial Primitives & Banking",
-    description:
-      "Full EU and offshore banking charters, Electronic Money Institutions (EMI), and payment institution licenses. Direct connectivity to SEPA, SWIFT, and Tier-1 central bank settlement rails.",
-    details: [
-      "Direct SEPA & TARGET2 Connectivity",
-      "Mastercard & Visa Principal BIN Sponsorship",
-      "Pre-cleared Correspondent Banking Rails",
-      "Full Passporting across all EEA Member States"
-    ],
-    bgImage: "/static/finance-background-8fc6f257ec55013a5a01fa94aa07598d.webp"
-  },
-  {
-    id: "crypto",
-    number: "02",
-    tag: "Blockchain",
-    title: "Regulated CASP & Digital Custody",
-    description:
-      "Fully compliant Virtual Asset Service Providers (VASP) and MiCA-aligned Crypto Asset Service Providers. Turnkey institutional custody infrastructure with multi-party computation (MPC) security.",
-    details: [
-      "MiCA Compliant Regulatory Authorizations",
-      "Institutional MPC Cold-Storage Architecture",
-      "Tier-1 EU Fiat On/Off Ramp Banking Integrations",
-      "Audited AML/KYC Rulebooks & Compliance Manuals"
-    ],
-    bgImage: "/static/blockchain-background-ec2ba01259ed2bb95c46e3f57da1ba88.webp"
-  },
-  {
-    id: "data",
-    number: "03",
-    tag: "Data",
-    title: "Bilateral NDA & Sovereign Escrow",
-    description:
-      "Institutional deal room safeguarding sensitive customer balances, core codebases, and cap tables. Every counterparty undergoes strict KYC verification before LOI submission.",
-    details: [
-      "Cryptographic LOI Escrow Coordination",
-      "Automated Dual-Signature Non-Disclosure Agreements",
-      "Confidential Blind Listings with Zero Balance Sheet Leaks",
-      "Institutional Diligence & Regulatory Ownership Approval"
-    ],
-    bgImage: "/static/data-background-40558dd2ed0062c23ee9deb54987075e.webp"
-  }
-];
-
 export function PillarsSection() {
+  const t = useTranslations("home");
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState<number>(0);
   const userInteractedRef = useRef<boolean>(false);
+
+  const pillars: Pillar[] = [
+    {
+      id: "banking",
+      number: "01",
+      tag: t("pillar1Tag"),
+      title: t("pillar1Title"),
+      description: t("pillar1Desc"),
+      details: t.raw("pillar1Details") as string[],
+      bgImage: "/static/finance-background-8fc6f257ec55013a5a01fa94aa07598d.webp"
+    },
+    {
+      id: "crypto",
+      number: "02",
+      tag: t("pillar2Tag"),
+      title: t("pillar2Title"),
+      description: t("pillar2Desc"),
+      details: t.raw("pillar2Details") as string[],
+      bgImage: "/static/blockchain-background-ec2ba01259ed2bb95c46e3f57da1ba88.webp"
+    },
+    {
+      id: "data",
+      number: "03",
+      tag: t("pillar3Tag"),
+      title: t("pillar3Title"),
+      description: t("pillar3Desc"),
+      details: t.raw("pillar3Details") as string[],
+      bgImage: "/static/data-background-40558dd2ed0062c23ee9deb54987075e.webp"
+    }
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -91,7 +73,7 @@ export function PillarsSection() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const current = (PILLARS[activeTab] ?? PILLARS[0])!;
+  const current = (pillars[activeTab] ?? pillars[0])!;
 
   return (
     <section
@@ -107,21 +89,21 @@ export function PillarsSection() {
               <div className="flex items-center gap-2.5">
                 <span className="inline-block size-2 bg-[#2bee4b]" />
                 <span className="font-lausanne text-xs font-semibold uppercase tracking-widest text-[#c8d2c8]">
-                  Marketplace Architecture
+                  {t("architectureEyebrow")}
                 </span>
               </div>
               <h2 className="font-mondwest text-4xl sm:text-5xl md:text-6xl font-normal tracking-tight text-[#fafffa] leading-[0.95]">
-                Three Pillars of Sovereign M&A
+                {t("architectureTitle")}
               </h2>
             </div>
             <p className="max-w-md font-lausanne text-xs sm:text-sm text-[#c8d2c8] leading-relaxed">
-              N5Deal bridges traditional financial regulatory frameworks with modern digital rails, enabling seamless bilateral institutional transactions.
+              {t("architectureDesc")}
             </p>
           </div>
 
           {/* Tab Selectors */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#232924] my-6 border border-[#232924]">
-            {PILLARS.map((p, idx) => {
+            {pillars.map((p, idx) => {
               const isSelected = activeTab === idx;
               return (
                 <button
@@ -176,7 +158,7 @@ export function PillarsSection() {
               {/* Pillar Left Details */}
               <div className="lg:col-span-7 space-y-5">
                 <div className="inline-flex items-center gap-2 rounded border border-[#232924] bg-[#161b17] px-3 py-1 font-lausanne text-[11px] uppercase tracking-widest text-[#2bee4b]">
-                  Charter Specification · {current.tag}
+                  {t("charterSpec")} · {current.tag}
                 </div>
 
                 <h4 className="font-mondwest text-2xl sm:text-3xl lg:text-4xl font-normal text-[#fafffa] leading-tight">
@@ -193,7 +175,7 @@ export function PillarsSection() {
                     prefetch={false}
                     className="btn-highlighter text-xs py-3 px-6"
                   >
-                    <span>Explore Matching Licences</span>
+                    <span>{t("exploreMatching")}</span>
                     <PixelArrow />
                   </Link>
 
@@ -202,7 +184,7 @@ export function PillarsSection() {
                     prefetch={false}
                     className="btn-ghost-dark text-xs py-3 px-5"
                   >
-                    View Buyer Demand
+                    {t("viewDemand")}
                   </Link>
                 </div>
               </div>
@@ -211,7 +193,7 @@ export function PillarsSection() {
               <div className="lg:col-span-5 rounded-[8px] border border-[#232924] bg-[#161b17]/90 p-5 sm:p-6 space-y-4 backdrop-blur-sm">
                 <div className="flex items-center justify-between border-b border-[#232924] pb-3">
                   <span className="font-lausanne text-[11px] font-semibold uppercase tracking-widest text-[#fafffa]">
-                    Verified Inclusions
+                    {t("verifiedInclusions")}
                   </span>
                   
                   {/* Central Green Venn Highlight icon */}
@@ -234,8 +216,8 @@ export function PillarsSection() {
                 </ul>
 
                 <div className="border-t border-[#232924] pt-3 flex items-center justify-between text-[11px] text-[#516254]">
-                  <span>Direct Bilateral Protocol</span>
-                  <span className="text-[#2bee4b] font-mono">NDA Protected</span>
+                  <span>{t("directProtocol")}</span>
+                  <span className="text-[#2bee4b] font-mono">{t("ndaProtected")}</span>
                 </div>
               </div>
             </div>

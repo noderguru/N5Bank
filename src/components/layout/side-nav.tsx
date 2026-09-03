@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { Link } from "@/i18n/routing";
-import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { X } from "lucide-react";
 import { PixelArrow } from "./candlestick";
@@ -38,20 +37,20 @@ export function SideNav({ isOpen, onClose, user }: SideNavProps) {
   if (!isOpen) return null;
 
   const navLinks = [
-    { href: "/", label: "Home" },
+    { href: "/", label: tNav("home") },
     { href: "/assets", label: tNav("assets") },
     { href: "/buyers", label: tNav("buyerDemand") },
     { href: "/inbox", label: tNav("inbox") },
   ];
 
   if (user?.role === "BUYER") {
-    navLinks.push({ href: "/buyer", label: "Buyer Portal" });
+    navLinks.push({ href: "/buyer", label: tNav("buyerPortal") });
     navLinks.push({ href: "/buyer/matches", label: tNav("myMatches") });
   } else if (user?.role === "SELLER") {
-    navLinks.push({ href: "/seller", label: "Seller Portal" });
+    navLinks.push({ href: "/seller", label: tNav("sellerPortal") });
     navLinks.push({ href: "/seller/assets/new", label: tNav("listAsset") });
   } else if (user?.role === "MANAGER") {
-    navLinks.push({ href: "/admin", label: "Platform Admin" });
+    navLinks.push({ href: "/admin", label: tNav("adminPortal") });
     navLinks.push({ href: "/admin/moderation", label: tNav("moderation") });
   }
 
@@ -81,9 +80,9 @@ export function SideNav({ isOpen, onClose, user }: SideNavProps) {
         <button
           onClick={onClose}
           className="group flex items-center gap-3 text-xs font-lausanne uppercase tracking-widest text-[#fafffa] hover:text-[#2bee4b] transition-colors"
-          aria-label="Close Menu"
+          aria-label={tNav("close")}
         >
-          <span>Close</span>
+          <span>{tNav("close")}</span>
           <div className="flex size-8 items-center justify-center rounded-full border border-[#232924] bg-[#121613] group-hover:border-[#2bee4b]">
             <X className="size-4 text-[#fafffa] group-hover:text-[#2bee4b]" />
           </div>
@@ -120,7 +119,7 @@ export function SideNav({ isOpen, onClose, user }: SideNavProps) {
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-6 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-10">
           <div className="space-y-1">
             <span className="font-lausanne text-[11px] uppercase tracking-widest text-[#516254]">
-              Bilateral M&A Enquiries
+              {tNav("bilateralEnquiries")}
             </span>
             <div>
               <a
@@ -140,13 +139,13 @@ export function SideNav({ isOpen, onClose, user }: SideNavProps) {
 
             {user ? (
               <div className="flex items-center gap-3">
-                <span className="text-[#516254]">Logged in as {user.email}</span>
+                <span className="text-[#516254]">{tNav("loggedInAs", { email: user.email })}</span>
                 <Link
                   href="/login"
                   onClick={onClose}
                   className="text-[#2bee4b] uppercase tracking-wider hover:underline"
                 >
-                  Account
+                  {tNav("account")}
                 </Link>
               </div>
             ) : (

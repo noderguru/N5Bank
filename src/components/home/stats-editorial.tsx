@@ -1,29 +1,32 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { PixelArrow } from "@/components/layout/candlestick";
 
 export function StatsEditorial() {
+  const t = useTranslations("home");
+
   const stats = [
     {
       figure: "$1.06B+",
-      label: "Current Asset Value on Platform",
-      detail: "Aggregated asking price of verified operational institutions and financial licenses"
+      label: t("metric1Label"),
+      detail: t("metric1Desc"),
     },
     {
       figure: "100+",
-      label: "Sovereign Jurisdictions",
-      detail: "Covering UK, EEA, Switzerland, UAE, Singapore, and offshore financial centers"
+      label: t("metric2Label"),
+      detail: t("metric2Desc"),
     },
     {
       figure: "98.4%",
-      label: "Regulatory Audit Pass Rate",
-      detail: "Strict pre-vetting of regulatory history, sanctions screening, and balance sheet integrity"
+      label: t("metric3Label"),
+      detail: t("metric3Desc"),
     },
     {
       figure: "350+",
-      label: "Institutional Buyers",
-      detail: "Active acquisition mandates from private equity funds, family offices, and fintech conglomerates"
+      label: t("metric4Label"),
+      detail: t("metric4Desc"),
     }
   ];
 
@@ -37,21 +40,21 @@ export function StatsEditorial() {
             <div className="flex items-center gap-3">
               <span className="inline-block size-2 bg-[#2bee4b]" />
               <span className="font-lausanne text-xs font-semibold uppercase tracking-widest text-[#c8d2c8]">
-                Marketplace Velocity
+                {t("velocityEyebrow")}
               </span>
             </div>
             <h2 className="font-mondwest text-4xl sm:text-6xl md:text-7xl font-normal tracking-tight leading-[0.95] text-[#fafffa]">
-              Institutional Scale
+              {t("velocityTitle")}
             </h2>
           </div>
 
           <div className="flex items-center gap-4">
             <Link href="/seller/assets/new" className="btn-highlighter">
-              <span>List An Asset</span>
+              <span>{t("listAssetCta")}</span>
               <PixelArrow />
             </Link>
             <Link href="/buyers" className="btn-ghost-dark">
-              <span>Review Mandates</span>
+              <span>{t("reviewMandatesCta")}</span>
             </Link>
           </div>
         </div>

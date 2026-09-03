@@ -31,10 +31,10 @@ export function Footer() {
           </div>
           <div className="max-w-xs text-right hidden sm:block">
             <p className="font-lausanne text-xs font-semibold uppercase tracking-widest text-[#121613]">
-              Sovereign M&A Infrastructure
+              {t("sovereignInfrastructure")}
             </p>
             <p className="font-lausanne text-xs text-[#121613]/80 mt-1">
-              Curated bilateral transactions for regulated financial institutions worldwide.
+              {t("sovereignInfraDesc")}
             </p>
           </div>
         </div>
@@ -48,7 +48,7 @@ export function Footer() {
           {/* Giant Email Headline */}
           <div className="border-b border-[#232924] pb-12 mb-16">
             <span className="font-lausanne text-[11px] uppercase tracking-widest text-[#516254] block mb-2">
-              Confidential Transaction Desk
+              {t("confidentialDesk")}
             </span>
             <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-6">
               <a
@@ -64,10 +64,10 @@ export function Footer() {
                 type="button"
                 onClick={scrollToTop}
                 className="group flex items-center gap-3 self-start sm:self-auto px-5 py-3 rounded border border-[#232924] bg-[#121613] hover:border-[#2bee4b] hover:bg-[#1a201c] transition-all"
-                aria-label="Scroll to top of page"
+                aria-label={t("topOfPage")}
               >
                 <span className="font-lausanne text-[11px] font-semibold uppercase tracking-widest text-[#fafffa] group-hover:text-[#2bee4b]">
-                  Top of page
+                  {t("topOfPage")}
                 </span>
                 <ArrowUp className="size-4 text-[#2bee4b] transition-transform duration-300 group-hover:-translate-y-1" />
               </button>
@@ -86,12 +86,12 @@ export function Footer() {
                   DEAL
                 </span>
                 <span className="font-lausanne text-[10px] uppercase tracking-widest text-[#c8d2c8] ml-2 border border-[#232924] bg-[#161b17] px-2 py-0.5 rounded">
-                  M&A Platform
+                  {t("mnaPlatform")}
                 </span>
               </div>
 
               <p className="max-w-md font-lausanne text-xs leading-relaxed text-[#c8d2c8]">
-                Curated bilateral introduction platform for banking institutions, EMI payment licenses, CASP/VASP entities, and institutional brokerage assets across 100+ sovereign jurisdictions.
+                {t("mnaPlatformDesc")}
               </p>
 
               <div className="flex items-center gap-2 pt-2 text-xs text-[#516254]">
@@ -108,22 +108,22 @@ export function Footer() {
               <ul className="space-y-2.5 font-lausanne text-xs text-[#c8d2c8]">
                 <li>
                   <Link href="/assets?license=E_MONEY" className="hover:text-[#2bee4b] transition-colors">
-                    EMI & Payment Institutions
+                    {t("emiPaymentLink")}
                   </Link>
                 </li>
                 <li>
                   <Link href="/assets?license=BANKING" className="hover:text-[#2bee4b] transition-colors">
-                    Banking & Credit Institutions
+                    {t("bankingCreditLink")}
                   </Link>
                 </li>
                 <li>
                   <Link href="/assets?license=CRYPTO" className="hover:text-[#2bee4b] transition-colors">
-                    Crypto & VASP Charters
+                    {t("cryptoVaspLink")}
                   </Link>
                 </li>
                 <li>
                   <Link href="/buyers" className="hover:text-[#2bee4b] transition-colors">
-                    Institutional Buyer Directory
+                    {t("buyerDirectoryLink")}
                   </Link>
                 </li>
               </ul>
@@ -137,22 +137,22 @@ export function Footer() {
               <ul className="space-y-2.5 font-lausanne text-xs text-[#c8d2c8]">
                 <li>
                   <Link href="/assets" className="hover:text-[#2bee4b] transition-colors">
-                    Regulatory Verification
+                    {t("regVerificationLink")}
                   </Link>
                 </li>
                 <li>
                   <Link href="/buyers" className="hover:text-[#2bee4b] transition-colors">
-                    Proof of Funds Protocol
+                    {t("pofProtocolLink")}
                   </Link>
                 </li>
                 <li>
                   <Link href="/login" className="hover:text-[#2bee4b] transition-colors">
-                    Seller Deal Room
+                    {t("sellerDealRoomLink")}
                   </Link>
                 </li>
                 <li>
                   <Link href="/login" className="hover:text-[#2bee4b] transition-colors">
-                    Institutional Mandates
+                    {t("mandatesLink")}
                   </Link>
                 </li>
               </ul>

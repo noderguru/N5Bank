@@ -14,6 +14,17 @@ interface HeroEditorialProps {
     proofValidated: string;
     proofNda: string;
     proofConfidential: string;
+    heroLine1: string;
+    heroLine2: string;
+    heroLine3: string;
+    heroLine4: string;
+    platformVolumeLabel: string;
+    platformVolumeSub: string;
+    globalReachLabel: string;
+    globalReachSub: string;
+    verificationLabel: string;
+    confidentialityLabel: string;
+    viewBuyerDirectory: string;
   };
 }
 
@@ -30,12 +41,12 @@ export function HeroEditorial({ t }: HeroEditorialProps) {
         </div>
 
         {/* Monolithic Typographic Wall */}
-        <div className="space-y-3 sm:space-y-4">
+        <div className="space-y-4 sm:space-y-5">
           
-          {/* Line 1: Advancing + [Large Tile 1] + the Capital */}
+          {/* Line 1: Advancing the Capital + [Large Tile 1] */}
           <div className="flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-3">
             <h1 className="font-mondwest text-5xl sm:text-7xl md:text-8xl lg:text-[105px] xl:text-[118px] font-normal tracking-tight leading-[0.92] text-[#121613]">
-              Advancing
+              {t.heroLine1}
             </h1>
 
             {/* Photo Tile 1 (322px x 135px) */}
@@ -57,47 +68,46 @@ export function HeroEditorial({ t }: HeroEditorialProps) {
                 priority
               />
             </div>
-
-            <h1 className="font-editorial text-5xl sm:text-7xl md:text-8xl lg:text-[105px] xl:text-[118px] font-light italic tracking-tight leading-[0.92] text-[#121613]">
-              the Capital
-            </h1>
           </div>
 
-          {/* Line 2: Networks of + M&A (images removed per user request) */}
+          {/* Line 2: Networks of M&A (no images, pure typography) */}
           <div className="flex flex-wrap items-baseline gap-x-4 sm:gap-x-6 gap-y-3">
             <h1 className="font-mondwest text-5xl sm:text-7xl md:text-8xl lg:text-[105px] xl:text-[118px] font-normal tracking-tight leading-[0.92] text-[#121613]">
-              Networks of
-            </h1>
-
-            <h1 className="font-lausanne text-5xl sm:text-7xl md:text-8xl lg:text-[105px] xl:text-[118px] font-semibold uppercase tracking-tighter leading-[0.92] text-[#121613]">
-              M&A
+              {t.heroLine2}
             </h1>
           </div>
 
-          {/* Line 3: and Regulated Financial Assets + [Tile 4 moved after Assets] */}
-          <div className="flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-3">
+          {/* Line 3 & 4: and Regulated Financial + Assets [Tile 4 directly opposite Assets] */}
+          <div className="space-y-2 sm:space-y-3">
             <h1 className="font-editorial text-4xl sm:text-6xl md:text-7xl lg:text-[92px] xl:text-[105px] font-light italic tracking-tight leading-[0.92] text-[#516254]">
-              and Regulated Financial Assets
+              {t.heroLine3}
             </h1>
 
-            {/* Photo Tile 4 placed after Assets */}
-            <div className="relative inline-flex h-[56px] w-[140px] sm:h-[84px] sm:w-[230px] md:h-[110px] md:w-[300px] lg:h-[135px] lg:w-[375px] overflow-hidden rounded-[14px] border border-[#232924]/15 shadow-md align-middle shrink-0 bg-[#161b17]">
-              <Image
-                src="/static/Hero-CRYPTO-04-0ecd9362de52a808c35ead4c9338c025.webp"
-                alt="Digital stock ticker"
-                fill
-                sizes="380px"
-                className="object-cover editorial-filter hero-img-swap"
-                priority
-              />
-              <Image
-                src="/static/Hero-NYSE-04-889ef0d843263d63e413de2856b57c90.webp"
-                alt="NYSE floor columns"
-                fill
-                sizes="380px"
-                className="object-cover editorial-filter"
-                priority
-              />
+            {/* Assets + Image 4 in a locked flex row, preventing image from dropping underneath */}
+            <div className="flex items-center gap-4 sm:gap-8">
+              <h1 className="font-editorial text-4xl sm:text-6xl md:text-7xl lg:text-[92px] xl:text-[105px] font-light italic tracking-tight leading-[0.92] text-[#516254]">
+                {t.heroLine4}
+              </h1>
+
+              {/* Photo Tile 4 directly next to / opposite Assets */}
+              <div className="relative inline-flex h-[56px] w-[140px] sm:h-[84px] sm:w-[230px] md:h-[110px] md:w-[300px] lg:h-[135px] lg:w-[375px] overflow-hidden rounded-[14px] border border-[#232924]/15 shadow-md align-middle shrink-0 bg-[#161b17]">
+                <Image
+                  src="/static/Hero-CRYPTO-04-0ecd9362de52a808c35ead4c9338c025.webp"
+                  alt="Digital stock ticker"
+                  fill
+                  sizes="380px"
+                  className="object-cover editorial-filter hero-img-swap"
+                  priority
+                />
+                <Image
+                  src="/static/Hero-NYSE-04-889ef0d843263d63e413de2856b57c90.webp"
+                  alt="NYSE floor columns"
+                  fill
+                  sizes="380px"
+                  className="object-cover editorial-filter"
+                  priority
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -123,7 +133,7 @@ export function HeroEditorial({ t }: HeroEditorialProps) {
               prefetch={false}
               className="font-lausanne text-xs uppercase tracking-widest text-[#121613] hover:text-[#2bee4b] underline underline-offset-8 transition-colors"
             >
-              {t.ctaSecondary}
+              {t.viewBuyerDirectory}
             </Link>
           </div>
         </div>
@@ -133,31 +143,31 @@ export function HeroEditorial({ t }: HeroEditorialProps) {
           <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
             <div className="space-y-1">
               <span className="font-mono text-xs uppercase tracking-widest text-[#516254]">
-                Platform Volume
+                {t.platformVolumeLabel}
               </span>
               <div className="font-lausanne text-xl sm:text-2xl font-bold tracking-tight text-[#121613]">
                 $1,064,137,489
               </div>
               <div className="font-lausanne text-[11px] text-[#516254]">
-                Verified Asset Value
+                {t.platformVolumeSub}
               </div>
             </div>
 
             <div className="space-y-1">
               <span className="font-mono text-xs uppercase tracking-widest text-[#516254]">
-                Global Reach
+                {t.globalReachLabel}
               </span>
               <div className="font-lausanne text-xl sm:text-2xl font-bold tracking-tight text-[#121613]">
                 100+
               </div>
               <div className="font-lausanne text-[11px] text-[#516254]">
-                Sovereign Jurisdictions
+                {t.globalReachSub}
               </div>
             </div>
 
             <div className="space-y-1">
               <span className="font-mono text-xs uppercase tracking-widest text-[#516254]">
-                Verification
+                {t.verificationLabel}
               </span>
               <div className="flex items-center gap-1.5 font-lausanne text-xl sm:text-2xl font-bold tracking-tight text-[#121613]">
                 <CheckCircle2 className="size-5 text-[#2bee4b] shrink-0" />
@@ -170,7 +180,7 @@ export function HeroEditorial({ t }: HeroEditorialProps) {
 
             <div className="space-y-1">
               <span className="font-mono text-xs uppercase tracking-widest text-[#516254]">
-                Confidentiality
+                {t.confidentialityLabel}
               </span>
               <div className="flex items-center gap-1.5 font-lausanne text-xl sm:text-2xl font-bold tracking-tight text-[#121613]">
                 <ShieldCheck className="size-5 text-[#2bee4b] shrink-0" />

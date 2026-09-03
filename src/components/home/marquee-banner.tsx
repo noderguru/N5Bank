@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
 interface MarqueeBannerProps {
@@ -9,11 +10,12 @@ interface MarqueeBannerProps {
 }
 
 export function MarqueeBanner({ dark = false, speed = "normal" }: MarqueeBannerProps) {
+  const t = useTranslations("home");
+
   const items = [
-    { editorial: "Wall Street M&A", mondwest: "Fintech Charters", img: "/static/Marquee-one-01-08a4b95c42607bb02f9a7c212d13188a.webp" },
-    { editorial: "Banking Rails", mondwest: "Sovereign Institutions", img: "/static/Story-01-7adf4ba13032bb16612d169daaf9d44f.webp" },
-    { editorial: "Digital Assets", mondwest: "Regulated CASP", img: "/static/Marquee-one-02-f5db565a07497b53d68555c43916f725.webp" },
-    { editorial: "Bilateral Escrow", mondwest: "Direct Acquisitions", img: "/static/Story-02-d1df78de491af1880cfda92bb637dee2.webp" },
+    { editorial: t("marqueeFintech"), mondwest: t("marqueeMna"), img: "/static/Marquee-one-01-08a4b95c42607bb02f9a7c212d13188a.webp" },
+    { editorial: t("marqueeBanking"), mondwest: t("marqueeEmi"), img: "/static/Story-01-7adf4ba13032bb16612d169daaf9d44f.webp" },
+    { editorial: t("marqueeCrypto"), mondwest: t("marqueeBrokerage"), img: "/static/Marquee-one-02-f5db565a07497b53d68555c43916f725.webp" },
   ];
 
   const durationClass = speed === "fast" ? "[animation-duration:20s]" : speed === "slow" ? "[animation-duration:40s]" : "[animation-duration:30s]";

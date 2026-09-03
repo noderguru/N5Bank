@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { PixelArrow } from "@/components/layout/candlestick";
 import { cn } from "@/lib/utils";
@@ -14,56 +15,57 @@ interface Story {
   statement: React.ReactNode;
 }
 
-const STORIES: Story[] = [
-  {
-    id: "01",
-    phase: "Phase · 01",
-    image: "/static/Story-01-7adf4ba13032bb16612d169daaf9d44f.webp",
-    alt: "NYSE trading floor",
-    statement: (
-      <>
-        Traditional financial M&A is{" "}
-        <span className="font-editorial italic font-light text-[#c8d2c8]">archaic</span>,
-        taking 18 months and exposing confidential balance sheets...
-      </>
-    )
-  },
-  {
-    id: "02",
-    phase: "Phase · 02",
-    image: "/static/Story-02-d1df78de491af1880cfda92bb637dee2.webp",
-    alt: "Data center server infrastructure",
-    statement: (
-      <>
-        Novel tech stacks have
-        <span className="inline-block w-8 sm:w-12 h-2.5 bg-[#2bee4b] mx-2 align-baseline" />
-        enabled a new
-        <span className="inline-block w-8 sm:w-12 h-2.5 bg-[#2bee4b] mx-2 align-baseline" />
-        form of bilateral markets...
-        <span className="inline-block w-8 sm:w-12 h-2.5 bg-[#2bee4b] mx-2 align-baseline blinky-cursor" />
-      </>
-    )
-  },
-  {
-    id: "03",
-    phase: "Phase · 03",
-    image: "/static/Story-03-fa3ee620c23979fb611a21b46183e247.webp",
-    alt: "Modern institutional capital allocators",
-    statement: (
-      <>
-        We bridge{" "}
-        <span className="font-editorial italic font-light text-[#c8d2c8]">sovereign banking institutions</span>{" "}
-        to digital finance allocators worldwide.
-      </>
-    )
-  }
-];
-
 export function StoriesSection() {
+  const t = useTranslations("home");
   const containerRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState<number>(0);
   const targetProgressRef = useRef<number>(0);
   const currentProgressRef = useRef<number>(0);
+
+  const stories: Story[] = [
+    {
+      id: "01",
+      phase: t("story1Phase"),
+      image: "/static/Story-01-7adf4ba13032bb16612d169daaf9d44f.webp",
+      alt: "NYSE trading floor",
+      statement: (
+        <>
+          {t("story1Traditional")}{" "}
+          <span className="font-editorial italic font-light text-[#c8d2c8]">{t("story1Archaic")}</span>,{" "}
+          {t("story1Suffix")}
+        </>
+      )
+    },
+    {
+      id: "02",
+      phase: t("story2Phase"),
+      image: "/static/Story-02-d1df78de491af1880cfda92bb637dee2.webp",
+      alt: "Data center server infrastructure",
+      statement: (
+        <>
+          {t("story2Text1")}
+          <span className="inline-block w-8 sm:w-12 h-2.5 bg-[#2bee4b] mx-2 align-baseline" />
+          {t("story2Text2")}
+          <span className="inline-block w-8 sm:w-12 h-2.5 bg-[#2bee4b] mx-2 align-baseline" />
+          {t("story2Text3")}
+          <span className="inline-block w-8 sm:w-12 h-2.5 bg-[#2bee4b] mx-2 align-baseline blinky-cursor" />
+        </>
+      )
+    },
+    {
+      id: "03",
+      phase: t("story3Phase"),
+      image: "/static/Story-03-fa3ee620c23979fb611a21b46183e247.webp",
+      alt: "Modern institutional capital allocators",
+      statement: (
+        <>
+          {t("story3Prefix")}{" "}
+          <span className="font-editorial italic font-light text-[#c8d2c8]">{t("story3Highlight")}</span>{" "}
+          {t("story3Suffix")}
+        </>
+      )
+    }
+  ];
 
   useEffect(() => {
     let animId: number;
@@ -190,7 +192,7 @@ export function StoriesSection() {
               
               {/* Vertical Scroll Invite (matching newformcap.com) */}
               <div className="hidden sm:flex flex-col items-center gap-3 text-[#516254] font-lausanne text-[11px] uppercase tracking-widest select-none">
-                <span className="[writing-mode:vertical-lr] rotate-180">Scroll</span>
+                <span className="[writing-mode:vertical-lr] rotate-180">{t("scrollBadge")}</span>
                 <span className="font-mono text-[#2bee4b] text-xs">0{activeStoryIndex + 1}</span>
                 <div className="text-[#2bee4b] animate-bounce">
                   <PixelArrow />
@@ -199,7 +201,7 @@ export function StoriesSection() {
 
               {/* 3D Image Orbit Stage */}
               <div className="relative w-full max-w-[420px] h-[360px] sm:h-[480px] lg:h-[540px]">
-                {STORIES.map((story, idx) => {
+                {stories.map((story, idx) => {
                   const style = getImageTransform(idx);
                   return (
                     <div
@@ -229,10 +231,10 @@ export function StoriesSection() {
               <div className="hidden xl:block absolute bottom-8 left-8 max-w-[320px] space-y-3 z-10">
                 <div className="space-y-1">
                   <h4 className="font-lausanne text-[11px] font-semibold uppercase tracking-widest text-[#fafffa]">
-                    The Institutional Thesis
+                    {t("thesisTitle")}
                   </h4>
                   <p className="font-lausanne text-xs text-[#c8d2c8] leading-relaxed">
-                    Curated bilateral acquisitions with cryptographic LOI escrow and pre-vetted compliance.
+                    {t("thesisDescription")}
                   </p>
                 </div>
                 <Link
@@ -240,7 +242,7 @@ export function StoriesSection() {
                   prefetch={false}
                   className="btn-highlighter text-[10px] py-2.5 px-4"
                 >
-                  <span>Explore Licences</span>
+                  <span>{t("exploreLicences")}</span>
                   <PixelArrow />
                 </Link>
               </div>
@@ -249,7 +251,7 @@ export function StoriesSection() {
 
             {/* Right Column: Scrubbed Narrative Statements */}
             <div className="lg:col-span-6 relative min-h-[320px] flex items-center">
-              {STORIES.map((story, idx) => {
+              {stories.map((story, idx) => {
                 const isActive = activeStoryIndex === idx;
                 return (
                   <div
