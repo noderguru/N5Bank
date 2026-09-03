@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
-import { useSafeTranslations } from "@/lib/i18n-client";
+import { useTranslations } from "next-intl";
 import { AlertCircle, ArrowRight, Loader2 } from "lucide-react";
 import { loginAction, type AuthFormState } from "@/app/actions/auth";
 import { DemoLoginButtons } from "@/components/auth/demo-login-buttons";
@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 const initialState: AuthFormState = {};
 
 export function LoginForm({ returnTo }: { returnTo?: string }) {
-  const t = useSafeTranslations("auth");
+  const t = useTranslations("auth");
   const [state, formAction, isPending] = useActionState(loginAction, initialState);
 
   const formError = state?.errors?._form?.[0];
@@ -50,7 +50,7 @@ export function LoginForm({ returnTo }: { returnTo?: string }) {
           >
             <AlertCircle className="size-4 shrink-0 mt-0.5" />
             <div>
-              <p className="font-semibold">Unable to sign in</p>
+              <p className="font-semibold">{t("loginError")}</p>
               <p className="mt-0.5 text-destructive/90">{formError}</p>
             </div>
           </div>
@@ -69,7 +69,7 @@ export function LoginForm({ returnTo }: { returnTo?: string }) {
               type="email"
               autoComplete="email"
               required
-              placeholder="name@company.com"
+              placeholder={t("emailFieldPlaceholder")}
               aria-invalid={!!emailError}
               aria-describedby={emailError ? "email-error" : undefined}
               className="h-10 rounded-xl"

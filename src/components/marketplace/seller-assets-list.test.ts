@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
+import { renderWithIntl } from "@/lib/render-test";
 import { SellerAssetsList, type SellerAssetItem } from "./seller-assets-list";
 
 vi.mock("next/navigation", () => ({
@@ -12,7 +12,7 @@ vi.mock("next/navigation", () => ({
 
 describe("SellerAssetsList", () => {
   it("renders empty state pointing to /seller/assets/new when no assets exist", () => {
-    const html = renderToStaticMarkup(
+    const html = renderWithIntl(
       React.createElement(SellerAssetsList, { assets: [] })
     );
 
@@ -55,7 +55,7 @@ describe("SellerAssetsList", () => {
       },
     ];
 
-    const html = renderToStaticMarkup(
+    const html = renderWithIntl(
       React.createElement(SellerAssetsList, { assets })
     );
 
@@ -87,7 +87,7 @@ describe("SellerAssetsList", () => {
       },
     ];
 
-    const html = renderToStaticMarkup(
+    const html = renderWithIntl(
       React.createElement(SellerAssetsList, { assets })
     );
 

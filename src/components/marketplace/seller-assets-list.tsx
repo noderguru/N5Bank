@@ -17,7 +17,8 @@ import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/marketplace/empty-state";
-import { formatLicenseType, formatPrice } from "@/lib/formatters";
+import { formatPrice } from "@/lib/formatters";
+import { useEnumLabel, useFormatLabels } from "@/lib/i18n-format";
 import { removeAssetAction, toggleAssetStatusAction } from "@/app/actions/assets";
 
 export type SellerAssetItem = {
@@ -42,6 +43,8 @@ type SellerAssetsListProps = {
 };
 
 export function SellerAssetsList({ assets }: SellerAssetsListProps) {
+  const enumLabel = useEnumLabel();
+  const { locale, price } = useFormatLabels();
   const router = useRouter();
   const [activeActionId, setActiveActionId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -142,7 +145,7 @@ export function SellerAssetsList({ assets }: SellerAssetsListProps) {
                   )}
 
                   <Badge variant="outline" className="text-xs font-medium border-[#D9D9D9]">
-                    {formatLicenseType(asset.licenseType)}
+                    {enumLabel("licenseType", asset.licenseType)}
                   </Badge>
 
                   <span className="text-xs text-neutral-400 font-medium">
@@ -182,7 +185,7 @@ export function SellerAssetsList({ assets }: SellerAssetsListProps) {
                     Valuation
                   </span>
                   <span className="text-lg font-bold text-neutral-900 tracking-tight">
-                    {formatPrice(asset.askingPrice, asset.priceMode, asset.currency)}
+                    {formatPrice(asset.askingPrice, asset.priceMode, asset.currency, locale, price)}
                   </span>
                 </div>
 

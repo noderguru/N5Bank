@@ -1,4 +1,5 @@
 import { TrendingUp } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export type SparklineProps = {
   data?: number[];
@@ -9,10 +10,12 @@ export type SparklineProps = {
 
 export function Sparkline({
   data = [12, 14, 18, 16, 22, 28, 26, 32, 36, 42, 40, 48],
-  label = "Secondary Market Liquidity Trend",
+  label,
   changePercent = "+18.4% YoY",
   className = "",
 }: SparklineProps) {
+  const t = useTranslations("marketplace");
+  const heading = label ?? t("liquidityTrend");
   const min = Math.min(...data);
   const max = Math.max(...data);
   const range = max - min || 1;
@@ -41,7 +44,7 @@ export function Sparkline({
           <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
             Market Index
           </span>
-          <div className="text-xs font-medium text-ink">{label}</div>
+          <div className="text-xs font-medium text-ink">{heading}</div>
         </div>
         <div className="inline-flex items-center gap-1 rounded-full bg-success-tint px-2 py-0.5 text-xs font-semibold text-success">
           <TrendingUp className="size-3.5" />
@@ -76,7 +79,7 @@ export function Sparkline({
       <div className="flex items-center justify-between text-[10px] text-muted-foreground">
         <span>Q1 2025</span>
         <span>Q4 2025</span>
-        <span>Present</span>
+        <span>{t("present")}</span>
       </div>
     </div>
   );

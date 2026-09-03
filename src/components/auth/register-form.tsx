@@ -7,11 +7,14 @@ import { registerAction, type AuthFormState } from "@/app/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
 const initialState: AuthFormState = {};
 
 export function RegisterForm() {
+  const t = useTranslations("auth");
+  const tNav = useTranslations("nav");
   const [state, formAction, isPending] = useActionState(registerAction, initialState);
   const [selectedRole, setSelectedRole] = useState<"BUYER" | "SELLER">("BUYER");
 
@@ -28,11 +31,11 @@ export function RegisterForm() {
       <div className="space-y-2 text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-hairline bg-surface px-3 py-1 text-xs font-semibold text-muted-foreground">
           <span className="size-2 rounded-full bg-brand" />
-          Join N5Deal
+          {t("joinBadge")}
         </div>
-        <h1 className="text-2xl font-bold tracking-tight text-ink">Create your marketplace account</h1>
+        <h1 className="display-lg text-ink">{t("registerHeadline")}</h1>
         <p className="text-sm text-muted-foreground">
-          Connect with European and global counterparties across regulated financial M&A
+          {t("registerSubtitle")}
         </p>
       </div>
 
@@ -44,7 +47,7 @@ export function RegisterForm() {
           >
             <AlertCircle className="size-4 shrink-0 mt-0.5" />
             <div>
-              <p className="font-semibold">Unable to register</p>
+              <p className="font-semibold">{t("registerError")}</p>
               <p className="mt-0.5 text-destructive/90">{formError}</p>
             </div>
           </div>
@@ -53,7 +56,7 @@ export function RegisterForm() {
         <form action={formAction} className="space-y-5">
           {/* Role Selection */}
           <div className="space-y-2">
-            <Label className="text-xs font-medium text-ink">Choose your role</Label>
+            <Label className="text-xs font-medium text-ink">{t("chooseRole")}</Label>
             <input type="hidden" name="role" value={selectedRole} />
             <div className="grid gap-3 sm:grid-cols-2">
               <button
@@ -84,9 +87,9 @@ export function RegisterForm() {
                       </span>
                     )}
                   </div>
-                  <div className="text-sm font-semibold text-ink">Buyer Account</div>
+                  <div className="text-sm font-semibold text-ink">{t("buyerAccount")}</div>
                   <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
-                    Acquire regulated institutions, filter by license type and ticket, and reach sellers directly.
+                    {t("buyerAccountDesc")}
                   </p>
                 </div>
               </button>
@@ -119,9 +122,9 @@ export function RegisterForm() {
                       </span>
                     )}
                   </div>
-                  <div className="text-sm font-semibold text-ink">Seller Account</div>
+                  <div className="text-sm font-semibold text-ink">{t("sellerAccount")}</div>
                   <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
-                    List financial licenses or operating entities, configure LOI/NDA pricing, and review buyer inquiries.
+                    {t("sellerAccountDesc")}
                   </p>
                 </div>
               </button>
@@ -132,13 +135,13 @@ export function RegisterForm() {
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label htmlFor="name" className="text-xs font-medium text-ink">
-                Full name
+                {t("fullNameLabel")}
               </Label>
               <Input
                 id="name"
                 name="name"
                 required
-                placeholder="Alex Morgan"
+                placeholder={t("namePlaceholder")}
                 aria-invalid={!!nameError}
                 aria-describedby={nameError ? "name-error" : undefined}
                 className="h-10 rounded-xl"
@@ -152,14 +155,14 @@ export function RegisterForm() {
 
             <div className="space-y-1.5">
               <Label htmlFor="email" className="text-xs font-medium text-ink">
-                Work email
+                {t("workEmail")}
               </Label>
               <Input
                 id="email"
                 name="email"
                 type="email"
                 required
-                placeholder="alex@northstar.com"
+                placeholder={t("emailPlaceholder")}
                 aria-invalid={!!emailError}
                 aria-describedby={emailError ? "email-error" : undefined}
                 className="h-10 rounded-xl"
@@ -174,7 +177,7 @@ export function RegisterForm() {
 
           <div className="space-y-1.5">
             <Label htmlFor="password" className="text-xs font-medium text-ink">
-              Password (min. 6 characters)
+              {t("passwordHint")}
             </Label>
             <Input
               id="password"
@@ -196,13 +199,13 @@ export function RegisterForm() {
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label htmlFor="company" className="text-xs font-medium text-ink">
-                Company / Organization
+                {t("companyOrg")}
               </Label>
               <Input
                 id="company"
                 name="company"
                 required
-                placeholder="Northstar Capital LLC"
+                placeholder={t("companyPlaceholder")}
                 aria-invalid={!!companyError}
                 aria-describedby={companyError ? "company-error" : undefined}
                 className="h-10 rounded-xl"
@@ -216,13 +219,13 @@ export function RegisterForm() {
 
             <div className="space-y-1.5">
               <Label htmlFor="country" className="text-xs font-medium text-ink">
-                Country
+                {t("countryLabel")}
               </Label>
               <Input
                 id="country"
                 name="country"
                 required
-                placeholder="United Kingdom"
+                placeholder={t("countryPlaceholder")}
                 aria-invalid={!!countryError}
                 aria-describedby={countryError ? "country-error" : undefined}
                 className="h-10 rounded-xl"
@@ -243,11 +246,11 @@ export function RegisterForm() {
             {isPending ? (
               <>
                 <Loader2 className="size-4 animate-spin" />
-                Creating account...
+                {t("creatingAccount")}
               </>
             ) : (
               <>
-                Create account
+                {t("registerButton")}
                 <ArrowRight className="size-4" />
               </>
             )}
@@ -256,12 +259,12 @@ export function RegisterForm() {
       </div>
 
       <p className="text-center text-xs text-muted-foreground">
-        Already have an account?{" "}
+        {t("haveAccount")}{" "}
         <Link
           href="/login"
           className="font-semibold text-brand underline-offset-4 hover:underline"
         >
-          Sign in
+          {tNav("signIn")}
         </Link>
       </p>
     </div>

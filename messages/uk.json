@@ -40,7 +40,11 @@
     "errorGeneric": "Виникла помилка. Будь ласка, спробуйте знову.",
     "notFound": "Сторінку не знайдено",
     "forbidden": "Доступ заборонено",
-    "goHome": "На головну"
+    "goHome": "На головну",
+    "flexibleTicket": "Гнучкий розмір угоди",
+    "from": "Від {amount}",
+    "upTo": "До {amount}",
+    "andMore": "+{count} ще"
   },
   "nav": {
     "assets": "Активи",
@@ -109,7 +113,28 @@
     "fullNameLabel": "Повне ім'я",
     "registerButton": "Створити акаунт",
     "haveAccount": "Вже маєте акаунт?",
-    "noAccount": "Немає акаунту?"
+    "noAccount": "Немає акаунту?",
+    "joinBadge": "Приєднатися до N5Deal",
+    "registerHeadline": "Створіть акаунт на майданчику",
+    "registerSubtitle": "Працюйте з європейськими та глобальними контрагентами в угодах M&A на регульованому ринку",
+    "registerError": "Не вдалося зареєструватися",
+    "chooseRole": "Оберіть роль",
+    "buyerAccount": "Акаунт покупця",
+    "buyerAccountDesc": "Купуйте регульовані компанії, фільтруйте за типом ліцензії та розміром угоди, зв'язуйтеся з продавцями напряму.",
+    "sellerAccount": "Акаунт продавця",
+    "sellerAccountDesc": "Розміщуйте фінансові ліцензії та чинні компанії, налаштовуйте розкриття ціни за LOI/NDA, опрацьовуйте запити покупців.",
+    "workEmail": "Робоча пошта",
+    "passwordHint": "Пароль (мін. 6 символів)",
+    "companyOrg": "Компанія / організація",
+    "countryLabel": "Країна",
+    "creatingAccount": "Створюємо акаунт...",
+    "namePlaceholder": "Олексій Морозов",
+    "emailPlaceholder": "alex@northstar.com",
+    "companyPlaceholder": "Northstar Capital LLC",
+    "countryPlaceholder": "Велика Британія",
+    "loginError": "Не вдалося увійти",
+    "emailFieldPlaceholder": "name@company.com",
+    "demoProfiles": "Демо-профілі"
   },
   "marketplace": {
     "catalogueTitle": "Верифіковані фінансові активи та ліцензії",
@@ -134,7 +159,19 @@
     "sortPriceDesc": "Ціна: від високої",
     "buyerDemandTitle": "Активні інституційні покупці",
     "buyerDemandSubtitle": "Прямий контакт з верифікованими фондами, стратегічними інвесторами та сімейними офісами.",
-    "sendDealMemo": "Надіслати меморандум"
+    "sendDealMemo": "Надіслати меморандум",
+    "sortPopular": "Популярні",
+    "interpreting": "Розпізнаємо...",
+    "interpretFilter": "Розпізнати запит",
+    "dismissMessage": "Приховати повідомлення",
+    "globalAny": "Глобально / будь-які",
+    "targetTimeframe": "Горизонт угоди:",
+    "searchQuery": "Пошуковий запит:",
+    "present": "Зараз",
+    "noResultsDefaultTitle": "Відповідних пропозицій не знайдено",
+    "noResultsDefaultDesc": "Жоден лістинг не підходить під обрані умови. Спробуйте змінити діапазон суми, фільтри ліцензій або скинути параметри.",
+    "clearActiveFilters": "Скинути фільтри",
+    "liquidityTrend": "Ліквідність вторинного ринку"
   },
   "matching": {
     "title": "Рекомендовані угоди",
@@ -156,7 +193,9 @@
     "sendMessage": "Надіслати",
     "sending": "Надсилання...",
     "userSuspended": "Контрагента призупинено. Відправлення повідомлень заблоковано.",
-    "userRemoved": "Цей контрагент більше недоступний на платформі."
+    "userRemoved": "Цей контрагент більше недоступний на платформі.",
+    "failedToSend": "Не надіслано",
+    "retry": "Повторити"
   },
   "admin": {
     "oversightTitle": "Консоль управління платформою",
@@ -180,5 +219,87 @@
   "footer": {
     "regulatoryNotice": "Повідомлення регулятора: N5Deal — це платформа знайомств та маркетплейс для придбання фінансових активів. Ми не надаємо фінансових порад, брокерсько-дилерських послуг або депозитарних сервісів.",
     "copyright": "© 2026 N5Deal Ltd. Всі права захищені."
+  },
+  "assetDetail": {
+    "backToCatalogue": "Назад до каталогу активів",
+    "views": "{count, plural, =0 {Немає переглядів} one {# перегляд} few {# перегляди} many {# переглядів} other {# перегляду}}",
+    "regulatoryValidated": "Перевірено регулятором",
+    "availableUponLoi": "Розкривається після листа про наміри (LOI)",
+    "protectedUnderNda": "Захищено угодою про нерозголошення (NDA)",
+    "listedOn": "Розміщено {date}",
+    "jurisdiction": "Юрисдикція",
+    "yearEstablished": "Рік заснування",
+    "operatingHistory": "Історія діяльності",
+    "headcount": "Чисельність",
+    "staffPersonnel": "Персонал і ключові співробітники",
+    "employees": "Співробітників: {count}",
+    "undisclosed": "Не розкривається",
+    "overviewTitle": "Огляд можливості та операційні характеристики",
+    "includedTitle": "Що входить і технічні можливості",
+    "valuationIndex": "Індекс оцінки: {type}",
+    "listingCounterparty": "Контрагент за лістингом",
+    "verifiedSeller": "Перевірений продавець",
+    "sellerJurisdiction": "Юрисдикція: {country}",
+    "verifiedInstitution": "Перевірена організація"
+  },
+  "forbidden": {
+    "badge": "403 Доступ заборонено",
+    "title": "Доступ обмежено",
+    "description": "Ваш обліковий запис не має прав на цей розділ. Ролі майданчика (покупець, продавець, менеджер) ізольовані для збереження конфіденційності угод.",
+    "backToLogin": "Повернутися до входу",
+    "backToMarketplace": "На головну майданчика"
+  },
+  "buyerDetail": {
+    "complianceReview": "Контрагент на комплаєнс-перевірці",
+    "globalFlexible": "Глобально / без обмежень",
+    "openToAllLicenses": "Будь-які типи ліцензій",
+    "flexibleBusinessModel": "Будь-яка бізнес-модель"
+  },
+  "enums": {
+    "licenseType": {
+      "BANKING": "Банківська",
+      "E_MONEY": "Електронні гроші / EMI",
+      "PAYMENT": "Платіжна (PI)",
+      "CRYPTO": "Крипто / VASP",
+      "BROKERAGE": "Брокерська",
+      "INSURANCE": "Страхова",
+      "OTHER": "Інша"
+    },
+    "businessType": {
+      "BANK": "Банк",
+      "FINTECH": "Фінтех",
+      "PAYMENT_INSTITUTION": "Платіжна установа",
+      "CRYPTO_BUSINESS": "Криптобізнес",
+      "BROKERAGE": "Брокеридж",
+      "INSURANCE_COMPANY": "Страхова компанія",
+      "OTHER": "Інше"
+    },
+    "businessStatus": {
+      "OPERATING": "Діючий",
+      "PRE_LAUNCH": "До запуску",
+      "DORMANT": "Неактивний",
+      "DISTRESSED": "Проблемний"
+    },
+    "horizon": {
+      "SHORT_TERM": "Короткостроковий",
+      "MEDIUM_TERM": "Середньостроковий",
+      "LONG_TERM": "Довгостроковий",
+      "FLEXIBLE": "Гнучкий"
+    },
+    "priceMode": {
+      "FIXED": "Фіксована ціна",
+      "ON_LOI": "За LOI",
+      "NDA": "За NDA"
+    }
+  },
+  "filters": {
+    "allCountries": "Усі країни",
+    "allLicenceTypes": "Усі типи ліцензій",
+    "allStatuses": "Усі статуси",
+    "allPrices": "Будь-яка ціна",
+    "priceUnder1m": "До $1 млн",
+    "price1m5m": "$1–5 млн",
+    "price5m20m": "$5–20 млн",
+    "priceOver20m": "Від $20 млн"
   }
 }

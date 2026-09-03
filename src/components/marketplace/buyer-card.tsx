@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useSafeTranslations } from "@/lib/i18n-client";
+import { useTranslations } from "next-intl";
 import type { BusinessType, InvestmentHorizon, LicenseType } from "@prisma/client";
 import { Building2, Globe2, Send, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { formatEnum, formatLicenseType, formatTicketRange } from "@/lib/formatters";
+import { formatTicketRange } from "@/lib/formatters";
+import { useEnumLabel, useFormatLabels } from "@/lib/i18n-format";
 import { cn } from "@/lib/utils";
 
 export type BuyerCardData = {
@@ -36,8 +37,9 @@ export function BuyerCard({
   className,
   onSendMemo,
 }: BuyerCardProps) {
-  const t = useSafeTranslations("marketplace");
-  const tCommon = useSafeTranslations("common");
+  const t = useTranslations("marketplace");
+  const enumLabel = useEnumLabel();
+  const { locale, ticket } = useFormatLabels();
   const {
     id,
     name,
@@ -52,7 +54,7 @@ export function BuyerCard({
     horizon,
   } = buyer;
 
-  const ticketDisplay = formatTicketRange(ticketMin, ticketMax, currency);
+  const ticketDisplay = formatTicketRange(ticketMin, ticketMax, currency, locale, ticket);
 
   return (
     <article
@@ -121,7 +123,7 @@ export function BuyerCard({
                   </span>
                 ))
               ) : (
-                <span className="text-[11px] text-muted-foreground italic">Global / Any</span>
+                <span className="text-[11px] italic text-muted-foreground">{t("globalAny")}</span>
               )}
               {targetCountries.length > 3 && (
                 <span className="text-[10px] font-medium text-muted-foreground self-center">
@@ -143,11 +145,11 @@ export function BuyerCard({
                     className="inline-flex items-center gap-1 rounded-md bg-canvas px-1.5 py-0.5 text-[11px] font-medium text-ink"
                   >
                     <Tag className="size-2.5 text-muted-foreground" />
-                    <span>{formatLicenseType(licence)}</span>
+                    <span>{enumLabel("licenseType", licence)}</span>
                   </span>
                 ))
               ) : (
-                <span className="text-[11px] text-muted-foreground italic">Flexible</span>
+                <span className="text-[11px] italic text-muted-foreground">{enumLabel("horizon", "FLEXIBLE")}</span>
               )}
               {targetLicenseTypes.length > 2 && (
                 <span className="text-[10px] font-medium text-muted-foreground self-center">
@@ -160,8 +162,8 @@ export function BuyerCard({
 
         {horizon && (
           <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-            <span>Target timeframe:</span>
-            <span className="font-semibold text-ink">{formatEnum(horizon)}</span>
+            <span>{t("targetTimeframe")}</span>
+            <span className="font-semibold text-ink">{enumLabel("horizon", horizon)}</span>
           </div>
         )}
       </div>

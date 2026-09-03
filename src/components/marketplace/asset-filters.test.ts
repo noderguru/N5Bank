@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
+import { renderWithIntl } from "@/lib/render-test";
 import { AssetFilters } from "./asset-filters";
 import { NoResultsState } from "./no-results-state";
 
@@ -12,7 +12,7 @@ vi.mock("next/navigation", () => ({
 
 describe("AssetFilters component", () => {
   it("renders search bar, category chips with server counts and filter dropdowns", () => {
-    const html = renderToStaticMarkup(
+    const html = renderWithIntl(
       React.createElement(AssetFilters, {
         totalCount: 42,
         chipCounts: {
@@ -38,12 +38,12 @@ describe("AssetFilters component", () => {
     expect(html).toContain("Germany");
     expect(html).toContain("Lithuania");
     expect(html).toContain("United Kingdom");
-    expect(html).toContain("Banking License");
+    expect(html).toContain("Banking");
     expect(html).toContain("Operating");
   });
 
   it("renders NoResultsState with resetHref link correctly", () => {
-    const html = renderToStaticMarkup(
+    const html = renderWithIntl(
       React.createElement(NoResultsState, {
         title: "No matching assets found",
         query: "NonExistentBank",

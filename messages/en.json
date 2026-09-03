@@ -40,7 +40,11 @@
     "errorGeneric": "Something went wrong. Please try again.",
     "notFound": "Page not found",
     "forbidden": "Access Forbidden",
-    "goHome": "Go to Homepage"
+    "goHome": "Go to Homepage",
+    "flexibleTicket": "Flexible ticket",
+    "from": "From {amount}",
+    "upTo": "Up to {amount}",
+    "andMore": "+{count} more"
   },
   "nav": {
     "assets": "Assets",
@@ -109,7 +113,28 @@
     "fullNameLabel": "Full name",
     "registerButton": "Create Account",
     "haveAccount": "Already have an account?",
-    "noAccount": "Don't have an account?"
+    "noAccount": "Don't have an account?",
+    "joinBadge": "Join N5Deal",
+    "registerHeadline": "Create your marketplace account",
+    "registerSubtitle": "Connect with European and global counterparties across regulated financial M&A",
+    "registerError": "Unable to register",
+    "chooseRole": "Choose your role",
+    "buyerAccount": "Buyer account",
+    "buyerAccountDesc": "Acquire regulated institutions, filter by license type and ticket, and reach sellers directly.",
+    "sellerAccount": "Seller account",
+    "sellerAccountDesc": "List financial licenses or operating entities, configure LOI/NDA pricing, and review buyer inquiries.",
+    "workEmail": "Work email",
+    "passwordHint": "Password (min. 6 characters)",
+    "companyOrg": "Company / Organisation",
+    "countryLabel": "Country",
+    "creatingAccount": "Creating account...",
+    "namePlaceholder": "Alex Morgan",
+    "emailPlaceholder": "alex@northstar.com",
+    "companyPlaceholder": "Northstar Capital LLC",
+    "countryPlaceholder": "United Kingdom",
+    "loginError": "Unable to sign in",
+    "emailFieldPlaceholder": "name@company.com",
+    "demoProfiles": "Demo profiles"
   },
   "marketplace": {
     "catalogueTitle": "Verified Financial Assets & Licences",
@@ -134,7 +159,19 @@
     "sortPriceDesc": "Price: High to Low",
     "buyerDemandTitle": "Active Institutional Buyers",
     "buyerDemandSubtitle": "Connect directly with verified acquisition funds, strategic investors, and family offices.",
-    "sendDealMemo": "Send deal memo"
+    "sendDealMemo": "Send deal memo",
+    "sortPopular": "Most popular",
+    "interpreting": "Interpreting...",
+    "interpretFilter": "Interpret filter",
+    "dismissMessage": "Dismiss message",
+    "globalAny": "Global / any",
+    "targetTimeframe": "Target timeframe:",
+    "searchQuery": "Search query:",
+    "present": "Present",
+    "noResultsDefaultTitle": "No matching opportunities found",
+    "noResultsDefaultDesc": "No marketplace listings match the selected criteria. Try adjusting your ticket range, licence filters, or resetting all parameters.",
+    "clearActiveFilters": "Clear active filters",
+    "liquidityTrend": "Secondary market liquidity trend"
   },
   "matching": {
     "title": "Tailored Opportunities",
@@ -156,7 +193,9 @@
     "sendMessage": "Send",
     "sending": "Sending...",
     "userSuspended": "This counterparty has been suspended. Messaging is disabled.",
-    "userRemoved": "This counterparty is no longer available on the platform."
+    "userRemoved": "This counterparty is no longer available on the platform.",
+    "failedToSend": "Failed to send",
+    "retry": "Retry"
   },
   "admin": {
     "oversightTitle": "Manager Oversight Console",
@@ -180,5 +219,87 @@
   "footer": {
     "regulatoryNotice": "Regulatory Notice: N5Deal is an introductions platform and marketplace for financial asset acquisitions. We do not provide financial advice, broker-dealer services, or custodial facilities.",
     "copyright": "© 2026 N5Deal Ltd. All rights reserved."
+  },
+  "assetDetail": {
+    "backToCatalogue": "Back to assets catalogue",
+    "views": "{count, plural, =0 {No views} one {# view} other {# views}}",
+    "regulatoryValidated": "Regulatory validated",
+    "availableUponLoi": "Available upon Letter of Intent (LOI)",
+    "protectedUnderNda": "Protected under Non-Disclosure Agreement (NDA)",
+    "listedOn": "Listed on {date}",
+    "jurisdiction": "Jurisdiction",
+    "yearEstablished": "Year established",
+    "operatingHistory": "Operating history",
+    "headcount": "Headcount",
+    "staffPersonnel": "Staff & key personnel",
+    "employees": "{count} employees",
+    "undisclosed": "Undisclosed",
+    "overviewTitle": "Opportunity overview & operational specs",
+    "includedTitle": "Included assets & technical capabilities",
+    "valuationIndex": "{type} valuation index",
+    "listingCounterparty": "Listing counterparty",
+    "verifiedSeller": "Verified seller",
+    "sellerJurisdiction": "Jurisdiction: {country}",
+    "verifiedInstitution": "Verified institution"
+  },
+  "forbidden": {
+    "badge": "403 Forbidden",
+    "title": "Access restricted",
+    "description": "Your account does not have permission to access this workspace. Marketplace roles (Buyer, Seller, Manager) are isolated to preserve deal confidentiality.",
+    "backToLogin": "Return to sign in",
+    "backToMarketplace": "Back to marketplace"
+  },
+  "buyerDetail": {
+    "complianceReview": "Counterparty under compliance review",
+    "globalFlexible": "Global / flexible",
+    "openToAllLicenses": "Open to all licence types",
+    "flexibleBusinessModel": "Flexible business model"
+  },
+  "enums": {
+    "licenseType": {
+      "BANKING": "Banking",
+      "E_MONEY": "E-Money / EMI",
+      "PAYMENT": "Payment (PI)",
+      "CRYPTO": "Crypto / VASP",
+      "BROKERAGE": "Brokerage",
+      "INSURANCE": "Insurance",
+      "OTHER": "Other"
+    },
+    "businessType": {
+      "BANK": "Bank",
+      "FINTECH": "Fintech",
+      "PAYMENT_INSTITUTION": "Payment institution",
+      "CRYPTO_BUSINESS": "Crypto business",
+      "BROKERAGE": "Brokerage",
+      "INSURANCE_COMPANY": "Insurance company",
+      "OTHER": "Other"
+    },
+    "businessStatus": {
+      "OPERATING": "Operating",
+      "PRE_LAUNCH": "Pre-launch",
+      "DORMANT": "Dormant",
+      "DISTRESSED": "Distressed"
+    },
+    "horizon": {
+      "SHORT_TERM": "Short term",
+      "MEDIUM_TERM": "Medium term",
+      "LONG_TERM": "Long term",
+      "FLEXIBLE": "Flexible"
+    },
+    "priceMode": {
+      "FIXED": "Fixed price",
+      "ON_LOI": "Upon LOI",
+      "NDA": "Under NDA"
+    }
+  },
+  "filters": {
+    "allCountries": "All countries",
+    "allLicenceTypes": "All licence types",
+    "allStatuses": "All statuses",
+    "allPrices": "Any price",
+    "priceUnder1m": "Under $1M",
+    "price1m5m": "$1M – $5M",
+    "price5m20m": "$5M – $20M",
+    "priceOver20m": "$20M+"
   }
 }

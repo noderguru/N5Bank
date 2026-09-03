@@ -36,7 +36,8 @@ import {
 } from "@/components/ui/table";
 import { NoResultsState } from "@/components/marketplace/no-results-state";
 import { ModerationDialog } from "@/components/admin/moderation-dialog";
-import { formatPrice, formatLicenseType, formatEnum, formatDate } from "@/lib/formatters";
+import { formatPrice, formatDate } from "@/lib/formatters";
+import { useEnumLabel, useFormatLabels } from "@/lib/i18n-format";
 import { cn } from "@/lib/utils";
 import type { PriceMode, AssetStatus, LicenseType, BusinessType } from "@prisma/client";
 
@@ -90,6 +91,8 @@ const SORTS = [
 ];
 
 export function AssetsTable({ assets, totalCount, sellers }: AssetsTableProps) {
+  const enumLabel = useEnumLabel();
+  const { locale, price } = useFormatLabels();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [, startTransition] = useTransition();
@@ -358,17 +361,17 @@ export function AssetsTable({ assets, totalCount, sellers }: AssetsTableProps) {
 
                       {/* Asking Price */}
                       <TableCell className="text-xs font-semibold text-ink">
-                        {formatPrice(asset.askingPrice, asset.priceMode, asset.currency)}
+                        {formatPrice(asset.askingPrice, asset.priceMode, asset.currency, locale, price)}
                       </TableCell>
 
                       {/* Charter & Type */}
                       <TableCell>
                         <div className="space-y-0.5">
                           <span className="inline-block rounded-md bg-neutral-100 px-1.5 py-0.5 text-[11px] font-medium text-neutral-800">
-                            {formatLicenseType(asset.licenseType)}
+                            {enumLabel("licenseType", asset.licenseType)}
                           </span>
                           <div className="text-[11px] text-muted-foreground">
-                            {formatEnum(asset.businessType)}
+                            {enumLabel("businessType", asset.businessType)}
                           </div>
                         </div>
                       </TableCell>
@@ -383,7 +386,7 @@ export function AssetsTable({ assets, totalCount, sellers }: AssetsTableProps) {
 
                       {/* Listed Date */}
                       <TableCell className="text-xs text-muted-foreground">
-                        {formatDate(asset.createdAt)}
+                        {formatDate(asset.createdAt, locale)}
                       </TableCell>
 
                       {/* Actions Column: View Link + Moderation Controls */}

@@ -1,4 +1,5 @@
 import { Prisma, UserRole, UserStatus } from "@prisma/client";
+import { getLocale, getTranslations } from "next-intl/server";
 import { requireRole } from "@/lib/auth/guard";
 import { prisma } from "@/lib/db/prisma";
 import { getPlatformSummaryStats } from "@/lib/db/admin";
@@ -22,6 +23,13 @@ type Props = {
 };
 
 export default async function AdminUsersPage({ searchParams }: Props) {
+  const locale = await getLocale();
+  const tCommon = await getTranslations("common");
+  const ticketLabels = {
+    flexible: tCommon("flexibleTicket"),
+    from: (amount: string) => tCommon("from", { amount }),
+    upTo: (amount: string) => tCommon("upTo", { amount }),
+  };
   // N5B-39: Доступ строго для роли MANAGER, проверка на сервере
   const session = await requireRole("MANAGER");
 
@@ -112,7 +120,9 @@ export default async function AdminUsersPage({ searchParams }: Props) {
       ? formatTicketRange(
           u.buyerProfile.ticketMin ? Number(u.buyerProfile.ticketMin) : null,
           u.buyerProfile.ticketMax ? Number(u.buyerProfile.ticketMax) : null,
-          u.buyerProfile.currency
+          u.buyerProfile.currency,
+          locale,
+          ticketLabels
         )
       : null;
 

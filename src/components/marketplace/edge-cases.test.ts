@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
 import React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
+import { renderWithIntl } from "@/lib/render-test";
 import { AssetCard } from "./asset-card";
 import { BuyerCard } from "./buyer-card";
 
 describe("Marketplace Edge Case Handling (N5B-94)", () => {
   it("renders AssetCard gracefully when price is missing or zero", () => {
-    const html = renderToStaticMarkup(
+    const html = renderWithIntl(
       React.createElement(AssetCard, {
         asset: {
           id: "ast_edge_1",
@@ -27,7 +27,7 @@ describe("Marketplace Edge Case Handling (N5B-94)", () => {
   });
 
   it("renders AssetCard with ON_LOI and CONFIDENTIAL price modes", () => {
-    const loiHtml = renderToStaticMarkup(
+    const loiHtml = renderWithIntl(
       React.createElement(AssetCard, {
         asset: {
           id: "ast_loi",
@@ -43,7 +43,7 @@ describe("Marketplace Edge Case Handling (N5B-94)", () => {
     );
     expect(loiHtml).toContain("Upon LOI");
 
-    const ndaHtml = renderToStaticMarkup(
+    const ndaHtml = renderWithIntl(
       React.createElement(AssetCard, {
         asset: {
           id: "ast_nda",
@@ -61,7 +61,7 @@ describe("Marketplace Edge Case Handling (N5B-94)", () => {
   });
 
   it("renders BuyerCard with missing thesis, empty target markets and licenses", () => {
-    const html = renderToStaticMarkup(
+    const html = renderWithIntl(
       React.createElement(BuyerCard, {
         buyer: {
           id: "byr_edge_1",
@@ -78,7 +78,7 @@ describe("Marketplace Edge Case Handling (N5B-94)", () => {
     );
 
     expect(html).toContain("Stealth Capital");
-    expect(html).toContain("Global / Any");
+    expect(html).toContain("Global / any");
     expect(html).toContain("Flexible");
     expect(html).toContain("Actively seeking strategic financial licenses");
   });

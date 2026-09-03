@@ -18,7 +18,8 @@ import { Badge } from "@/components/ui/badge";
 import { Sparkline } from "@/components/marketplace/sparkline";
 import { FavoriteButton } from "@/components/marketplace/favorite-button";
 import { ContactSellerButton } from "@/components/marketplace/contact-seller-button";
-import { formatEnum, formatLicenseType, formatPrice, formatDate } from "@/lib/formatters";
+import { getTranslations } from "next-intl/server";
+import { formatPrice, formatDate } from "@/lib/formatters";
 
 type Props = {
   params: Promise<{
@@ -83,16 +84,30 @@ export default async function AssetDetailPage({ params }: Props) {
     isFavorite = Boolean(fav);
   }
 
+  const t = await getTranslations("assetDetail");
+  const tMarketplace = await getTranslations("marketplace");
+  const tCommon = await getTranslations("common");
+  const tEnums = await getTranslations("enums");
+  const enumLabel = (group: string, value: string) => tEnums(`${group}.${value}`);
+  const priceLabels = {
+    onRequest: tCommon("priceOnRequest"),
+    uponLoi: tCommon("uponLoi"),
+    underNda: tCommon("underNda"),
+  };
+
   const formattedPrice = formatPrice(
     asset.askingPrice ? Number(asset.askingPrice) : null,
     asset.priceMode,
-    asset.currency
+    asset.currency,
+    locale,
+    priceLabels
   );
 
   const sellerCompany =
-    asset.seller.sellerProfile?.company || asset.seller.name || "Verified Institution";
+    asset.seller.sellerProfile?.company || asset.seller.name || t("verifiedInstitution");
   const sellerCountry = asset.seller.sellerProfile?.country || asset.country;
   const isVerifiedSeller = asset.seller.sellerProfile?.verified ?? true;
+
 
   return (
     <AppShell
@@ -111,13 +126,13 @@ export default async function AssetDetailPage({ params }: Props) {
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-brand transition-colors"
           >
             <ArrowLeft className="size-4" />
-            <span>Back to Assets Catalogue</span>
+            <span>{t("backToCatalogue")}</span>
           </Link>
 
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
               <Eye className="size-3.5" />
-              <span>{displayViews} views</span>
+              <span>{t("views", { count: displayViews })}</span>
             </span>
 
             {asset.validated && (
@@ -126,7 +141,7 @@ export default async function AssetDetailPage({ params }: Props) {
                 className="inline-flex items-center gap-1 rounded-full bg-success-tint px-2.5 py-0.5 text-xs font-semibold text-success"
               >
                 <CheckCircle2 className="size-3.5 shrink-0" />
-                <span>Regulatory Validated</span>
+                <span>{t("regulatoryValidated")}</span>
               </span>
             )}
           </div>
@@ -142,10 +157,10 @@ export default async function AssetDetailPage({ params }: Props) {
                   <span>{asset.country}</span>
                 </span>
                 <Badge variant="outline" className="rounded-full border-hairline px-3 py-0.5 text-xs font-medium">
-                  {formatLicenseType(asset.licenseType)}
+                  {enumLabel("licenseType", asset.licenseType)}
                 </Badge>
                 <Badge variant="outline" className="rounded-full border-hairline px-3 py-0.5 text-xs font-medium">
-                  {formatEnum(asset.businessType)}
+                  {enumLabel("businessType", asset.businessType)}
                 </Badge>
               </div>
 
@@ -161,7 +176,7 @@ export default async function AssetDetailPage({ params }: Props) {
             {/* Price Box */}
             <div className="rounded-2xl border border-hairline bg-canvas/40 p-5 sm:min-w-[240px] shrink-0 text-left md:text-right space-y-1">
               <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                Asking Price
+                {tMarketplace("askingPrice")}
               </span>
               <div className="text-2xl sm:text-3xl font-bold text-ink tracking-tight">
                 {formattedPrice}
@@ -169,8 +184,8 @@ export default async function AssetDetailPage({ params }: Props) {
               {asset.priceMode !== "FIXED" && (
                 <p className="text-xs text-brand font-medium">
                   {asset.priceMode === "ON_LOI"
-                    ? "Available upon Letter of Intent (LOI)"
-                    : "Protected under Non-Disclosure Agreement (NDA)"}
+                    ? t("availableUponLoi")
+                    : t("protectedUnderNda")}
                 </p>
               )}
             </div>
@@ -192,7 +207,7 @@ export default async function AssetDetailPage({ params }: Props) {
             </div>
 
             <div className="text-xs text-muted-foreground">
-              Listed on {formatDate(asset.createdAt, locale)}
+              {t("listedOn", { date: formatDate(asset.createdAt, locale) })}
             </div>
           </div>
         </div>
@@ -202,7 +217,7 @@ export default async function AssetDetailPage({ params }: Props) {
           <div className="rounded-2xl border border-hairline bg-surface p-4 shadow-2xs space-y-1">
             <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
               <Globe2 className="size-3.5 text-brand" />
-              <span>Jurisdiction</span>
+              <span>{t("jurisdiction")}</span>
             </div>
             <div className="text-sm font-semibold text-ink">{asset.country}</div>
             {asset.regulator && (
@@ -215,36 +230,36 @@ export default async function AssetDetailPage({ params }: Props) {
           <div className="rounded-2xl border border-hairline bg-surface p-4 shadow-2xs space-y-1">
             <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
               <ShieldCheck className="size-3.5 text-brand" />
-              <span>Licence Type</span>
+              <span>{tMarketplace("licenseType")}</span>
             </div>
             <div className="text-sm font-semibold text-ink">
-              {formatLicenseType(asset.licenseType)}
+              {enumLabel("licenseType", asset.licenseType)}
             </div>
             <div className="text-xs text-muted-foreground">
-              {formatEnum(asset.businessStatus)}
+              {enumLabel("businessStatus", asset.businessStatus)}
             </div>
           </div>
 
           <div className="rounded-2xl border border-hairline bg-surface p-4 shadow-2xs space-y-1">
             <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
               <Calendar className="size-3.5 text-brand" />
-              <span>Year Established</span>
+              <span>{t("yearEstablished")}</span>
             </div>
             <div className="text-sm font-semibold text-ink">
-              {asset.yearOfIssue ? asset.yearOfIssue : "N/A"}
+              {asset.yearOfIssue ? asset.yearOfIssue : tCommon("notAvailable")}
             </div>
-            <div className="text-xs text-muted-foreground">Operating History</div>
+            <div className="text-xs text-muted-foreground">{t("operatingHistory")}</div>
           </div>
 
           <div className="rounded-2xl border border-hairline bg-surface p-4 shadow-2xs space-y-1">
             <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
               <Users className="size-3.5 text-brand" />
-              <span>Headcount</span>
+              <span>{t("headcount")}</span>
             </div>
             <div className="text-sm font-semibold text-ink">
-              {asset.employees !== null ? `${asset.employees} employees` : "Undisclosed"}
+              {asset.employees !== null ? t("employees", { count: asset.employees }) : t("undisclosed")}
             </div>
-            <div className="text-xs text-muted-foreground">Staff &amp; Key Personnel</div>
+            <div className="text-xs text-muted-foreground">{t("staffPersonnel")}</div>
           </div>
         </div>
 
@@ -255,7 +270,7 @@ export default async function AssetDetailPage({ params }: Props) {
             {/* Description */}
             <div className="rounded-3xl border border-hairline bg-surface p-6 sm:p-7 shadow-2xs space-y-4">
               <h2 className="text-base font-semibold text-ink tracking-tight">
-                Opportunity Overview &amp; Operational Specs
+                {t("overviewTitle")}
               </h2>
               <div className="prose prose-sm max-w-none text-muted-foreground leading-relaxed whitespace-pre-line text-sm">
                 {asset.description}
@@ -266,7 +281,7 @@ export default async function AssetDetailPage({ params }: Props) {
             {asset.features.length > 0 && (
               <div className="rounded-3xl border border-hairline bg-surface p-6 sm:p-7 shadow-2xs space-y-3">
                 <h2 className="text-base font-semibold text-ink tracking-tight">
-                  Included Assets &amp; Technical Capabilities
+                  {t("includedTitle")}
                 </h2>
                 <div className="flex flex-wrap gap-2 pt-1">
                   {asset.features.map((feature, idx) => (
@@ -287,7 +302,7 @@ export default async function AssetDetailPage({ params }: Props) {
           <div className="space-y-6">
             {/* Market Trend Sparkline */}
             <Sparkline
-              label={`${formatLicenseType(asset.licenseType)} Valuation Index`}
+              label={t("valuationIndex", { type: enumLabel("licenseType", asset.licenseType) })}
               changePercent="+18.4% YoY"
             />
 
@@ -295,12 +310,12 @@ export default async function AssetDetailPage({ params }: Props) {
             <div className="rounded-2xl border border-hairline bg-surface p-5 shadow-2xs space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                  Listing Counterparty
+                  {t("listingCounterparty")}
                 </span>
                 {isVerifiedSeller && (
                   <span className="inline-flex items-center gap-1 rounded-full bg-success-tint px-2 py-0.5 text-[11px] font-semibold text-success">
                     <ShieldCheck className="size-3" />
-                    <span>Verified Seller</span>
+                    <span>{t("verifiedSeller")}</span>
                   </span>
                 )}
               </div>
@@ -313,7 +328,7 @@ export default async function AssetDetailPage({ params }: Props) {
                   </span>
                 </div>
                 <div className="text-xs text-muted-foreground">
-                  Jurisdiction: {sellerCountry}
+                  {t("sellerJurisdiction", { country: sellerCountry })}
                 </div>
               </div>
 

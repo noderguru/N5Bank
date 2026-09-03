@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
+import { renderWithIntl } from "@/lib/render-test";
 import { AdminHeader, type PlatformSummaryStats } from "./admin-header";
 import { UsersTable, type AdminUserRow } from "./users-table";
 import { AssetsTable, type AdminAssetRow, type SellerOption } from "./assets-table";
@@ -29,7 +29,7 @@ describe("Manager Console Components", () => {
 
   describe("AdminHeader", () => {
     it("renders platform overview statistics correctly", () => {
-      const html = renderToStaticMarkup(
+      const html = renderWithIntl(
         React.createElement(AdminHeader, {
           stats: mockStats,
           activeTab: "users",
@@ -81,7 +81,7 @@ describe("Manager Console Components", () => {
     ];
 
     it("renders user rows with appropriate status and role badges", () => {
-      const html = renderToStaticMarkup(
+      const html = renderWithIntl(
         React.createElement(UsersTable, {
           users: mockUsers,
           totalCount: 2,
@@ -104,7 +104,7 @@ describe("Manager Console Components", () => {
     });
 
     it("renders empty state when no users match filters", () => {
-      const html = renderToStaticMarkup(
+      const html = renderWithIntl(
         React.createElement(UsersTable, {
           users: [],
           totalCount: 25,
@@ -166,7 +166,7 @@ describe("Manager Console Components", () => {
     ];
 
     it("renders assets table with public page links and status flags", () => {
-      const html = renderToStaticMarkup(
+      const html = renderWithIntl(
         React.createElement(AssetsTable, {
           assets: mockAssets,
           totalCount: 2,
@@ -190,7 +190,7 @@ describe("Manager Console Components", () => {
     });
 
     it("renders empty state when no assets match filters", () => {
-      const html = renderToStaticMarkup(
+      const html = renderWithIntl(
         React.createElement(AssetsTable, {
           assets: [],
           totalCount: 40,
@@ -236,7 +236,7 @@ describe("Manager Console Components", () => {
     ];
 
     it("renders moderation log table with action badges, targets, and quotes", () => {
-      const html = renderToStaticMarkup(
+      const html = renderWithIntl(
         React.createElement(ModerationTable, {
           logs: mockLogs,
           totalCount: 2,
@@ -254,7 +254,7 @@ describe("Manager Console Components", () => {
     });
 
     it("renders meaningful empty state when no actions have occurred (N5B-31)", () => {
-      const html = renderToStaticMarkup(
+      const html = renderWithIntl(
         React.createElement(ModerationTable, {
           logs: [],
           totalCount: 0,

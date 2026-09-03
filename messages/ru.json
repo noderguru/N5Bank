@@ -40,7 +40,11 @@
     "errorGeneric": "Произошла ошибка. Пожалуйста, попробуйте снова.",
     "notFound": "Страница не найдена",
     "forbidden": "Доступ запрещен",
-    "goHome": "На главную"
+    "goHome": "На главную",
+    "flexibleTicket": "Гибкий размер сделки",
+    "from": "От {amount}",
+    "upTo": "До {amount}",
+    "andMore": "+{count} ещё"
   },
   "nav": {
     "assets": "Активы",
@@ -109,7 +113,28 @@
     "fullNameLabel": "Полное имя",
     "registerButton": "Создать аккаунт",
     "haveAccount": "Уже есть аккаунт?",
-    "noAccount": "Нет аккаунта?"
+    "noAccount": "Нет аккаунта?",
+    "joinBadge": "Присоединиться к N5Deal",
+    "registerHeadline": "Создайте аккаунт на площадке",
+    "registerSubtitle": "Работайте с европейскими и глобальными контрагентами в сделках M&A на регулируемом рынке",
+    "registerError": "Не удалось зарегистрироваться",
+    "chooseRole": "Выберите роль",
+    "buyerAccount": "Аккаунт покупателя",
+    "buyerAccountDesc": "Приобретайте регулируемые компании, фильтруйте по типу лицензии и размеру сделки, связывайтесь с продавцами напрямую.",
+    "sellerAccount": "Аккаунт продавца",
+    "sellerAccountDesc": "Размещайте финансовые лицензии и действующие компании, настраивайте раскрытие цены по LOI/NDA, разбирайте запросы покупателей.",
+    "workEmail": "Рабочая почта",
+    "passwordHint": "Пароль (мин. 6 символов)",
+    "companyOrg": "Компания / организация",
+    "countryLabel": "Страна",
+    "creatingAccount": "Создаём аккаунт...",
+    "namePlaceholder": "Алексей Морозов",
+    "emailPlaceholder": "alex@northstar.com",
+    "companyPlaceholder": "Northstar Capital LLC",
+    "countryPlaceholder": "Великобритания",
+    "loginError": "Не удалось войти",
+    "emailFieldPlaceholder": "name@company.com",
+    "demoProfiles": "Демо-профили"
   },
   "marketplace": {
     "catalogueTitle": "Верифицированные финансовые активы и лицензии",
@@ -134,7 +159,19 @@
     "sortPriceDesc": "Цена: по убыванию",
     "buyerDemandTitle": "Активные институциональные покупатели",
     "buyerDemandSubtitle": "Прямой контакт с верифицированными фондами, стратегическими инвесторами и семейными офисами.",
-    "sendDealMemo": "Отправить меморандум"
+    "sendDealMemo": "Отправить меморандум",
+    "sortPopular": "Популярные",
+    "interpreting": "Распознаём...",
+    "interpretFilter": "Распознать запрос",
+    "dismissMessage": "Скрыть сообщение",
+    "globalAny": "Глобально / любые",
+    "targetTimeframe": "Горизонт сделки:",
+    "searchQuery": "Поисковый запрос:",
+    "present": "Сейчас",
+    "noResultsDefaultTitle": "Подходящих предложений не найдено",
+    "noResultsDefaultDesc": "Ни один листинг не подходит под выбранные условия. Попробуйте изменить диапазон суммы, фильтры лицензий или сбросить параметры.",
+    "clearActiveFilters": "Сбросить фильтры",
+    "liquidityTrend": "Ликвидность вторичного рынка"
   },
   "matching": {
     "title": "Рекомендованные сделки",
@@ -156,7 +193,9 @@
     "sendMessage": "Отправить",
     "sending": "Отправка...",
     "userSuspended": "Контрагент приостановлен. Отправка сообщений заблокирована.",
-    "userRemoved": "Этот контрагент больше недоступен на платформе."
+    "userRemoved": "Этот контрагент больше недоступен на платформе.",
+    "failedToSend": "Не отправлено",
+    "retry": "Повторить"
   },
   "admin": {
     "oversightTitle": "Консоль управления платформой",
@@ -180,5 +219,87 @@
   "footer": {
     "regulatoryNotice": "Уведомление регулятора: N5Deal — это платформа знакомств и маркетплейс для приобретения финансовых активов. Мы не предоставляем финансовых консультаций, брокерско-дилерских услуг или депозитарных сервисов.",
     "copyright": "© 2026 N5Deal Ltd. Все права защищены."
+  },
+  "assetDetail": {
+    "backToCatalogue": "Назад в каталог активов",
+    "views": "{count, plural, =0 {Нет просмотров} one {# просмотр} few {# просмотра} many {# просмотров} other {# просмотра}}",
+    "regulatoryValidated": "Проверено регулятором",
+    "availableUponLoi": "Раскрывается после письма о намерениях (LOI)",
+    "protectedUnderNda": "Защищено соглашением о неразглашении (NDA)",
+    "listedOn": "Размещено {date}",
+    "jurisdiction": "Юрисдикция",
+    "yearEstablished": "Год основания",
+    "operatingHistory": "История деятельности",
+    "headcount": "Численность",
+    "staffPersonnel": "Персонал и ключевые сотрудники",
+    "employees": "Сотрудников: {count}",
+    "undisclosed": "Не раскрывается",
+    "overviewTitle": "Обзор возможности и операционные характеристики",
+    "includedTitle": "Что входит и технические возможности",
+    "valuationIndex": "Индекс оценки: {type}",
+    "listingCounterparty": "Контрагент по листингу",
+    "verifiedSeller": "Проверенный продавец",
+    "sellerJurisdiction": "Юрисдикция: {country}",
+    "verifiedInstitution": "Проверенная организация"
+  },
+  "forbidden": {
+    "badge": "403 Доступ запрещён",
+    "title": "Доступ ограничен",
+    "description": "У вашей учётной записи нет прав на этот раздел. Роли площадки (покупатель, продавец, менеджер) изолированы для сохранения конфиденциальности сделок.",
+    "backToLogin": "Вернуться ко входу",
+    "backToMarketplace": "На главную площадки"
+  },
+  "buyerDetail": {
+    "complianceReview": "Контрагент на комплаенс-проверке",
+    "globalFlexible": "Глобально / без ограничений",
+    "openToAllLicenses": "Любые типы лицензий",
+    "flexibleBusinessModel": "Любая бизнес-модель"
+  },
+  "enums": {
+    "licenseType": {
+      "BANKING": "Банковская",
+      "E_MONEY": "Электронные деньги / EMI",
+      "PAYMENT": "Платёжная (PI)",
+      "CRYPTO": "Крипто / VASP",
+      "BROKERAGE": "Брокерская",
+      "INSURANCE": "Страховая",
+      "OTHER": "Другая"
+    },
+    "businessType": {
+      "BANK": "Банк",
+      "FINTECH": "Финтех",
+      "PAYMENT_INSTITUTION": "Платёжный институт",
+      "CRYPTO_BUSINESS": "Криптобизнес",
+      "BROKERAGE": "Брокеридж",
+      "INSURANCE_COMPANY": "Страховая компания",
+      "OTHER": "Другое"
+    },
+    "businessStatus": {
+      "OPERATING": "Действующий",
+      "PRE_LAUNCH": "До запуска",
+      "DORMANT": "Неактивный",
+      "DISTRESSED": "Проблемный"
+    },
+    "horizon": {
+      "SHORT_TERM": "Краткосрочный",
+      "MEDIUM_TERM": "Среднесрочный",
+      "LONG_TERM": "Долгосрочный",
+      "FLEXIBLE": "Гибкий"
+    },
+    "priceMode": {
+      "FIXED": "Фиксированная цена",
+      "ON_LOI": "По LOI",
+      "NDA": "По NDA"
+    }
+  },
+  "filters": {
+    "allCountries": "Все страны",
+    "allLicenceTypes": "Все типы лицензий",
+    "allStatuses": "Все статусы",
+    "allPrices": "Любая цена",
+    "priceUnder1m": "До $1 млн",
+    "price1m5m": "$1–5 млн",
+    "price5m20m": "$5–20 млн",
+    "priceOver20m": "От $20 млн"
   }
 }

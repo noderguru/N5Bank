@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useSafeTranslations } from "@/lib/i18n-client";
+import { useTranslations } from "next-intl";
 import { Users, FileText, MessageSquare, ShieldAlert, CheckCircle2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -26,25 +26,24 @@ type AdminHeaderProps = {
 };
 
 export function AdminHeader({ stats, activeTab }: AdminHeaderProps) {
-  const t = useSafeTranslations("admin");
-  const tNav = useSafeTranslations("nav");
+  const t = useTranslations("admin");
 
   const tabs = [
     {
       id: "users",
-      label: t("tabParticipants", "Participants & KYC"),
+      label: t("tabParticipants"),
       href: "/admin/users",
       count: stats.totalUsers,
     },
     {
       id: "assets",
-      label: t("tabAssets", "Marketplace Assets"),
+      label: t("tabAssets"),
       href: "/admin/assets",
       count: stats.totalAssets,
     },
     {
       id: "moderation",
-      label: t("tabModeration", "Moderation Log"),
+      label: t("tabModeration"),
       href: "/admin/moderation",
       count: stats.totalModerationLogs,
     },

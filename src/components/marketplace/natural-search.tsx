@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useSafeTranslations } from "@/lib/i18n-client";
+import { useTranslations } from "next-intl";
 import { Sparkles, Loader2, ArrowRight, AlertCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,7 @@ import { parseSearchQueryAction } from "@/app/actions/ai";
 import type { ParsedSearchFilters } from "@/lib/ai/query-parser";
 
 export function NaturalSearch() {
-  const t = useSafeTranslations("marketplace");
+  const t = useTranslations("marketplace");
   const router = useRouter();
   const searchParams = useSearchParams();
   const [query, setQuery] = useState("");
@@ -94,11 +94,11 @@ export function NaturalSearch() {
           {isPending ? (
             <>
               <Loader2 className="size-3.5 animate-spin" />
-              <span className="hidden sm:inline">Interpreting...</span>
+              <span className="hidden sm:inline">{t("interpreting")}</span>
             </>
           ) : (
             <>
-              <span className="hidden sm:inline">Interpret Filter</span>
+              <span className="hidden sm:inline">{t("interpretFilter")}</span>
               <ArrowRight className="size-3.5" />
             </>
           )}
@@ -136,7 +136,7 @@ export function NaturalSearch() {
             type="button"
             onClick={() => setParseNotice(null)}
             className="text-muted-foreground hover:text-ink shrink-0 ml-2"
-            aria-label="Dismiss message"
+            aria-label={t("dismissMessage")}
           >
             ×
           </button>

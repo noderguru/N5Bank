@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
+import { renderWithIntl } from "@/lib/render-test";
 import {
   AssetCardSkeleton,
   BuyerCardSkeleton,
@@ -13,7 +13,7 @@ import {
 describe("reusable marketplace states", () => {
   describe("EmptyState", () => {
     it("renders title, description and call to action", () => {
-      const html = renderToStaticMarkup(
+      const html = renderWithIntl(
         React.createElement(EmptyState, {
           title: "No active conversations",
           description: "Reach out to buyers or sellers from the marketplace catalogue to initiate deal discussions.",
@@ -30,7 +30,7 @@ describe("reusable marketplace states", () => {
 
   describe("ErrorState", () => {
     it("renders dignified error title and message without slang or oops", () => {
-      const html = renderToStaticMarkup(
+      const html = renderWithIntl(
         React.createElement(ErrorState, {
           title: "Connection interrupted",
           message: "Failed to synchronize listings with the server.",
@@ -49,7 +49,7 @@ describe("reusable marketplace states", () => {
 
   describe("NoResultsState", () => {
     it("renders no results title, query and clear filters button", () => {
-      const html = renderToStaticMarkup(
+      const html = renderWithIntl(
         React.createElement(NoResultsState, {
           query: "banking license Brazil",
           onReset: vi.fn(),
@@ -66,18 +66,18 @@ describe("reusable marketplace states", () => {
 
   describe("Skeletons", () => {
     it("renders high-fidelity AssetCardSkeleton matching real card layout", () => {
-      const html = renderToStaticMarkup(React.createElement(AssetCardSkeleton));
+      const html = renderWithIntl(React.createElement(AssetCardSkeleton));
       expect(html).toContain("rounded-2xl");
       expect(html).toContain("border-hairline");
     });
 
     it("renders BuyerCardSkeleton with ticket and parameters placeholders", () => {
-      const html = renderToStaticMarkup(React.createElement(BuyerCardSkeleton));
+      const html = renderWithIntl(React.createElement(BuyerCardSkeleton));
       expect(html).toContain("rounded-2xl");
     });
 
     it("renders CardGridSkeleton with requested count", () => {
-      const html = renderToStaticMarkup(
+      const html = renderWithIntl(
         React.createElement(CardGridSkeleton, { count: 3, type: "asset" })
       );
       expect(html).toContain("grid-cols-1");

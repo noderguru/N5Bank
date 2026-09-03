@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useSafeTranslations } from "@/lib/i18n-client";
+import { useTranslations } from "next-intl";
 import { FilterX, Search, SlidersHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -38,8 +38,8 @@ const TICKET_RANGES = [
 ];
 
 export function BuyerFilters() {
-  const t = useSafeTranslations("marketplace");
-  const tCommon = useSafeTranslations("common");
+  const t = useTranslations("marketplace");
+  const tCommon = useTranslations("common");
   const router = useRouter();
   const searchParams = useSearchParams();
   const [, startTransition] = useTransition();

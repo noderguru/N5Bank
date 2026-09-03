@@ -1,14 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useSafeTranslations } from "@/lib/i18n-client";
+import { useTranslations } from "next-intl";
 import type { AssetStatus, BusinessStatus, BusinessType, LicenseType, PriceMode } from "@prisma/client";
 import { CheckCircle2, Globe2, MessageSquare, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { FavoriteButton } from "@/components/marketplace/favorite-button";
 import { cn } from "@/lib/utils";
-import { formatEnum, formatLicenseType, formatPrice } from "@/lib/formatters";
+import { formatPrice } from "@/lib/formatters";
+import { useEnumLabel, useFormatLabels } from "@/lib/i18n-format";
 
 export type AssetCardData = {
   id: string;
@@ -42,8 +43,10 @@ export function AssetCard({
   onContact,
   maxFeatures = 2,
 }: AssetCardProps) {
-  const t = useSafeTranslations("marketplace");
-  const tCommon = useSafeTranslations("common");
+  const t = useTranslations("marketplace");
+  const enumLabel = useEnumLabel();
+  const { locale, price } = useFormatLabels();
+  const tCommon = useTranslations("common");
   const {
     id,
     title,
@@ -60,7 +63,7 @@ export function AssetCard({
     regulator,
   } = asset;
 
-  const displayPrice = formatPrice(askingPrice, priceMode, currency);
+  const displayPrice = formatPrice(askingPrice, priceMode, currency, locale, price);
   const visibleFeatures = features.slice(0, maxFeatures);
   const overflowCount = features.length - maxFeatures;
 
@@ -87,7 +90,7 @@ export function AssetCard({
                 className="inline-flex items-center gap-1 border border-success/40 bg-success-tint px-2 py-0.5 eyebrow text-success"
               >
                 <CheckCircle2 className="size-3 shrink-0" />
-                <span>{tCommon("validated", "Validated")}</span>
+                <span>{tCommon("validated")}</span>
               </span>
             )}
           </div>
@@ -135,7 +138,7 @@ export function AssetCard({
               {t("licenseType")}
             </span>
             <div className="truncate text-xs font-medium text-ink">
-              {formatLicenseType(licenseType)}
+              {enumLabel("licenseType", licenseType)}
             </div>
           </div>
 
@@ -144,7 +147,7 @@ export function AssetCard({
               {t("businessType")}
             </span>
             <div className="truncate text-xs font-medium text-ink">
-              {formatEnum(businessType)}
+              {enumLabel("businessType", businessType)}
             </div>
           </div>
 
@@ -153,7 +156,7 @@ export function AssetCard({
               {tCommon("status")}
             </span>
             <div className="truncate text-xs font-medium text-ink">
-              {formatEnum(businessStatus)}
+              {enumLabel("businessStatus", businessStatus)}
             </div>
           </div>
         </div>
@@ -175,7 +178,7 @@ export function AssetCard({
                 variant="outline"
                 className="rounded-none border-hairline bg-transparent px-2 py-0.5 eyebrow text-muted-foreground"
               >
-                +{overflowCount} more
+                {tCommon("andMore", { count: overflowCount })}
               </Badge>
             )}
           </div>

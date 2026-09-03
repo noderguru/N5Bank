@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
 import React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
+import { renderWithIntl } from "@/lib/render-test";
 import { AssetCard, BuyerCard } from "./index";
 
 describe("marketplace cards", () => {
   describe("AssetCard", () => {
     it("renders full spec-grid, country, and validated badge", () => {
-      const html = renderToStaticMarkup(
+      const html = renderWithIntl(
         React.createElement(AssetCard, {
           asset: {
             id: "ast_1",
@@ -46,7 +46,7 @@ describe("marketplace cards", () => {
         "Feature 7",
       ];
 
-      const html = renderToStaticMarkup(
+      const html = renderWithIntl(
         React.createElement(AssetCard, {
           asset: {
             id: "ast_stress",
@@ -80,7 +80,7 @@ describe("marketplace cards", () => {
     });
 
     it("displays Upon LOI and Under NDA modes cleanly", () => {
-      const loiHtml = renderToStaticMarkup(
+      const loiHtml = renderWithIntl(
         React.createElement(AssetCard, {
           asset: {
             id: "ast_loi",
@@ -96,7 +96,7 @@ describe("marketplace cards", () => {
       );
       expect(loiHtml).toContain("Upon LOI");
 
-      const ndaHtml = renderToStaticMarkup(
+      const ndaHtml = renderWithIntl(
         React.createElement(AssetCard, {
           asset: {
             id: "ast_nda",
@@ -116,7 +116,7 @@ describe("marketplace cards", () => {
 
   describe("BuyerCard", () => {
     it("renders buyer details, ticket range badge, and thesis", () => {
-      const html = renderToStaticMarkup(
+      const html = renderWithIntl(
         React.createElement(BuyerCard, {
           buyer: {
             id: "byr_1",
@@ -146,7 +146,7 @@ describe("marketplace cards", () => {
     });
 
     it("handles missing thesis and flexible ticket without crashing", () => {
-      const html = renderToStaticMarkup(
+      const html = renderWithIntl(
         React.createElement(BuyerCard, {
           buyer: {
             id: "byr_flex",

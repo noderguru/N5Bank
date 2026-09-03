@@ -2,7 +2,7 @@
 
 import { useState, useTransition, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useSafeTranslations } from "@/lib/i18n-client";
+import { useTranslations, useLocale } from "next-intl";
 import {
   AlertTriangle,
   Building2,
@@ -51,7 +51,8 @@ export function InboxView({
   conversations,
   selectedConversationId,
 }: InboxViewProps) {
-  const t = useSafeTranslations("inbox");
+  const t = useTranslations("inbox");
+  const locale = useLocale();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [messageText, setMessageText] = useState("");
@@ -185,7 +186,7 @@ export function InboxView({
                         </span>
                       )}
                       <span className="text-[10px] text-muted-foreground">
-                        {formatDate(conv.updatedAt, undefined, {
+                        {formatDate(conv.updatedAt, locale, {
                           month: "short",
                           day: "numeric",
                         })}
@@ -285,23 +286,23 @@ export function InboxView({
                         {msg.pending ? (
                           <span className="flex items-center gap-1 text-brand font-medium">
                             <Clock className="size-3 animate-spin" />
-                            <span>Sending...</span>
+                            <span>{t("sending")}</span>
                           </span>
                         ) : msg.error ? (
                           <div className="flex items-center gap-1.5 text-rose-600 font-medium">
-                            <span>Failed to send</span>
+                            <span>{t("failedToSend")}</span>
                             <button
                               type="button"
                               onClick={() => handleSendMessage(msg.body, msg.id)}
                               className="inline-flex items-center gap-0.5 underline hover:text-rose-800 font-bold"
                             >
                               <RefreshCw className="size-2.5" />
-                              <span>Retry</span>
+                              <span>{t("retry")}</span>
                             </button>
                           </div>
                         ) : (
                           <span>
-                            {formatDateTime(msg.createdAt, undefined, {
+                            {formatDateTime(msg.createdAt, locale, {
                               hour: "2-digit",
                               minute: "2-digit",
                             })}

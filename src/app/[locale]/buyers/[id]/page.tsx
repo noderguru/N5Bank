@@ -6,7 +6,8 @@ import { prisma } from "@/lib/db/prisma";
 import { AppShell } from "@/components/layout/app-shell";
 import { Badge } from "@/components/ui/badge";
 import { ContactBuyerButton } from "@/components/marketplace/contact-buyer-button";
-import { formatEnum, formatLicenseType, formatTicketRange } from "@/lib/formatters";
+import { getLocale, getTranslations } from "next-intl/server";
+import { formatTicketRange } from "@/lib/formatters";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -28,6 +29,16 @@ export async function generateMetadata({ params }: Props) {
 export default async function BuyerDetailPage({ params }: Props) {
   const { id } = await params;
   const session = await readSession();
+  const locale = await getLocale();
+  const t = await getTranslations("buyerDetail");
+  const tCommon = await getTranslations("common");
+  const tEnums = await getTranslations("enums");
+  const enumLabel = (group: string, value: string) => tEnums(`${group}.${value}`);
+  const ticketLabels = {
+    flexible: tCommon("flexibleTicket"),
+    from: (amount: string) => tCommon("from", { amount }),
+    upTo: (amount: string) => tCommon("upTo", { amount }),
+  };
 
   const buyer = await prisma.buyerProfile.findUnique({
     where: { userId: id },
@@ -52,7 +63,9 @@ export default async function BuyerDetailPage({ params }: Props) {
   const ticketDisplay = formatTicketRange(
     buyer.ticketMin ? Number(buyer.ticketMin) : null,
     buyer.ticketMax ? Number(buyer.ticketMax) : null,
-    buyer.currency
+    buyer.currency,
+    locale,
+    ticketLabels
   );
 
   return (
@@ -80,7 +93,7 @@ export default async function BuyerDetailPage({ params }: Props) {
           <div className="rounded-2xl border border-amber-300 bg-amber-50 p-5 space-y-2">
             <div className="flex items-center gap-2 text-amber-900 font-semibold text-sm">
               <Shield className="h-4 w-4 text-amber-700" />
-              <span>Counterparty Under Compliance Review</span>
+              <span>{t("complianceReview")}</span>
             </div>
             <p className="text-xs text-amber-800 leading-relaxed">
               This institutional buyer account is currently suspended by platform moderation. New bilateral conversations cannot be initiated.
@@ -157,7 +170,7 @@ export default async function BuyerDetailPage({ params }: Props) {
                     </span>
                   ))
                 ) : (
-                  <span className="text-xs text-neutral-500 italic">Global / Flexible</span>
+                  <span className="text-xs italic text-muted-foreground">{t("globalFlexible")}</span>
                 )}
               </div>
             </div>
@@ -175,11 +188,11 @@ export default async function BuyerDetailPage({ params }: Props) {
                       className="inline-flex items-center gap-1 rounded-lg bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-800 border border-neutral-200"
                     >
                       <Tag className="h-3 w-3 text-neutral-400" />
-                      {formatLicenseType(l)}
+                      {enumLabel("licenseType", l)}
                     </span>
                   ))
                 ) : (
-                  <span className="text-xs text-neutral-500 italic">Open to all licenses</span>
+                  <span className="text-xs italic text-muted-foreground">{t("openToAllLicenses")}</span>
                 )}
               </div>
             </div>
@@ -196,11 +209,11 @@ export default async function BuyerDetailPage({ params }: Props) {
                       key={i}
                       className="rounded-lg bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-800 border border-neutral-200"
                     >
-                      {formatEnum(b)}
+                      {enumLabel("businessType", b)}
                     </span>
                   ))
                 ) : (
-                  <span className="text-xs text-neutral-500 italic">Flexible business model</span>
+                  <span className="text-xs italic text-muted-foreground">{t("flexibleBusinessModel")}</span>
                 )}
               </div>
             </div>
@@ -211,7 +224,7 @@ export default async function BuyerDetailPage({ params }: Props) {
                 Execution Horizon
               </h3>
               <p className="text-sm font-semibold text-neutral-800">
-                {formatEnum(buyer.horizon)}
+                {enumLabel("horizon", buyer.horizon)}
               </p>
             </div>
           </div>

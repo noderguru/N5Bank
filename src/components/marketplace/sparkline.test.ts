@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
 import React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
+import { renderWithIntl } from "@/lib/render-test";
 import { Sparkline } from "./sparkline";
 import { FavoriteButton } from "./favorite-button";
 
 describe("Sparkline component", () => {
   it("renders SVG sparkline, change percentage, and time horizons", () => {
-    const html = renderToStaticMarkup(
+    const html = renderWithIntl(
       React.createElement(Sparkline, {
         label: "Banking Charter Index",
         changePercent: "+24.5% YoY",
@@ -25,7 +25,7 @@ describe("Sparkline component", () => {
 
 describe("FavoriteButton component", () => {
   it("renders with un-saved initial state", () => {
-    const html = renderToStaticMarkup(
+    const html = renderWithIntl(
       React.createElement(FavoriteButton, {
         assetId: "ast_1",
         initialFavorite: false,
@@ -38,7 +38,7 @@ describe("FavoriteButton component", () => {
   });
 
   it("renders with saved initial state", () => {
-    const html = renderToStaticMarkup(
+    const html = renderWithIntl(
       React.createElement(FavoriteButton, {
         assetId: "ast_1",
         initialFavorite: true,

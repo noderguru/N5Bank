@@ -2,54 +2,51 @@
 
 import { useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useSafeTranslations } from "@/lib/i18n-client";
+import { useTranslations } from "next-intl";
 import { Search, X, RotateCcw } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { formatEnum, formatLicenseType } from "@/lib/formatters";
+
+import { useEnumLabel } from "@/lib/i18n-format";
 import { NaturalSearch } from "@/components/marketplace/natural-search";
 
+// Values only — every label comes from the enums dictionary at render time.
 const BUSINESS_TYPES = [
-  { value: "BANK", label: "Bank" },
-  { value: "FINTECH", label: "Fintech" },
-  { value: "PAYMENT_INSTITUTION", label: "Payment" },
-  { value: "CRYPTO_BUSINESS", label: "Crypto" },
-  { value: "BROKERAGE", label: "Brokerage" },
-  { value: "INSURANCE_COMPANY", label: "Insurance" },
-  { value: "OTHER", label: "Other" },
+  "BANK",
+  "FINTECH",
+  "PAYMENT_INSTITUTION",
+  "CRYPTO_BUSINESS",
+  "BROKERAGE",
+  "INSURANCE_COMPANY",
+  "OTHER",
 ];
 
 const LICENSE_TYPES = [
-  { value: "BANKING", label: "Banking License" },
-  { value: "E_MONEY", label: "E-Money / EMI" },
-  { value: "PAYMENT", label: "Payment (PI)" },
-  { value: "CRYPTO", label: "Crypto / VASP" },
-  { value: "BROKERAGE", label: "Brokerage" },
-  { value: "INSURANCE", label: "Insurance" },
-  { value: "OTHER", label: "Other" },
+  "BANKING",
+  "E_MONEY",
+  "PAYMENT",
+  "CRYPTO",
+  "BROKERAGE",
+  "INSURANCE",
+  "OTHER",
 ];
 
-const BUSINESS_STATUSES = [
-  { value: "OPERATING", label: "Operating" },
-  { value: "PRE_LAUNCH", label: "Pre-Launch" },
-  { value: "DORMANT", label: "Dormant" },
-  { value: "DISTRESSED", label: "Distressed" },
-];
+const BUSINESS_STATUSES = ["OPERATING", "PRE_LAUNCH", "DORMANT", "DISTRESSED"];
 
 const PRICE_RANGES = [
-  { value: "under_1m", label: "Under $1M" },
-  { value: "1m_5m", label: "$1M – $5M" },
-  { value: "5m_20m", label: "$5M – $20M" },
-  { value: "over_20m", label: "$20M+" },
-];
+  { value: "under_1m", key: "priceUnder1m" },
+  { value: "1m_5m", key: "price1m5m" },
+  { value: "5m_20m", key: "price5m20m" },
+  { value: "over_20m", key: "priceOver20m" },
+] as const;
 
 const SORT_OPTIONS = [
-  { value: "newest", label: "Newest First" },
-  { value: "price_asc", label: "Price: Low to High" },
-  { value: "price_desc", label: "Price: High to Low" },
-  { value: "popular", label: "Most Popular" },
-];
+  { value: "newest", key: "sortNewest" },
+  { value: "price_asc", key: "sortPriceAsc" },
+  { value: "price_desc", key: "sortPriceDesc" },
+  { value: "popular", key: "sortPopular" },
+] as const;
 
 export type AssetFiltersProps = {
   totalCount: number;
@@ -62,8 +59,10 @@ export function AssetFilters({
   chipCounts,
   availableCountries,
 }: AssetFiltersProps) {
-  const t = useSafeTranslations("marketplace");
-  const tCommon = useSafeTranslations("common");
+  const t = useTranslations("marketplace");
+  const tCommon = useTranslations("common");
+  const enumLabel = useEnumLabel();
+  const tFilters = useTranslations("filters");
   const router = useRouter();
   const searchParams = useSearchParams();
   const [, startTransition] = useTransition();
@@ -127,7 +126,7 @@ export function AssetFilters({
             <Input
               value={currentQ}
               onChange={(e) => updateParam("q", e.target.value)}
-              placeholder={tCommon("searchPlaceholder", "Search assets by title, country or licence...")}
+              placeholder={tCommon("searchPlaceholder")}
               className="pl-9 h-10 rounded-none border-hairline bg-canvas/30 text-sm focus-visible:ring-brand"
             />
             {currentQ && (
@@ -149,9 +148,9 @@ export function AssetFilters({
               value={currentCountry}
               onChange={(e) => updateParam("country", e.target.value)}
               className="h-10 rounded-none border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
-              aria-label="Filter by country"
+              aria-label={tFilters("allCountries")}
             >
-              <option value="">{tCommon("all")} {tCommon("country")}</option>
+              <option value="">{tFilters("allCountries")}</option>
               {availableCountries.map((c) => (
                 <option key={c} value={c}>
                   {c}
@@ -164,12 +163,12 @@ export function AssetFilters({
               value={currentLicenseType}
               onChange={(e) => updateParam("licenseType", e.target.value)}
               className="h-10 rounded-none border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
-              aria-label="Filter by license type"
+              aria-label={tFilters("allLicenceTypes")}
             >
-              <option value="">{tCommon("all")} {t("licenseType")}</option>
-              {LICENSE_TYPES.map((l) => (
-                <option key={l.value} value={l.value}>
-                  {l.label}
+              <option value="">{tFilters("allLicenceTypes")}</option>
+              {LICENSE_TYPES.map((value) => (
+                <option key={value} value={value}>
+                  {enumLabel("licenseType", value)}
                 </option>
               ))}
             </select>
@@ -179,12 +178,12 @@ export function AssetFilters({
               value={currentBusinessStatus}
               onChange={(e) => updateParam("businessStatus", e.target.value)}
               className="h-10 rounded-none border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
-              aria-label="Filter by operational status"
+              aria-label={tFilters("allStatuses")}
             >
-              <option value="">{tCommon("all")} {tCommon("status")}</option>
-              {BUSINESS_STATUSES.map((s) => (
-                <option key={s.value} value={s.value}>
-                  {s.label}
+              <option value="">{tFilters("allStatuses")}</option>
+              {BUSINESS_STATUSES.map((value) => (
+                <option key={value} value={value}>
+                  {enumLabel("businessStatus", value)}
                 </option>
               ))}
             </select>
@@ -194,12 +193,12 @@ export function AssetFilters({
               value={currentPrice}
               onChange={(e) => updateParam("price", e.target.value)}
               className="h-10 rounded-none border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
-              aria-label="Filter by asking price"
+              aria-label={tFilters("allPrices")}
             >
-              <option value="">{tCommon("all")} {t("askingPrice")}</option>
-              {PRICE_RANGES.map((t) => (
-                <option key={t.value} value={t.value}>
-                  {t.label}
+              <option value="">{tFilters("allPrices")}</option>
+              {PRICE_RANGES.map((range) => (
+                <option key={range.value} value={range.value}>
+                  {tFilters(range.key)}
                 </option>
               ))}
             </select>
@@ -209,11 +208,11 @@ export function AssetFilters({
               value={currentSort}
               onChange={(e) => updateParam("sort", e.target.value)}
               className="h-10 rounded-none border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
-              aria-label="Sort listings"
+              aria-label={t("sortNewest")}
             >
-              {SORT_OPTIONS.map((s) => (
-                <option key={s.value} value={s.value}>
-                  {s.label}
+              {SORT_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {t(option.key)}
                 </option>
               ))}
             </select>
@@ -261,7 +260,7 @@ export function AssetFilters({
                 data-testid="chip-license"
                 className="inline-flex items-center gap-1 rounded-none bg-brand/10 border border-brand/20 px-2.5 py-0.5 text-xs font-medium text-brand"
               >
-                <span>License: {formatLicenseType(currentLicenseType)}</span>
+                <span>License: {enumLabel("licenseType", currentLicenseType)}</span>
                 <button
                   type="button"
                   onClick={() => updateParam("licenseType", "")}
@@ -277,7 +276,7 @@ export function AssetFilters({
                 data-testid="chip-business"
                 className="inline-flex items-center gap-1 rounded-none bg-brand/10 border border-brand/20 px-2.5 py-0.5 text-xs font-medium text-brand"
               >
-                <span>Model: {formatEnum(currentBusinessType)}</span>
+                <span>Model: {enumLabel("businessType", currentBusinessType)}</span>
                 <button
                   type="button"
                   onClick={() => updateParam("businessType", "")}
@@ -293,7 +292,7 @@ export function AssetFilters({
                 data-testid="chip-status"
                 className="inline-flex items-center gap-1 rounded-none bg-brand/10 border border-brand/20 px-2.5 py-0.5 text-xs font-medium text-brand"
               >
-                <span>Status: {formatEnum(currentBusinessStatus)}</span>
+                <span>Status: {enumLabel("businessStatus", currentBusinessStatus)}</span>
                 <button
                   type="button"
                   onClick={() => updateParam("businessStatus", "")}
@@ -310,7 +309,11 @@ export function AssetFilters({
                 className="inline-flex items-center gap-1 rounded-none bg-brand/10 border border-brand/20 px-2.5 py-0.5 text-xs font-medium text-brand"
               >
                 <span>
-                  Price: {PRICE_RANGES.find((p) => p.value === currentPrice)?.label || currentPrice}
+                  {t("askingPrice")}:{" "}
+                  {(() => {
+                    const range = PRICE_RANGES.find((r) => r.value === currentPrice);
+                    return range ? tFilters(range.key) : currentPrice;
+                  })()}
                 </span>
                 <button
                   type="button"
@@ -372,13 +375,13 @@ export function AssetFilters({
           </button>
 
           {BUSINESS_TYPES.map((bt) => {
-            const count = chipCounts[bt.value] || 0;
-            const isSelected = currentBusinessType === bt.value;
+            const count = chipCounts[bt] || 0;
+            const isSelected = currentBusinessType === bt;
             return (
               <button
-                key={bt.value}
+                key={bt}
                 type="button"
-                onClick={() => toggleBusinessTypeChip(bt.value)}
+                onClick={() => toggleBusinessTypeChip(bt)}
                 className={cn(
                   "inline-flex items-center gap-1.5 rounded-none px-3 py-1 text-xs font-medium transition-[background-color,border-color,color,transform] duration-150 ease-out active:scale-95 border",
                   isSelected
@@ -386,7 +389,7 @@ export function AssetFilters({
                     : "bg-surface text-muted-foreground border-hairline hover:border-brand/40 hover:text-ink"
                 )}
               >
-                <span>{bt.label}</span>
+                <span>{enumLabel("businessType", bt)}</span>
                 <span
                   className={cn(
                     "rounded-none px-1.5 py-0.2 text-[10px]",

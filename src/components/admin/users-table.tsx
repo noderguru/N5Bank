@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useLocale } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -80,6 +81,7 @@ const SORTS = [
 ];
 
 export function UsersTable({ users, totalCount, currentUserId }: UsersTableProps) {
+  const locale = useLocale();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [, startTransition] = useTransition();
@@ -383,7 +385,7 @@ export function UsersTable({ users, totalCount, currentUserId }: UsersTableProps
 
                       {/* Joined Date */}
                       <TableCell className="text-xs text-muted-foreground">
-                        {formatDate(user.createdAt)}
+                        {formatDate(user.createdAt, locale)}
                       </TableCell>
 
                       {/* N5B-34: Moderation Actions & Dialog Trigger */}

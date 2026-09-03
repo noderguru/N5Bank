@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
+import { renderWithIntl } from "@/lib/render-test";
 
 vi.mock("next/navigation", () => ({
   usePathname: () => "/assets",
@@ -48,7 +48,7 @@ describe("navigation and app shell layout", () => {
 
   describe("PillNav Component", () => {
     it("renders guest navigation with Sign in button", () => {
-      const html = renderToStaticMarkup(React.createElement(PillNav, { user: null }));
+      const html = renderWithIntl(React.createElement(PillNav, { user: null }));
       expect(html).toContain("N5");
       expect(html).toContain("Deal");
       expect(html).toContain("Sign in");
@@ -57,7 +57,7 @@ describe("navigation and app shell layout", () => {
     });
 
     it("renders authenticated navigation with role indicator and unread badge", () => {
-      const html = renderToStaticMarkup(
+      const html = renderWithIntl(
         React.createElement(PillNav, {
           user: { id: "usr_buyer_demo", email: "buyer@demo", role: "BUYER", name: "Alexander" },
           unreadCount: 4,
@@ -73,7 +73,7 @@ describe("navigation and app shell layout", () => {
 
   describe("Footer Component", () => {
     it("renders compliance disclaimer and legal info", () => {
-      const html = renderToStaticMarkup(React.createElement(Footer));
+      const html = renderWithIntl(React.createElement(Footer));
       expect(html).toContain("Regulatory Notice");
       expect(html).toContain("N5Deal is an introductions platform");
       expect(html).toContain("M&amp;A Platform");

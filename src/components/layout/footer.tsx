@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useSafeTranslations } from "@/lib/i18n-client";
+import { useTranslations } from "next-intl";
 import { ShieldCheck } from "lucide-react";
 
 export function Footer() {
-  const t = useSafeTranslations("footer");
-  const tNav = useSafeTranslations("nav");
+  const t = useTranslations("footer");
+  const tNav = useTranslations("nav");
   return (
     <footer className="mt-24 border-t border-[#3a3a3f] bg-black text-white">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
+import { renderWithIntl } from "@/lib/render-test";
 
 vi.mock("next/navigation", () => ({
   usePathname: () => "/assets",
@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 
 describe("Accessibility Standards (N5B-44)", () => {
   it("renders accessible skip link and semantic landmarks in AppShell", () => {
-    const html = renderToStaticMarkup(
+    const html = renderWithIntl(
       React.createElement(
         AppShell,
         { hideFooter: false },
@@ -32,7 +32,7 @@ describe("Accessibility Standards (N5B-44)", () => {
   });
 
   it("ensures icon-only buttons have explicit aria-label", () => {
-    const html = renderToStaticMarkup(
+    const html = renderWithIntl(
       React.createElement(FavoriteButton, {
         assetId: "ast_a11y_1",
         initialFavorite: false,
@@ -43,7 +43,7 @@ describe("Accessibility Standards (N5B-44)", () => {
   });
 
   it("ensures forms link labels with inputs via htmlFor and id", () => {
-    const html = renderToStaticMarkup(
+    const html = renderWithIntl(
       React.createElement(
         "div",
         null,

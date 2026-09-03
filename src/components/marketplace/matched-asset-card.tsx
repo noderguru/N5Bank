@@ -9,7 +9,8 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FavoriteButton } from "@/components/marketplace/favorite-button";
-import { formatEnum, formatLicenseType, formatPrice } from "@/lib/formatters";
+import { getLocale, getTranslations } from "next-intl/server";
+import { formatPrice } from "@/lib/formatters";
 import { cn } from "@/lib/utils";
 import type { MatchedAssetItem } from "@/lib/ai/matching";
 
@@ -18,12 +19,23 @@ export interface MatchedAssetCardProps {
   isFavorite?: boolean;
 }
 
-export function MatchedAssetCard({ item, isFavorite }: MatchedAssetCardProps) {
+export async function MatchedAssetCard({ item, isFavorite }: MatchedAssetCardProps) {
+  const locale = await getLocale();
+  const tEnums = await getTranslations("enums");
+  const tCommon = await getTranslations("common");
+  const price = {
+    onRequest: tCommon("priceOnRequest"),
+    uponLoi: tCommon("uponLoi"),
+    underNda: tCommon("underNda"),
+  };
+  const enumLabel = (group: string, value: string) => tEnums(`${group}.${value}`);
   const { asset, matchScore, matchReasons, aiExplanation, engine, breakdown } = item;
   const displayPrice = formatPrice(
     asset.askingPrice ? Number(asset.askingPrice) : null,
     asset.priceMode,
-    asset.currency
+    asset.currency,
+    locale,
+    price
   );
 
   const getScoreBadgeClass = (score: number) => {
@@ -79,7 +91,7 @@ export function MatchedAssetCard({ item, isFavorite }: MatchedAssetCardProps) {
             <Globe2 className="size-3.5 text-brand shrink-0" />
             <span className="font-medium text-ink">{asset.country}</span>
             <span>·</span>
-            <span>{formatLicenseType(asset.licenseType)}</span>
+            <span>{enumLabel("licenseType", asset.licenseType)}</span>
           </div>
 
           <h3 className="text-base font-semibold text-ink leading-snug tracking-tight group-hover:text-brand transition-colors">
@@ -143,11 +155,11 @@ export function MatchedAssetCard({ item, isFavorite }: MatchedAssetCardProps) {
         <div className="grid grid-cols-2 gap-2 text-[11px] text-muted-foreground bg-surface rounded-lg p-2 border border-hairline">
           <div>
             <span className="font-semibold text-ink">Model: </span>
-            {formatEnum(asset.businessType)}
+            {enumLabel("businessType", asset.businessType)}
           </div>
           <div>
             <span className="font-semibold text-ink">Status: </span>
-            {formatEnum(asset.businessStatus)}
+            {enumLabel("businessStatus", asset.businessStatus)}
           </div>
         </div>
       </div>

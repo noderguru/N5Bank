@@ -1,6 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
+import { useLocale } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -67,6 +68,7 @@ const TARGET_FILTERS = [
 ];
 
 export function ModerationTable({ logs, totalCount }: ModerationTableProps) {
+  const locale = useLocale();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [, startTransition] = useTransition();
@@ -211,7 +213,7 @@ export function ModerationTable({ logs, totalCount }: ModerationTableProps) {
                       <TableCell className="py-3.5">
                         <div className="flex items-center gap-1.5 text-xs text-muted-foreground whitespace-nowrap">
                           <Clock className="h-3.5 w-3.5 text-muted-foreground/70 shrink-0" />
-                          <span>{formatDateTime(log.createdAt)}</span>
+                          <span>{formatDateTime(log.createdAt, locale)}</span>
                         </div>
                       </TableCell>
 
