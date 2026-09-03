@@ -1,17 +1,18 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowRight, Sparkles, AlertCircle } from "lucide-react";
+import { ArrowRight, Sparkles, AlertCircle, ShieldCheck, Sliders } from "lucide-react";
 import { readSession } from "@/lib/auth/session";
 import { prisma } from "@/lib/db/prisma";
 import { AppShell } from "@/components/layout/app-shell";
-import { AssetCard, type AssetCardData } from "@/components/marketplace/asset-card";
 import { EmptyState } from "@/components/marketplace/empty-state";
+import { MatchedAssetCard } from "@/components/marketplace/matched-asset-card";
 import { computeProfileCompleteness } from "@/lib/validation/buyer";
+import { getMatchesForBuyer } from "@/lib/ai/matching";
 import { Button } from "@/components/ui/button";
 
 export const metadata = {
-  title: "Matched Assets | N5Deal Marketplace",
-  description: "Algorithmic and AI-curated matching between your investment mandate and available banking opportunities.",
+  title: "Target Asset Matches | N5Deal Marketplace",
+  description: "AI and deterministic institutional matching between buyer investment mandates and available banking assets.",
 };
 
 export default async function MatchesPage() {
@@ -27,7 +28,7 @@ export default async function MatchesPage() {
 
   const completeness = computeProfileCompleteness(profile);
 
-  // Criterion: "Незаполненный профиль не ломает /matches, а объясняет что заполнить"
+  // Incomplete profile condition: Guide buyer to complete criteria
   if (!completeness.isComplete || !profile) {
     return (
       <AppShell
@@ -47,7 +48,7 @@ export default async function MatchesPage() {
               Complete Your Mandate to Unlock Matches
             </h1>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Our matching engine pairs your investment thesis, target ticket range, and licensed charter requirements with vetted sellers.
+              Our institutional matching engine pairs your investment thesis, target ticket range, and licensed charter requirements with vetted sellers.
             </p>
           </div>
 
@@ -95,55 +96,22 @@ export default async function MatchesPage() {
     );
   }
 
-  // Fetch matched published assets
-  const orConditions = [];
-
-  if (profile.targetCountries.length > 0) {
-    orConditions.push({ country: { in: profile.targetCountries } });
-  }
-
-  if (profile.targetLicenseTypes.length > 0) {
-    orConditions.push({ licenseType: { in: profile.targetLicenseTypes } });
-  }
-
-  if (profile.targetBusinessTypes.length > 0) {
-    orConditions.push({ businessType: { in: profile.targetBusinessTypes } });
-  }
-
-  const matchedAssets = await prisma.asset.findMany({
+  // Fetch all active candidate assets for holistic evaluation
+  const candidateAssets = await prisma.asset.findMany({
     where: {
       status: "PUBLISHED",
       seller: { status: "ACTIVE" },
-      ...(orConditions.length > 0 ? { OR: orConditions } : {}),
     },
-    orderBy: { views: "desc" },
-    take: 12,
+    take: 50,
   });
+
+  const matchingResult = await getMatchesForBuyer(profile, candidateAssets);
 
   const favorites = await prisma.favorite.findMany({
     where: { userId: session.userId },
     select: { assetId: true },
   });
   const favSet = new Set(favorites.map((f) => f.assetId));
-
-  const assets: AssetCardData[] = matchedAssets.map((asset) => ({
-    id: asset.id,
-    title: asset.title,
-    summary: asset.summary,
-    country: asset.country,
-    licenseType: asset.licenseType,
-    businessType: asset.businessType,
-    businessStatus: asset.businessStatus,
-    askingPrice: asset.askingPrice ? Number(asset.askingPrice) : null,
-    priceMode: asset.priceMode,
-    currency: asset.currency,
-    features: asset.features,
-    status: asset.status,
-    validated: asset.validated,
-    views: asset.views,
-    regulator: asset.regulator,
-    isFavorite: favSet.has(asset.id),
-  }));
 
   return (
     <AppShell
@@ -154,34 +122,84 @@ export default async function MatchesPage() {
       }}
     >
       <div className="space-y-6 max-w-5xl mx-auto pb-12">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div className="space-y-1">
-            <h1 className="text-2xl font-bold tracking-tight text-ink sm:text-3xl flex items-center gap-2">
-              <Sparkles className="size-6 text-brand" />
-              <span>Target Asset Matches</span>
-            </h1>
-            <p className="text-sm text-muted-foreground leading-relaxed max-w-xl">
-              Regulated opportunities matched against your mandate criteria ({profile.company} · {profile.currency} {profile.ticketMin ? `$${profile.ticketMin.toString()}` : "Any"} – {profile.ticketMax ? `$${profile.ticketMax.toString()}` : "Any"}).
+        {/* Page Heading and Mode Banner */}
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl font-bold tracking-tight text-ink sm:text-3xl flex items-center gap-2">
+                <Sparkles className="size-6 text-brand" />
+                <span>Target Asset Matches</span>
+              </h1>
+
+              {matchingResult.engine === "ai" ? (
+                <span className="inline-flex items-center gap-1 rounded-full bg-purple-500/10 px-2.5 py-0.5 text-xs font-semibold text-purple-700 border border-purple-500/20">
+                  <Sparkles className="size-3" />
+                  <span>AI Matching Active</span>
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1 rounded-full bg-slate-500/10 px-2.5 py-0.5 text-xs font-semibold text-slate-700 border border-slate-500/20">
+                  <ShieldCheck className="size-3" />
+                  <span>Deterministic Rule Scorer</span>
+                </span>
+              )}
+            </div>
+
+            <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
+              Regulated opportunities matched against mandate criteria for{" "}
+              <strong className="text-ink font-semibold">{profile.company}</strong> (
+              {profile.currency} {profile.ticketMin ? `$${profile.ticketMin.toString()}` : "Any"} –{" "}
+              {profile.ticketMax ? `$${profile.ticketMax.toString()}` : "Any"}).
             </p>
+
+            {matchingResult.engine === "ai" ? (
+              <p className="text-xs text-purple-700/90 flex items-center gap-1.5">
+                <Sparkles className="size-3 shrink-0" />
+                <span>
+                  Matches are evaluated by OpenRouter AI against your investment thesis and weighted by regulatory compatibility.
+                </span>
+              </p>
+            ) : (
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <Sliders className="size-3 shrink-0" />
+                <span>
+                  Matches are ranked deterministically by regulatory charter (35%), jurisdiction (30%), business model (20%), and ticket envelope (15%).
+                </span>
+              </p>
+            )}
           </div>
 
-          <Button asChild variant="outline" className="rounded-xl border-hairline text-xs font-medium">
+          <Button asChild variant="outline" className="rounded-xl border-hairline text-xs font-medium shrink-0">
             <Link href="/buyer">Edit Mandate</Link>
           </Button>
         </div>
 
-        {assets.length > 0 ? (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {assets.map((asset) => (
-              <AssetCard key={asset.id} asset={asset} />
-            ))}
+        {/* Results count & Matched Cards */}
+        {matchingResult.matches.length > 0 ? (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between text-xs text-muted-foreground px-1">
+              <span>
+                Found <strong className="text-ink font-semibold">{matchingResult.matches.length}</strong> compatible{" "}
+                {matchingResult.matches.length === 1 ? "opportunity" : "opportunities"}
+              </span>
+              <span>Sorted by highest compatibility score</span>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {matchingResult.matches.map((item) => (
+                <MatchedAssetCard
+                  key={item.asset.id}
+                  item={item}
+                  isFavorite={favSet.has(item.asset.id)}
+                />
+              ))}
+            </div>
           </div>
         ) : (
           <EmptyState
-            title="No matches found for current criteria"
-            description="Try broadening your target countries, license charters, or budget envelope in your buyer profile."
+            title="No matches found for current mandate criteria"
+            description="Try expanding your target jurisdictions, permitted charter licenses, or budget parameters in your investment profile."
             action={{
-              label: "Update Mandate Criteria",
+              label: "Update Mandate Profile",
               href: "/buyer",
             }}
           />
