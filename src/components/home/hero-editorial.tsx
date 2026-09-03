@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { PixelArrow } from "@/components/layout/candlestick";
 import { ShieldCheck, CheckCircle2 } from "lucide-react";
@@ -40,75 +39,27 @@ export function HeroEditorial({ t }: HeroEditorialProps) {
           </span>
         </div>
 
-        {/* Monolithic Typographic Wall */}
+        {/* Monolithic Typographic Wall - Pure Editorial Typography */}
         <div className="space-y-4 sm:space-y-5">
-          
-          {/* Line 1: Advancing the Capital + [Large Tile 1] */}
-          <div className="flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-3">
+          {/* Line 1: Advancing the Capital */}
+          <div>
             <h1 className="font-mondwest text-5xl sm:text-7xl md:text-8xl lg:text-[105px] xl:text-[118px] font-normal tracking-tight leading-[0.92] text-[#121613]">
               {t.heroLine1}
             </h1>
-
-            {/* Photo Tile 1 (322px x 135px) */}
-            <div className="relative inline-flex h-[56px] w-[130px] sm:h-[84px] sm:w-[210px] md:h-[110px] md:w-[270px] lg:h-[135px] lg:w-[322px] overflow-hidden rounded-[14px] border border-[#232924]/15 shadow-md align-middle shrink-0 bg-[#161b17]">
-              <Image
-                src="/static/Hero-CRYPTO-01-f02c7b2ef403195aaa3970a8f942f3c3.webp"
-                alt="Financial billboard"
-                fill
-                sizes="330px"
-                className="object-cover editorial-filter hero-img-swap"
-                priority
-              />
-              <Image
-                src="/static/Hero-NYSE-01-24bb730d87e775c1bc17a14a707054f4.webp"
-                alt="NYSE building"
-                fill
-                sizes="330px"
-                className="object-cover editorial-filter"
-                priority
-              />
-            </div>
           </div>
 
-          {/* Line 2: Networks of M&A (no images, pure typography) */}
-          <div className="flex flex-wrap items-baseline gap-x-4 sm:gap-x-6 gap-y-3">
+          {/* Line 2: Networks of M&A */}
+          <div>
             <h1 className="font-mondwest text-5xl sm:text-7xl md:text-8xl lg:text-[105px] xl:text-[118px] font-normal tracking-tight leading-[0.92] text-[#121613]">
               {t.heroLine2}
             </h1>
           </div>
 
-          {/* Line 3 & 4: and Regulated Financial + Assets [Tile 4 directly opposite Assets] */}
-          <div className="space-y-2 sm:space-y-3">
+          {/* Line 3: and Regulated Financial Assets */}
+          <div>
             <h1 className="font-editorial text-4xl sm:text-6xl md:text-7xl lg:text-[92px] xl:text-[105px] font-light italic tracking-tight leading-[0.92] text-[#516254]">
-              {t.heroLine3}
+              {t.heroLine3} {t.heroLine4}
             </h1>
-
-            {/* Assets + Image 4 in a locked flex row, preventing image from dropping underneath */}
-            <div className="flex items-center gap-4 sm:gap-8">
-              <h1 className="font-editorial text-4xl sm:text-6xl md:text-7xl lg:text-[92px] xl:text-[105px] font-light italic tracking-tight leading-[0.92] text-[#516254]">
-                {t.heroLine4}
-              </h1>
-
-              {/* Photo Tile 4 directly next to / opposite Assets */}
-              <div className="relative inline-flex h-[56px] w-[140px] sm:h-[84px] sm:w-[230px] md:h-[110px] md:w-[300px] lg:h-[135px] lg:w-[375px] overflow-hidden rounded-[14px] border border-[#232924]/15 shadow-md align-middle shrink-0 bg-[#161b17]">
-                <Image
-                  src="/static/Hero-CRYPTO-04-0ecd9362de52a808c35ead4c9338c025.webp"
-                  alt="Digital stock ticker"
-                  fill
-                  sizes="380px"
-                  className="object-cover editorial-filter hero-img-swap"
-                  priority
-                />
-                <Image
-                  src="/static/Hero-NYSE-04-889ef0d843263d63e413de2856b57c90.webp"
-                  alt="NYSE floor columns"
-                  fill
-                  sizes="380px"
-                  className="object-cover editorial-filter"
-                  priority
-                />
-              </div>
-            </div>
           </div>
         </div>
 
