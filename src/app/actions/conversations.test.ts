@@ -154,6 +154,20 @@ describe("conversations server actions", () => {
       expect(result.error).toContain("counterparty has been suspended");
     });
 
+    it("blocks messages if counterparty is REMOVED", async () => {
+      prismaMock.conversation.findUnique.mockResolvedValue({
+        id: "conv_1",
+        buyerId: "usr_buyer_removed",
+        sellerId: "usr_seller_1",
+        buyer: { id: "usr_buyer_removed", status: "REMOVED" },
+        seller: { id: "usr_seller_1", status: "ACTIVE" },
+      });
+
+      const result = await sendMessageAction("conv_1", "Are you available?");
+      expect(result.success).toBe(false);
+      expect(result.error).toContain("counterparty has been suspended");
+    });
+
     it("sends message and updates thread timestamp", async () => {
       prismaMock.conversation.findUnique.mockResolvedValue({
         id: "conv_1",
