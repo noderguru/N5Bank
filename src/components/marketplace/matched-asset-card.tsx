@@ -35,7 +35,7 @@ export function MatchedAssetCard({ item, isFavorite }: MatchedAssetCardProps) {
   return (
     <article
       data-testid="matched-asset-card"
-      className="group relative flex flex-col justify-between rounded-2xl border border-hairline bg-surface p-5 transition-all hover:border-brand/60 hover:shadow-sm"
+      className="group relative flex flex-col justify-between rounded-2xl border border-hairline bg-surface p-5 transition-[transform,box-shadow,border-color] duration-200 ease-out sm:hover:-translate-y-0.5 sm:hover:shadow-md sm:hover:border-brand/60 animate-in fade-in-50 duration-200"
     >
       <div className="space-y-4">
         {/* Match Header Bar */}

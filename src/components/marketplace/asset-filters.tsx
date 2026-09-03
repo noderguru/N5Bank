@@ -351,7 +351,7 @@ export function AssetFilters({
             type="button"
             onClick={() => updateParam("businessType", "")}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors border",
+              "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-[background-color,border-color,color,transform] duration-150 ease-out active:scale-95 border",
               !currentBusinessType
                 ? "bg-brand text-white border-brand shadow-2xs font-semibold"
                 : "bg-surface text-muted-foreground border-hairline hover:border-brand/40 hover:text-ink"
@@ -377,7 +377,7 @@ export function AssetFilters({
                 type="button"
                 onClick={() => toggleBusinessTypeChip(bt.value)}
                 className={cn(
-                  "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors border",
+                  "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-[background-color,border-color,color,transform] duration-150 ease-out active:scale-95 border",
                   isSelected
                     ? "bg-brand text-white border-brand shadow-2xs font-semibold"
                     : "bg-surface text-muted-foreground border-hairline hover:border-brand/40 hover:text-ink"
