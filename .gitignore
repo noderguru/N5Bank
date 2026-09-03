@@ -59,4 +59,5 @@ skills-lock.json
 N5Bank_test_task.txt
 notes/
 scratch/
+.playwright-mcp/
 _private/
