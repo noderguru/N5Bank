@@ -62,7 +62,7 @@ export function SideNav({ isOpen, onClose, user }: SideNavProps) {
       aria-label="Site Navigation"
       className="fixed inset-0 z-50 flex flex-col justify-between overflow-y-auto paper-dark text-[#fafffa] animate-in fade-in duration-300"
     >
-      <div className="noise-overlay" />
+      
 
       {/* Top Header inside overlay */}
       <div className="relative z-10 mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-8 sm:px-10">

@@ -29,7 +29,7 @@ export function StatsEditorial() {
 
   return (
     <section className="relative overflow-hidden paper-dark text-[#fafffa] py-24 sm:py-32 border-b border-[#232924]">
-      <div className="noise-overlay" />
+      
 
       <div className="relative z-10 mx-auto max-w-6xl px-6 sm:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-16 border-b border-[#232924]">

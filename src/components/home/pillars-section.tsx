@@ -69,7 +69,7 @@ export function PillarsSection() {
 
   return (
     <section className="relative overflow-hidden border-y border-[#232924] paper-dark text-[#fafffa] py-24 sm:py-32">
-      <div className="noise-overlay" />
+      
 
       <div className="relative z-10 mx-auto max-w-6xl px-6 sm:px-8">
         {/* Section Header */}

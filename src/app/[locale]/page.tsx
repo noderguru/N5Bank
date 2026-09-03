@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { readSession } from "@/lib/auth/session";
 import { AppShell } from "@/components/layout/app-shell";
 import { HeroEditorial } from "@/components/home/hero-editorial";
+import { StoriesSection } from "@/components/home/stories-section";
 import { MarqueeBanner } from "@/components/home/marquee-banner";
 import { PillarsSection } from "@/components/home/pillars-section";
 import { StatsEditorial } from "@/components/home/stats-editorial";
@@ -117,6 +118,9 @@ export default async function Home() {
           proofConfidential: t("proofConfidential"),
         }}
       />
+
+      {/* Narrative Stories Stage Pinned on Scroll */}
+      <StoriesSection />
 
       {/* Infinite Dual-Type Marquee 1 */}
       <MarqueeBanner />

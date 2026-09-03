@@ -569,18 +569,9 @@ body {
   background-repeat: repeat;
 }
 
-/* Noise overlay */
+/* Noise overlay disabled to prevent eye fatigue - paper textures used instead */
 .noise-overlay {
-  position: absolute;
-  top: -10rem;
-  left: -10rem;
-  width: calc(100% + 20rem);
-  height: calc(100% + 20rem);
-  background-image: url('/static/noise-371d72175aafed861a68c9b3beb98584.webp');
-  background-size: 15%;
-  opacity: 0.25;
-  pointer-events: none;
-  animation: eQmCIX 0.3s steps(6) infinite;
+  display: none;
 }
 
 /* Highlighter Green Action Button */

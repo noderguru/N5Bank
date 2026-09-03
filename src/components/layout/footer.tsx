@@ -42,7 +42,7 @@ export function Footer() {
 
       {/* Dark Broadsheet Footer */}
       <footer className="relative border-t border-[#232924] paper-dark text-[#fafffa] overflow-hidden">
-        <div className="noise-overlay" />
+        
 
         <div className="relative z-10 mx-auto max-w-6xl px-6 py-20 sm:px-8">
           {/* Giant Email Headline */}
