@@ -6,6 +6,8 @@ import { Search, X, RotateCcw } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { formatEnum, formatLicenseType } from "@/lib/formatters";
+import { NaturalSearch } from "@/components/marketplace/natural-search";
 
 const BUSINESS_TYPES = [
   { value: "BANK", label: "Bank" },
@@ -110,6 +112,9 @@ export function AssetFilters({
 
   return (
     <div className="space-y-4">
+      {/* N5B-37 / N5B-99: Natural Language Search with AI and deterministic parsing */}
+      <NaturalSearch />
+
       {/* Search and Secondary Filter Row */}
       <div className="rounded-2xl border border-hairline bg-surface p-4 shadow-2xs space-y-3">
         <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3">
@@ -225,6 +230,120 @@ export function AssetFilters({
             )}
           </div>
         </div>
+
+        {/* N5B-83: Active Filter Chips with individual dismissals */}
+        {hasActiveFilters && (
+          <div className="flex flex-wrap items-center gap-1.5 pt-2 border-t border-hairline/60">
+            <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mr-1">
+              Active:
+            </span>
+            {currentCountry && (
+              <span
+                data-testid="chip-country"
+                className="inline-flex items-center gap-1 rounded-full bg-brand/10 border border-brand/20 px-2.5 py-0.5 text-xs font-medium text-brand"
+              >
+                <span>Country: {currentCountry}</span>
+                <button
+                  type="button"
+                  onClick={() => updateParam("country", "")}
+                  className="hover:text-ink focus:outline-none ml-0.5"
+                  aria-label={`Remove ${currentCountry} filter`}
+                >
+                  <X className="size-3" />
+                </button>
+              </span>
+            )}
+            {currentLicenseType && (
+              <span
+                data-testid="chip-license"
+                className="inline-flex items-center gap-1 rounded-full bg-brand/10 border border-brand/20 px-2.5 py-0.5 text-xs font-medium text-brand"
+              >
+                <span>License: {formatLicenseType(currentLicenseType)}</span>
+                <button
+                  type="button"
+                  onClick={() => updateParam("licenseType", "")}
+                  className="hover:text-ink focus:outline-none ml-0.5"
+                  aria-label="Remove license filter"
+                >
+                  <X className="size-3" />
+                </button>
+              </span>
+            )}
+            {currentBusinessType && (
+              <span
+                data-testid="chip-business"
+                className="inline-flex items-center gap-1 rounded-full bg-brand/10 border border-brand/20 px-2.5 py-0.5 text-xs font-medium text-brand"
+              >
+                <span>Model: {formatEnum(currentBusinessType)}</span>
+                <button
+                  type="button"
+                  onClick={() => updateParam("businessType", "")}
+                  className="hover:text-ink focus:outline-none ml-0.5"
+                  aria-label="Remove business model filter"
+                >
+                  <X className="size-3" />
+                </button>
+              </span>
+            )}
+            {currentBusinessStatus && (
+              <span
+                data-testid="chip-status"
+                className="inline-flex items-center gap-1 rounded-full bg-brand/10 border border-brand/20 px-2.5 py-0.5 text-xs font-medium text-brand"
+              >
+                <span>Status: {formatEnum(currentBusinessStatus)}</span>
+                <button
+                  type="button"
+                  onClick={() => updateParam("businessStatus", "")}
+                  className="hover:text-ink focus:outline-none ml-0.5"
+                  aria-label="Remove status filter"
+                >
+                  <X className="size-3" />
+                </button>
+              </span>
+            )}
+            {currentPrice && (
+              <span
+                data-testid="chip-price"
+                className="inline-flex items-center gap-1 rounded-full bg-brand/10 border border-brand/20 px-2.5 py-0.5 text-xs font-medium text-brand"
+              >
+                <span>
+                  Price: {PRICE_RANGES.find((p) => p.value === currentPrice)?.label || currentPrice}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => updateParam("price", "")}
+                  className="hover:text-ink focus:outline-none ml-0.5"
+                  aria-label="Remove price filter"
+                >
+                  <X className="size-3" />
+                </button>
+              </span>
+            )}
+            {currentQ && (
+              <span
+                data-testid="chip-q"
+                className="inline-flex items-center gap-1 rounded-full bg-brand/10 border border-brand/20 px-2.5 py-0.5 text-xs font-medium text-brand"
+              >
+                <span>Keyword: &quot;{currentQ}&quot;</span>
+                <button
+                  type="button"
+                  onClick={() => updateParam("q", "")}
+                  className="hover:text-ink focus:outline-none ml-0.5"
+                  aria-label="Remove keyword search"
+                >
+                  <X className="size-3" />
+                </button>
+              </span>
+            )}
+            <button
+              type="button"
+              onClick={handleReset}
+              className="text-xs text-muted-foreground hover:text-ink underline ml-1"
+            >
+              Clear all
+            </button>
+          </div>
+        )}
 
         {/* N5B-69: Category Chips with server-counted tallies */}
         <div className="flex flex-wrap items-center gap-1.5 pt-1 border-t border-hairline/60">
