@@ -8,8 +8,17 @@
   --ink: #050505;
   --muted-ink: #616773;
   --brand: #383bfe;
+  --brand-hover: #2d30e0;
   --tint: #e7f3ff;
+  --tint-subtle: #f4f9ff;
   --hairline: #d9d9d9;
+  --hairline-subtle: #ebebeb;
+  --success: #059669;
+  --success-tint: #ecfdf5;
+  --warning: #d97706;
+  --warning-tint: #fffbeb;
+  --destructive: #c51f3a;
+  --destructive-tint: #fef2f2;
 
   --background: var(--surface);
   --foreground: var(--ink);
@@ -25,7 +34,6 @@
   --muted-foreground: var(--muted-ink);
   --accent: var(--tint);
   --accent-foreground: var(--brand);
-  --destructive: #c51f3a;
   --border: var(--hairline);
   --input: var(--hairline);
   --ring: var(--brand);
@@ -35,6 +43,15 @@
   --chart-4: #1f726d;
   --chart-5: #c57c2b;
   --radius: 0.75rem;
+
+  --radius-chip: 8px;
+  --radius-input: 12px;
+  --radius-panel: 16px;
+  --radius-card: 24px;
+  --radius-pill: 9999px;
+
+  --shadow-floating: 0 10px 30px -5px rgba(5, 5, 5, 0.08), 0 4px 12px -2px rgba(5, 5, 5, 0.03);
+
   --sidebar: var(--surface);
   --sidebar-foreground: var(--ink);
   --sidebar-primary: var(--brand);
@@ -51,10 +68,26 @@
   --color-ink: var(--ink);
   --color-muted-ink: var(--muted-ink);
   --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
   --color-tint: var(--tint);
+  --color-tint-subtle: var(--tint-subtle);
   --color-hairline: var(--hairline);
-  --font-sans: var(--font-inter);
-  --font-heading: var(--font-inter);
+  --color-hairline-subtle: var(--hairline-subtle);
+  --color-success: var(--success);
+  --color-success-tint: var(--success-tint);
+  --color-warning: var(--warning);
+  --color-warning-tint: var(--warning-tint);
+
+  --font-sans: var(--font-inter), sans-serif;
+  --font-heading: var(--font-inter), sans-serif;
+
+  --radius-chip: var(--radius-chip);
+  --radius-input: var(--radius-input);
+  --radius-panel: var(--radius-panel);
+  --radius-card: var(--radius-card);
+  --radius-pill: var(--radius-pill);
+
+  --shadow-floating: var(--shadow-floating);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
