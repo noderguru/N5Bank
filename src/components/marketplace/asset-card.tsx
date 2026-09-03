@@ -67,7 +67,7 @@ export function AssetCard({
     >
       <div className="space-y-4">
         {/* Top Header: Badge, Country, Price */}
-        <div className="flex items-start justify-between gap-3">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-tint px-2.5 py-0.5 text-xs font-semibold text-brand">
               <Globe2 className="size-3.5 shrink-0" />
@@ -85,7 +85,7 @@ export function AssetCard({
             )}
           </div>
 
-          <div className="text-right shrink-0">
+          <div className="sm:text-right shrink-0">
             <div className="text-sm font-bold text-ink tracking-tight">{displayPrice}</div>
             {priceMode !== "FIXED" && (
               <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
@@ -98,7 +98,7 @@ export function AssetCard({
         {/* Title & Summary */}
         <div className="space-y-1.5">
           <h3 className="text-base font-semibold text-ink leading-snug tracking-tight line-clamp-2 group-hover:text-brand transition-colors">
-            <Link href={`/assets/${id}`} className="focus:outline-none">
+            <Link href={`/assets/${id}`} prefetch={false} className="focus:outline-none">
               {title}
             </Link>
           </h3>
@@ -182,7 +182,7 @@ export function AssetCard({
           variant="outline"
           className="h-8 gap-1 rounded-xl border-hairline text-xs font-medium hover:border-brand hover:text-brand"
         >
-          <Link href={`/assets/${id}`}>
+          <Link href={`/assets/${id}`} prefetch={false}>
             <span>View specs</span>
             <ArrowUpRight className="size-3.5" />
           </Link>
@@ -202,7 +202,7 @@ export function AssetCard({
             asChild
             className="h-8 gap-1.5 rounded-xl bg-brand text-xs font-medium text-surface hover:bg-brand/90 shadow-xs"
           >
-            <Link href={`/assets/${id}?contact=true`}>
+            <Link href={`/assets/${id}?contact=true`} prefetch={false}>
               <MessageSquare className="size-3.5" />
               <span>Contact seller</span>
             </Link>

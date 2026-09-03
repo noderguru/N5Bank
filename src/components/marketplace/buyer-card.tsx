@@ -59,25 +59,25 @@ export function BuyerCard({
     >
       <div className="space-y-4">
         {/* Header: Company & Ticket Range */}
-        <div className="flex items-start justify-between gap-3">
-          <div className="space-y-1">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
+          <div className="space-y-1 min-w-0">
             <div className="flex items-center gap-1.5">
               <Building2 className="size-4 text-brand shrink-0" />
-              <h3 className="text-base font-semibold text-ink leading-tight tracking-tight truncate max-w-[200px]" title={company}>
+              <h3 className="text-base font-semibold text-ink leading-tight tracking-tight truncate" title={company}>
                 {company}
               </h3>
             </div>
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <span className="font-medium text-ink/80">{name}</span>
+              <span className="font-medium text-ink/80 truncate max-w-[120px]">{name}</span>
               <span>•</span>
-              <span className="inline-flex items-center gap-1">
+              <span className="inline-flex items-center gap-1 shrink-0">
                 <Globe2 className="size-3 shrink-0" />
                 <span>{country}</span>
               </span>
             </div>
           </div>
 
-          <div className="text-right shrink-0">
+          <div className="sm:text-right shrink-0">
             <Badge
               variant="outline"
               className="rounded-full border-brand/20 bg-tint px-2.5 py-1 text-xs font-semibold text-brand"

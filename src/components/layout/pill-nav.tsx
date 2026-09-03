@@ -75,6 +75,7 @@ export function PillNav({ user, unreadCount = 0 }: PillNavProps) {
               <Link
                 key={item.href}
                 href={item.href}
+                prefetch={false}
                 className={cn(
                   "relative flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
                   isActive
@@ -181,7 +182,7 @@ export function PillNav({ user, unreadCount = 0 }: PillNavProps) {
                   size="sm"
                   className="hidden sm:inline-flex h-8 rounded-full px-3 text-xs font-medium text-muted-foreground hover:bg-canvas hover:text-ink focus-visible:ring-2 focus-visible:ring-brand"
                 >
-                  <Link href={secondaryCta.href}>{secondaryCta.label}</Link>
+                  <Link href={secondaryCta.href} prefetch={false}>{secondaryCta.label}</Link>
                 </Button>
               )}
               <Button
@@ -189,7 +190,7 @@ export function PillNav({ user, unreadCount = 0 }: PillNavProps) {
                 size="sm"
                 className="h-8 rounded-full bg-brand px-3.5 text-xs font-medium text-surface hover:bg-brand/90 shadow-xs focus-visible:ring-2 focus-visible:ring-brand"
               >
-                <Link href={cta.href}>{cta.label}</Link>
+                <Link href={cta.href} prefetch={false}>{cta.label}</Link>
               </Button>
             </div>
           )}
@@ -217,6 +218,7 @@ export function PillNav({ user, unreadCount = 0 }: PillNavProps) {
                     <Link
                       key={item.href}
                       href={item.href}
+                      prefetch={false}
                       onClick={() => setMobileOpen(false)}
                       className={cn(
                         "flex items-center justify-between rounded-xl px-4 py-2.5 text-sm font-medium transition-colors",
@@ -240,7 +242,7 @@ export function PillNav({ user, unreadCount = 0 }: PillNavProps) {
                       className="w-full h-10 rounded-xl bg-brand text-sm font-medium text-surface hover:bg-brand/90"
                       onClick={() => setMobileOpen(false)}
                     >
-                      <Link href={cta.href}>{cta.label}</Link>
+                      <Link href={cta.href} prefetch={false}>{cta.label}</Link>
                     </Button>
                   </div>
 
