@@ -64,7 +64,9 @@ export function BuyerCard({
             <div className="flex items-center gap-1.5">
               <Building2 className="size-4 text-brand shrink-0" />
               <h3 className="text-base font-semibold text-ink leading-tight tracking-tight truncate" title={company}>
-                {company}
+                <Link href={`/buyers/${id}`} className="hover:text-brand hover:underline">
+                  {company}
+                </Link>
               </h3>
             </div>
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
