@@ -175,6 +175,14 @@ export default async function AssetsPage({ searchParams }: Props) {
 
   const availableCountries = countries.map((c) => c.country);
 
+  const userFavorites = session
+    ? await prisma.favorite.findMany({
+        where: { userId: session.userId },
+        select: { assetId: true },
+      })
+    : [];
+  const favoriteSet = new Set(userFavorites.map((f) => f.assetId));
+
   const assets: AssetCardData[] = rawAssets.map((a) => ({
     id: a.id,
     title: a.title,
@@ -191,6 +199,7 @@ export default async function AssetsPage({ searchParams }: Props) {
     validated: a.validated,
     views: a.views,
     regulator: a.regulator,
+    isFavorite: favoriteSet.has(a.id),
   }));
 
   const hasActiveFilters = Boolean(
