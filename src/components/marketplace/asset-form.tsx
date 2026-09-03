@@ -175,6 +175,7 @@ export function AssetForm({
   };
 
   const handleSubmit = (targetStatus: "DRAFT" | "PUBLISHED") => {
+    if (isPending) return;
     setErrors({});
 
     const formData = new FormData();
