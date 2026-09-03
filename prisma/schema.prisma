@@ -7,3 +7,243 @@ datasource db {
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
+
+enum UserRole {
+  BUYER
+  SELLER
+  MANAGER
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  REMOVED
+}
+
+enum AssetStatus {
+  DRAFT
+  PUBLISHED
+  SUSPENDED
+  REMOVED
+}
+
+enum PriceMode {
+  FIXED
+  ON_LOI
+  NDA
+}
+
+enum LicenseType {
+  BANKING
+  E_MONEY
+  PAYMENT
+  CRYPTO
+  BROKERAGE
+  INSURANCE
+  OTHER
+}
+
+enum BusinessType {
+  BANK
+  FINTECH
+  PAYMENT_INSTITUTION
+  CRYPTO_BUSINESS
+  BROKERAGE
+  INSURANCE_COMPANY
+  OTHER
+}
+
+enum BusinessStatus {
+  OPERATING
+  PRE_LAUNCH
+  DORMANT
+  DISTRESSED
+}
+
+enum InvestmentHorizon {
+  SHORT_TERM
+  MEDIUM_TERM
+  LONG_TERM
+  FLEXIBLE
+}
+
+enum ModerationTarget {
+  USER
+  ASSET
+}
+
+enum ModerationAction {
+  SUSPEND
+  REMOVE
+  RESTORE
+  VALIDATE
+  REJECT
+}
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  passwordHash String
+  role         UserRole
+  /// Status changes are soft moderation actions so marketplace history remains auditable.
+  status       UserStatus @default(ACTIVE)
+  name         String
+  locale       String     @default("en") @db.VarChar(5)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  sellerProfile       SellerProfile?
+  buyerProfile        BuyerProfile?
+  assets              Asset[]         @relation("SellerAssets")
+  buyerConversations  Conversation[]  @relation("BuyerConversations")
+  sellerConversations Conversation[]  @relation("SellerConversations")
+  messages            Message[]
+  favorites           Favorite[]
+  moderationActions   ModerationLog[] @relation("ModerationActor")
+
+  @@index([role, status])
+  @@index([createdAt])
+}
+
+model SellerProfile {
+  userId    String   @id
+  company   String
+  country   String
+  website   String?
+  bio       String?
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@index([country])
+  @@index([verified])
+}
+
+model BuyerProfile {
+  userId              String            @id
+  company             String
+  country             String
+  bio                 String?
+  thesis              String?
+  ticketMin           Decimal?          @db.Decimal(18, 2)
+  ticketMax           Decimal?          @db.Decimal(18, 2)
+  currency            String            @default("USD") @db.VarChar(3)
+  /// Native Postgres enum arrays keep matching inputs structured and directly queryable.
+  targetCountries     String[]
+  targetLicenseTypes  LicenseType[]
+  targetBusinessTypes BusinessType[]
+  horizon             InvestmentHorizon @default(FLEXIBLE)
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@index([country])
+  @@index([ticketMin, ticketMax])
+  @@index([targetCountries], type: Gin)
+  @@index([targetLicenseTypes], type: Gin)
+  @@index([targetBusinessTypes], type: Gin)
+}
+
+model Asset {
+  id             String         @id @default(cuid())
+  sellerId       String
+  title          String
+  summary        String
+  description    String
+  country        String
+  licenseType    LicenseType
+  businessType   BusinessType
+  businessStatus BusinessStatus
+  /// M&A listings can disclose a fixed price, defer it until an LOI, or keep it behind an NDA.
+  askingPrice    Decimal?       @db.Decimal(18, 2)
+  priceMode      PriceMode      @default(FIXED)
+  currency       String         @default("USD") @db.VarChar(3)
+  yearOfIssue    Int?
+  employees      Int?
+  regulator      String?
+  features       String[]
+  /// Assets use soft states so moderation never destroys conversation or audit history.
+  status         AssetStatus    @default(DRAFT)
+  validated      Boolean        @default(false)
+  views          Int            @default(0)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  seller        User           @relation("SellerAssets", fields: [sellerId], references: [id], onDelete: Restrict)
+  conversations Conversation[]
+  favorites     Favorite[]
+
+  @@index([status, createdAt])
+  @@index([sellerId, status])
+  @@index([status, country])
+  @@index([status, licenseType])
+  @@index([status, businessType])
+  @@index([status, businessStatus])
+  @@index([status, askingPrice])
+  @@index([status, views])
+}
+
+model Conversation {
+  id        String   @id @default(cuid())
+  /// A nullable asset supports direct profile outreach while preserving one thread per asset and counterparty pair.
+  assetId   String?
+  buyerId   String
+  sellerId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  asset    Asset?    @relation(fields: [assetId], references: [id], onDelete: SetNull)
+  buyer    User      @relation("BuyerConversations", fields: [buyerId], references: [id], onDelete: Restrict)
+  seller   User      @relation("SellerConversations", fields: [sellerId], references: [id], onDelete: Restrict)
+  messages Message[]
+
+  @@unique([assetId, buyerId, sellerId])
+  @@index([buyerId, updatedAt])
+  @@index([sellerId, updatedAt])
+}
+
+model Message {
+  id             String    @id @default(cuid())
+  conversationId String
+  senderId       String
+  body           String
+  createdAt      DateTime  @default(now())
+  readAt         DateTime?
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender       User         @relation(fields: [senderId], references: [id], onDelete: Restrict)
+
+  @@index([conversationId, createdAt])
+  @@index([senderId])
+}
+
+model Favorite {
+  userId    String
+  assetId   String
+  createdAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  asset Asset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@id([userId, assetId])
+  @@index([assetId])
+}
+
+model ModerationLog {
+  id         String           @id @default(cuid())
+  actorId    String
+  /// Targets are intentionally polymorphic because the same audit stream covers users and assets.
+  targetType ModerationTarget
+  targetId   String
+  action     ModerationAction
+  reason     String
+  createdAt  DateTime         @default(now())
+
+  actor User @relation("ModerationActor", fields: [actorId], references: [id], onDelete: Restrict)
+
+  @@index([targetType, targetId, createdAt])
+  @@index([actorId, createdAt])
+}
