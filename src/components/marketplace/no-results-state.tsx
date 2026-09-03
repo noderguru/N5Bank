@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FilterX, RotateCcw } from "lucide-react";
 import { Button } from "../ui/button";
 
@@ -6,6 +7,7 @@ export type NoResultsStateProps = {
   description?: string;
   query?: string;
   onReset?: () => void;
+  resetHref?: string;
   resetLabel?: string;
 };
 
@@ -14,6 +16,7 @@ export function NoResultsState({
   description = "No marketplace listings match the selected criteria. Try adjusting your ticket range, licence filters, or resetting all parameters.",
   query,
   onReset,
+  resetHref,
   resetLabel = "Clear active filters",
 }: NoResultsStateProps) {
   return (
@@ -33,7 +36,20 @@ export function NoResultsState({
         {description}
       </p>
 
-      {onReset && (
+      {resetHref ? (
+        <div className="mt-6">
+          <Button
+            asChild
+            variant="outline"
+            className="h-9 gap-1.5 rounded-xl border-hairline font-medium text-xs hover:border-brand hover:text-brand"
+          >
+            <Link href={resetHref}>
+              <RotateCcw className="size-3.5" />
+              {resetLabel}
+            </Link>
+          </Button>
+        </div>
+      ) : onReset ? (
         <div className="mt-6">
           <Button
             onClick={onReset}
@@ -44,7 +60,8 @@ export function NoResultsState({
             {resetLabel}
           </Button>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
+
