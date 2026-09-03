@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db/prisma";
 import { AppShell } from "@/components/layout/app-shell";
 import { AssetForm } from "@/components/marketplace/asset-form";
 import { AlertCircle } from "lucide-react";
+import { isOpenRouterConfigured } from "@/lib/ai/openrouter";
 
 export const metadata = {
   title: "Edit Listing | N5Deal Marketplace",
@@ -64,6 +65,7 @@ export default async function EditAssetPage({ params }: Props) {
         ) : (
           <AssetForm
             isEdit
+            canUseAi={isOpenRouterConfigured()}
             initialData={{
               id: asset.id,
               title: asset.title,

@@ -3,13 +3,15 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Check, Info, Loader2 } from "lucide-react";
+import { ArrowLeft, Check, Info, Loader2, Sparkles, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { createAssetAction, updateAssetAction } from "@/app/actions/assets";
+import { generateAssetSummaryAction } from "@/app/actions/ai";
+import { auditAssetCompleteness } from "@/lib/ai/summary";
 
 export type AssetFormData = {
   id?: string;
@@ -33,6 +35,7 @@ export type AssetFormData = {
 type AssetFormProps = {
   initialData?: Partial<AssetFormData>;
   isEdit?: boolean;
+  canUseAi?: boolean;
 };
 
 const LICENSE_TYPES = [
@@ -80,9 +83,15 @@ const PRICE_MODES = [
   },
 ] as const;
 
-export function AssetForm({ initialData, isEdit = false }: AssetFormProps) {
+export function AssetForm({
+  initialData,
+  isEdit = false,
+  canUseAi = false,
+}: AssetFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
+  const [proposedSummary, setProposedSummary] = useState<string | null>(null);
 
   const [title, setTitle] = useState(initialData?.title ?? "");
   const [summary, setSummary] = useState(initialData?.summary ?? "");
@@ -122,6 +131,48 @@ export function AssetForm({ initialData, isEdit = false }: AssetFormProps) {
   );
 
   const [errors, setErrors] = useState<Record<string, string[]>>({});
+
+  const completenessWarnings = auditAssetCompleteness({
+    regulator,
+    yearOfIssue,
+    description,
+    features,
+  });
+
+  const handleGenerateSummary = async () => {
+    if (!title.trim() && !country.trim()) {
+      toast.error("Please fill in at least the Title or Country before generating a summary.");
+      return;
+    }
+
+    setIsGeneratingSummary(true);
+    try {
+      const res = await generateAssetSummaryAction({
+        title,
+        country,
+        licenseType,
+        businessType,
+        description,
+        features,
+        regulator,
+        yearOfIssue,
+      });
+
+      if (res.summary) {
+        setProposedSummary(res.summary);
+        toast.info(
+          res.engine === "ai"
+            ? "AI summary draft generated. Review the proposal below."
+            : "Summary template generated. Review the proposal below."
+        );
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to generate summary");
+    } finally {
+      setIsGeneratingSummary(false);
+    }
+  };
 
   const handleSubmit = (targetStatus: "DRAFT" | "PUBLISHED") => {
     setErrors({});
@@ -468,21 +519,78 @@ export function AssetForm({ initialData, isEdit = false }: AssetFormProps) {
 
         <div className="space-y-4">
           <div>
-            <div className="flex justify-between items-center">
-              <Label htmlFor="summary" className="text-sm font-medium text-neutral-800">
-                Short Summary <span className="text-rose-500">*</span>
-              </Label>
+            <div className="flex justify-between items-center mb-1.5">
+              <div className="flex items-center gap-2">
+                <Label htmlFor="summary" className="text-sm font-medium text-neutral-800">
+                  Short Summary <span className="text-rose-500">*</span>
+                </Label>
+                {canUseAi && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleGenerateSummary}
+                    disabled={isPending || isGeneratingSummary || (!title.trim() && !country.trim())}
+                    className="h-7 px-2.5 text-xs gap-1.5 rounded-lg border-purple-200 bg-purple-50 text-purple-700 hover:bg-purple-100 hover:text-purple-900"
+                  >
+                    <Sparkles className="size-3" />
+                    <span>{isGeneratingSummary ? "Drafting with AI..." : "Draft Summary with AI"}</span>
+                  </Button>
+                )}
+              </div>
               <span className="text-xs text-neutral-400">
                 {summary.length}/300
               </span>
             </div>
+
+            {proposedSummary && (
+              <div
+                data-testid="ai-summary-proposal"
+                className="mb-2 rounded-xl border border-purple-200 bg-purple-50/70 p-3 space-y-2 text-xs"
+              >
+                <div className="flex items-center justify-between font-semibold text-purple-900">
+                  <div className="flex items-center gap-1.5">
+                    <Sparkles className="size-3.5 text-purple-600" />
+                    <span>Suggested AI Summary Proposal</span>
+                  </div>
+                  <span className="text-[11px] font-normal text-purple-700">Editable before saving</span>
+                </div>
+                <p className="text-neutral-800 italic bg-white/90 p-2.5 rounded-lg border border-purple-100">
+                  &ldquo;{proposedSummary}&rdquo;
+                </p>
+                <div className="flex items-center gap-2 pt-1">
+                  <Button
+                    type="button"
+                    size="sm"
+                    onClick={() => {
+                      setSummary(proposedSummary);
+                      setProposedSummary(null);
+                      toast.success("Draft inserted into summary. You can further edit it.");
+                    }}
+                    className="h-7 text-xs bg-purple-600 hover:bg-purple-700 text-white rounded-lg"
+                  >
+                    Use Draft Proposal
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setProposedSummary(null)}
+                    className="h-7 text-xs text-neutral-600 hover:text-neutral-900"
+                  >
+                    Dismiss
+                  </Button>
+                </div>
+              </div>
+            )}
+
             <Input
               id="summary"
               value={summary}
               onChange={(e) => setSummary(e.target.value)}
               placeholder="e.g. Fully operational European EMI with SEPA Instant integration and 12 staff members."
               maxLength={300}
-              className="mt-1.5 h-11 rounded-xl"
+              className="h-11 rounded-xl"
               disabled={isPending}
               aria-invalid={Boolean(errors.summary)}
               aria-describedby={errors.summary ? "summary-error" : undefined}
@@ -609,6 +717,41 @@ export function AssetForm({ initialData, isEdit = false }: AssetFormProps) {
             )}
           </div>
         </div>
+      </div>
+
+      {/* Smart Listing Completeness Warnings */}
+      <div
+        data-testid="smart-listing-advisory"
+        className="rounded-[24px] border border-hairline bg-surface p-5 sm:p-6 space-y-3"
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Info className="size-4 text-brand" />
+            <h3 className="text-sm font-semibold text-ink">Smart Listing Advisory</h3>
+          </div>
+          <span className="text-xs text-muted-foreground">Institutional diligence check</span>
+        </div>
+
+        {completenessWarnings.length > 0 ? (
+          <ul className="space-y-2 text-xs">
+            {completenessWarnings.map((w, idx) => (
+              <li
+                key={idx}
+                className="flex items-start gap-2 rounded-xl bg-amber-500/10 p-2.5 text-amber-900 border border-amber-500/20"
+              >
+                <AlertCircle className="size-3.5 text-amber-600 shrink-0 mt-0.5" />
+                <span>{w.message}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="flex items-center gap-2 text-xs font-medium text-emerald-700 bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-2.5">
+            <Check className="size-3.5 text-emerald-600 shrink-0" />
+            <span>
+              All institutional completeness criteria satisfied! Your listing meets Tier 1 due diligence standards.
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Sticky Bottom Actions Bar */}

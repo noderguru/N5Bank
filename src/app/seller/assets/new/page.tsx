@@ -1,6 +1,7 @@
 import { requireRole } from "@/lib/auth/guard";
 import { AppShell } from "@/components/layout/app-shell";
 import { AssetForm } from "@/components/marketplace/asset-form";
+import { isOpenRouterConfigured } from "@/lib/ai/openrouter";
 
 export const metadata = {
   title: "Publish Listing | N5Deal Marketplace",
@@ -9,6 +10,7 @@ export const metadata = {
 
 export default async function NewAssetPage() {
   const session = await requireRole("SELLER");
+  const canUseAi = isOpenRouterConfigured();
 
   return (
     <AppShell
@@ -31,7 +33,7 @@ export default async function NewAssetPage() {
           </p>
         </div>
 
-        <AssetForm />
+        <AssetForm canUseAi={canUseAi} />
       </div>
     </AppShell>
   );
