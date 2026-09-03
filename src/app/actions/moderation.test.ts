@@ -9,6 +9,7 @@ const prismaMock = vi.hoisted(() => ({
   user: {
     findUnique: vi.fn(),
     update: vi.fn(),
+    count: vi.fn(),
   },
   asset: {
     findUnique: vi.fn(),
@@ -56,6 +57,28 @@ describe("moderation server actions", () => {
 
       expect(result.success).toBe(false);
       expect(result.error).toContain("Managers cannot perform moderation actions on their own account");
+      expect(prismaMock.$transaction).not.toHaveBeenCalled();
+    });
+
+    it("prevents suspending or removing the last active platform manager (N5B-95)", async () => {
+      prismaMock.user.findUnique.mockResolvedValue({
+        id: "usr_manager_2",
+        name: "Second Manager",
+        role: "MANAGER",
+        status: "ACTIVE",
+      });
+
+      // Only 1 active manager left in the platform
+      prismaMock.user.count.mockResolvedValue(1);
+
+      const result = await moderateUserAction({
+        userId: "usr_manager_2",
+        action: "SUSPEND",
+        reason: "Testing suspension of last manager",
+      });
+
+      expect(result.success).toBe(false);
+      expect(result.error).toContain("Cannot suspend or remove the last active platform manager");
       expect(prismaMock.$transaction).not.toHaveBeenCalled();
     });
 

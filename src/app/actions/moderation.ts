@@ -48,6 +48,23 @@ export async function moderateUserAction(
     return { success: false, error: "Target participant not found." };
   }
 
+  // Criterion: "Нельзя саспендить последнего активного менеджера"
+  if (target.role === "MANAGER" && (action === "SUSPEND" || action === "REMOVE")) {
+    const activeManagersCount = await prisma.user.count({
+      where: {
+        role: "MANAGER",
+        status: UserStatus.ACTIVE,
+      },
+    });
+
+    if (activeManagersCount <= 1) {
+      return {
+        success: false,
+        error: "Cannot suspend or remove the last active platform manager.",
+      };
+    }
+  }
+
   let nextStatus: UserStatus;
   let moderationAction: ModerationAction;
 
