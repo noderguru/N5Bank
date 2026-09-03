@@ -58,7 +58,7 @@ export function BuyerCard({
     <article
       data-testid="buyer-card"
       className={cn(
-        "group relative flex flex-col justify-between rounded-2xl border border-hairline bg-surface p-5 transition-[transform,box-shadow,border-color] duration-200 ease-out sm:hover:-translate-y-0.5 sm:hover:shadow-md sm:hover:border-brand/60 animate-in fade-in-50 duration-200",
+        "group relative flex flex-col justify-between bg-surface p-6 transition-colors duration-200 ease-out hover:bg-tint-subtle",
         className
       )}
     >
@@ -67,9 +67,9 @@ export function BuyerCard({
         <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
           <div className="space-y-1 min-w-0">
             <div className="flex items-center gap-1.5">
-              <Building2 className="size-4 text-brand shrink-0" />
+              <Building2 className="size-4 shrink-0 text-ink" />
               <h3 className="text-base font-semibold text-ink leading-tight tracking-tight truncate" title={company}>
-                <Link href={`/buyers/${id}`} className="hover:text-brand hover:underline">
+                <Link href={`/buyers/${id}`} className="hover:underline">
                   {company}
                 </Link>
               </h3>
@@ -87,7 +87,7 @@ export function BuyerCard({
           <div className="sm:text-right shrink-0">
             <Badge
               variant="outline"
-              className="rounded-full border-brand/20 bg-tint px-2.5 py-1 text-xs font-semibold text-brand"
+              className="rounded-none border-hairline bg-transparent px-2 py-0.5 eyebrow text-ink"
             >
               {ticketDisplay}
             </Badge>
@@ -95,7 +95,7 @@ export function BuyerCard({
         </div>
 
         {/* Mandate Thesis */}
-        <div className="space-y-1 rounded-xl border border-hairline bg-canvas/30 p-3">
+        <div className="space-y-1 border-y border-hairline py-3">
           <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
             {t("investmentThesis")}
           </span>
@@ -172,7 +172,7 @@ export function BuyerCard({
           <Button
             type="button"
             onClick={() => onSendMemo(id)}
-            className="h-8 gap-1.5 rounded-xl bg-brand text-xs font-medium text-surface hover:bg-brand/90 shadow-xs"
+            className="h-9 gap-1.5 rounded-none border border-ink bg-ink caps text-canvas transition-colors hover:bg-transparent hover:text-ink"
           >
             <Send className="size-3.5" />
             <span>{t("sendDealMemo")}</span>
@@ -180,7 +180,7 @@ export function BuyerCard({
         ) : (
           <Button
             asChild
-            className="h-8 gap-1.5 rounded-xl bg-brand text-xs font-medium text-surface hover:bg-brand/90 shadow-xs"
+            className="h-9 gap-1.5 rounded-none border border-ink bg-ink caps text-canvas transition-colors hover:bg-transparent hover:text-ink"
           >
             <Link href={`/inbox?recipient=${id}`}>
               <Send className="size-3.5" />

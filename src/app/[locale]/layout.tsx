@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import { Inter } from "next/font/google";
+import { Geologica, Inter } from "next/font/google";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
@@ -14,6 +14,17 @@ import "../globals.css";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin", "cyrillic"],
+  display: "swap",
+});
+
+// Display tier. D-DIN has no Cyrillic coverage, and neither does any condensed
+// DIN substitute on Google Fonts — Geologica is the closest industrial grotesk
+// that ships uk/ru glyphs, which the three locales make non-negotiable.
+const geologica = Geologica({
+  variable: "--font-display",
+  subsets: ["latin", "cyrillic"],
+  weight: ["500", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -72,7 +83,7 @@ export default async function LocaleLayout({
           }}
         />
       </head>
-      <body className={`${inter.variable} antialiased`}>
+      <body className={`${inter.variable} ${geologica.variable} antialiased`}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <TooltipProvider>{children}</TooltipProvider>
           <Toaster />

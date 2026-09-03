@@ -66,6 +66,29 @@
     "roleSeller": "Seller",
     "roleManager": "Platform Manager"
   },
+  "home": {
+    "eyebrow": "Curated M&A for regulated financial assets",
+    "headlineLead": "Institutional marketplace for",
+    "rotatingWords": [
+      "banking licences",
+      "payment institutions",
+      "fintech charters",
+      "crypto & VASP entities",
+      "brokerage licences"
+    ],
+    "lead": "Direct bilateral acquisitions, verified balance sheets and LOI escrow coordination. Connecting qualified institutional buyers with licensed entities worldwide.",
+    "ctaPrimary": "Explore the marketplace",
+    "ctaSecondary": "View buyer directory",
+    "proofValidated": "100% validated sellers",
+    "proofNda": "Bilateral NDA workflows",
+    "proofConfidential": "Zero public balance leaks",
+    "featuredEyebrow": "Featured assets",
+    "featuredTitle": "Available financial institutions",
+    "featuredLink": "All listings",
+    "demandEyebrow": "Verified demand",
+    "demandTitle": "Active institutional mandates",
+    "demandLink": "All mandates"
+  },
   "auth": {
     "welcomeBack": "Welcome back",
     "loginDescription": "Enter your credentials or use a one-click demo profile below.",

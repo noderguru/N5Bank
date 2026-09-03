@@ -37,9 +37,11 @@ export type PillNavProps = {
     name?: string | null;
   } | null;
   unreadCount?: number;
+  /** Lays the bar over a dark hero band instead of sitting on the canvas. */
+  overlay?: boolean;
 };
 
-export function PillNav({ user, unreadCount = 0 }: PillNavProps) {
+export function PillNav({ user, unreadCount = 0, overlay = false }: PillNavProps) {
   const pathname = usePathname() || "";
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -54,23 +56,34 @@ export function PillNav({ user, unreadCount = 0 }: PillNavProps) {
   const { items, cta, secondaryCta } = getRoleNavConfig(user?.role, unreadCount, tFunc);
 
   return (
-    <header className="sticky top-4 z-40 mx-auto w-full max-w-6xl px-3 sm:px-6">
+    <header
+      className={cn(
+        "z-40 w-full",
+        overlay
+          // `dark` flips the tokens for the subtree, so the bar reads white
+          // over the night band without hardcoding a single hex.
+          ? "dark absolute inset-x-0 top-0 bg-transparent"
+          : "sticky top-0 border-b border-hairline bg-canvas/85 backdrop-blur-md"
+      )}
+    >
       <nav
         aria-label="Main Navigation"
-        className="flex h-14 items-center justify-between rounded-full border border-hairline/80 bg-surface/90 px-4 py-2 shadow-floating backdrop-blur-md transition-all sm:px-5"
+        className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:px-6"
       >
         {/* Brand Logo */}
         <div className="flex items-center gap-2">
           <Link
             href="/"
-            className="flex items-center gap-2 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+            className="flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2"
           >
-            <div className="flex size-7 items-center justify-center rounded-lg bg-brand text-surface font-black text-sm tracking-tighter">
+            <div className="flex size-7 items-center justify-center bg-ink text-canvas font-bold text-[13px] tracking-tight">
               N5
             </div>
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-base font-bold tracking-tight text-ink">Deal</span>
-              <span className="hidden sm:inline-block text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+            <div className="flex items-baseline gap-2">
+              <span className="font-heading text-base font-bold uppercase tracking-[0.06em] text-ink">
+                Deal
+              </span>
+              <span className="hidden sm:inline-block eyebrow text-muted-foreground">
                 Marketplace
               </span>
             </div>
@@ -88,10 +101,9 @@ export function PillNav({ user, unreadCount = 0 }: PillNavProps) {
                 href={item.href}
                 prefetch={false}
                 className={cn(
-                  "relative flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
-                  isActive
-                    ? "bg-canvas text-brand font-semibold shadow-2xs"
-                    : "text-muted-foreground hover:bg-canvas/60 hover:text-ink"
+                  "relative flex items-center gap-1.5 px-3 py-2 eyebrow transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink",
+                  "after:absolute after:inset-x-3 after:bottom-1 after:h-px after:origin-left after:scale-x-0 after:bg-ink after:transition-transform after:duration-200 hover:after:scale-x-100",
+                  isActive ? "text-ink after:scale-x-100" : "text-muted-foreground hover:text-ink"
                 )}
               >
                 <span>{item.label}</span>
@@ -122,10 +134,10 @@ export function PillNav({ user, unreadCount = 0 }: PillNavProps) {
                 asChild
                 size="sm"
                 className={cn(
-                  "hidden sm:inline-flex h-8 rounded-full px-3.5 text-xs font-medium shadow-xs focus-visible:ring-2 focus-visible:ring-brand",
+                  "hidden sm:inline-flex h-9 rounded-full border px-4 caps transition-colors focus-visible:ring-2 focus-visible:ring-ink",
                   cta.variant === "outline"
-                    ? "border-hairline bg-surface text-ink hover:bg-canvas"
-                    : "bg-brand text-surface hover:bg-brand/90"
+                    ? "border-ink bg-transparent text-ink hover:bg-ink hover:text-canvas"
+                    : "border-ink bg-ink text-canvas hover:bg-transparent hover:text-ink"
                 )}
               >
                 <Link href={cta.href}>{cta.label}</Link>
@@ -192,7 +204,7 @@ export function PillNav({ user, unreadCount = 0 }: PillNavProps) {
                   asChild
                   variant="ghost"
                   size="sm"
-                  className="hidden sm:inline-flex h-8 rounded-full px-3 text-xs font-medium text-muted-foreground hover:bg-canvas hover:text-ink focus-visible:ring-2 focus-visible:ring-brand"
+                  className="hidden sm:inline-flex h-9 rounded-full px-3 caps text-muted-foreground hover:text-ink focus-visible:ring-2 focus-visible:ring-ink"
                 >
                   <Link href={secondaryCta.href} prefetch={false}>{secondaryCta.label}</Link>
                 </Button>
@@ -200,7 +212,7 @@ export function PillNav({ user, unreadCount = 0 }: PillNavProps) {
               <Button
                 asChild
                 size="sm"
-                className="h-8 rounded-full bg-brand px-3.5 text-xs font-medium text-surface hover:bg-brand/90 shadow-xs focus-visible:ring-2 focus-visible:ring-brand"
+                className="h-9 rounded-full border border-ink bg-ink px-4 caps text-canvas transition-colors hover:bg-transparent hover:text-ink focus-visible:ring-2 focus-visible:ring-ink"
               >
                 <Link href={cta.href} prefetch={false}>{cta.label}</Link>
               </Button>
@@ -214,7 +226,7 @@ export function PillNav({ user, unreadCount = 0 }: PillNavProps) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="size-8 rounded-full p-0 text-ink hover:bg-canvas focus-visible:ring-2 focus-visible:ring-brand"
+                  className="size-9 rounded-none p-0 text-ink hover:bg-tint focus-visible:ring-2 focus-visible:ring-ink"
                   aria-label="Open mobile navigation"
                 >
                   <Menu className="size-5" />

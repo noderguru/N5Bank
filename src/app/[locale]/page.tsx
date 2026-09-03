@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, Shield, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import { readSession } from "@/lib/auth/session";
 import { AppShell } from "@/components/layout/app-shell";
+import { RotatingWords } from "@/components/home/rotating-words";
 import { AssetCard } from "@/components/marketplace/asset-card";
 import { BuyerCard } from "@/components/marketplace/buyer-card";
-import { Button } from "@/components/ui/button";
 
 const FEATURED_ASSETS = [
   {
@@ -87,93 +88,104 @@ const FEATURED_BUYERS = [
 
 export default async function Home() {
   const session = await readSession();
+  const t = await getTranslations("home");
+  const rotatingWords = t.raw("rotatingWords") as string[];
 
   return (
-    <AppShell user={session ? { id: session.userId, email: session.userId, role: session.role } : null}>
-      {/* Hero Section */}
-      <section className="py-12 md:py-20 text-center space-y-6 max-w-4xl mx-auto">
-        <div className="inline-flex items-center gap-2 rounded-full border border-hairline bg-surface px-3.5 py-1 text-xs font-semibold text-muted-foreground shadow-2xs">
-          <Sparkles className="size-3.5 text-brand" />
-          <span>Curated M&amp;A for Regulated Financial Assets</span>
-        </div>
+    <AppShell
+      fullBleed
+      user={session ? { id: session.userId, email: session.userId, role: session.role } : null}
+    >
+      {/*
+        Night band. Forced dark in both themes — this is the system's photo
+        band, and its type must read white whatever the visitor's theme is.
+        The nested `dark` class flips the tokens for the whole subtree, so
+        descendants keep using var(--ink) instead of hardcoding hexes.
+      */}
+      <section className="dark relative isolate overflow-hidden bg-canvas">
+        <div aria-hidden="true" className="grid-field absolute inset-0" />
 
-        <h1 className="text-3xl font-bold tracking-tight text-ink sm:text-5xl lg:text-6xl leading-[1.08]">
-          Institutional marketplace for banking, payment &amp; fintech licences.
-        </h1>
+        <div
+          data-hero
+          className="relative mx-auto flex min-h-[86vh] max-w-6xl flex-col justify-center gap-8 px-4 py-24 sm:px-6"
+        >
+          <span className="eyebrow text-muted-ink">{t("eyebrow")}</span>
 
-        <p className="text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          Direct bilateral acquisitions, verified balance sheets, and LOI escrow coordination. Connecting qualified institutional buyers with licensed entities worldwide.
-        </p>
+          <h1 className="display-xxl max-w-5xl text-ink">
+            {t("headlineLead")}{" "}
+            <RotatingWords words={rotatingWords} />
+          </h1>
 
-        <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-          <Button asChild size="lg" className="h-11 rounded-full bg-brand px-6 text-sm font-semibold text-surface hover:bg-brand/90 shadow-xs">
-            <Link href="/assets" prefetch={false}>
-              <span>Explore Marketplace</span>
-              <ArrowRight className="ml-2 size-4" />
+          <p className="lead max-w-xl text-muted-ink">{t("lead")}</p>
+
+          <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+            {/* One ghost pill per band — the only marketing CTA in the system. */}
+            <Link href="/assets" prefetch={false} className="cta-ghost caps text-ink">
+              <span>{t("ctaPrimary")}</span>
+              <ArrowRight className="size-4" />
             </Link>
-          </Button>
-          <Button asChild size="lg" variant="outline" className="h-11 rounded-full border-hairline bg-surface px-6 text-sm font-semibold text-ink hover:bg-canvas">
-            <Link href="/buyers" prefetch={false}>View Buyer Directory</Link>
-          </Button>
-        </div>
+            <Link
+              href="/buyers"
+              prefetch={false}
+              className="caps text-muted-ink underline underline-offset-8 transition-colors hover:text-ink"
+            >
+              {t("ctaSecondary")}
+            </Link>
+          </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-6 pt-6 text-xs text-muted-foreground">
-          <div className="flex items-center gap-1.5">
-            <CheckCircle2 className="size-4 text-success" />
-            <span>100% Validated Sellers</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <Shield className="size-4 text-brand" />
-            <span>Bilateral NDA Workflows</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <CheckCircle2 className="size-4 text-success" />
-            <span>Zero Public Balance Leaks</span>
-          </div>
+          <ul className="flex flex-wrap gap-x-10 gap-y-3 border-t border-hairline pt-6 eyebrow text-muted-ink">
+            <li>{t("proofValidated")}</li>
+            <li>{t("proofNda")}</li>
+            <li>{t("proofConfidential")}</li>
+          </ul>
         </div>
       </section>
 
-      {/* Featured Opportunities Section */}
-      <section className="py-10 space-y-6">
-        <div className="flex items-end justify-between border-b border-hairline pb-4">
-          <div>
-            <span className="text-xs font-semibold uppercase tracking-wider text-brand">Featured Assets</span>
-            <h2 className="text-2xl font-bold tracking-tight text-ink mt-0.5">
-              Available Financial Institutions
-            </h2>
+      <div className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
+        <section data-reveal className="py-20">
+          <div className="mb-10 flex flex-wrap items-end justify-between gap-4 border-b border-hairline pb-5">
+            <div className="space-y-2">
+              <span className="eyebrow text-muted-ink">{t("featuredEyebrow")}</span>
+              <h2 className="display-lg text-ink">{t("featuredTitle")}</h2>
+            </div>
+            <Link
+              href="/assets"
+              prefetch={false}
+              className="caps text-ink underline underline-offset-8 transition-opacity hover:opacity-60"
+            >
+              {t("featuredLink")}
+            </Link>
           </div>
-          <Button asChild variant="ghost" className="text-xs font-semibold text-brand hover:text-brand-hover">
-            <Link href="/assets" prefetch={false}>View all listings &rarr;</Link>
-          </Button>
-        </div>
 
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {FEATURED_ASSETS.map((asset) => (
-            <AssetCard key={asset.id} asset={asset} />
-          ))}
-        </div>
-      </section>
-
-      {/* Institutional Buyers Section */}
-      <section className="py-10 space-y-6">
-        <div className="flex items-end justify-between border-b border-hairline pb-4">
-          <div>
-            <span className="text-xs font-semibold uppercase tracking-wider text-brand">Verified Demand</span>
-            <h2 className="text-2xl font-bold tracking-tight text-ink mt-0.5">
-              Active Institutional Mandates
-            </h2>
+          <div className="grid grid-cols-1 gap-px bg-hairline md:grid-cols-2 lg:grid-cols-3">
+            {FEATURED_ASSETS.map((asset) => (
+              <AssetCard key={asset.id} asset={asset} />
+            ))}
           </div>
-          <Button asChild variant="ghost" className="text-xs font-semibold text-brand hover:text-brand-hover">
-            <Link href="/buyers" prefetch={false}>View all mandates &rarr;</Link>
-          </Button>
-        </div>
+        </section>
 
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-          {FEATURED_BUYERS.map((buyer) => (
-            <BuyerCard key={buyer.id} buyer={buyer} />
-          ))}
-        </div>
-      </section>
+        <section data-reveal className="py-20">
+          <div className="mb-10 flex flex-wrap items-end justify-between gap-4 border-b border-hairline pb-5">
+            <div className="space-y-2">
+              <span className="eyebrow text-muted-ink">{t("demandEyebrow")}</span>
+              <h2 className="display-lg text-ink">{t("demandTitle")}</h2>
+            </div>
+            <Link
+              href="/buyers"
+              prefetch={false}
+              className="caps text-ink underline underline-offset-8 transition-opacity hover:opacity-60"
+            >
+              {t("demandLink")}
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 gap-px bg-hairline md:grid-cols-2">
+            {FEATURED_BUYERS.map((buyer) => (
+              <BuyerCard key={buyer.id} buyer={buyer} />
+            ))}
+          </div>
+        </section>
+      </div>
     </AppShell>
   );
 }

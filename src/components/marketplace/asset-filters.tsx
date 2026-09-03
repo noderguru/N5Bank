@@ -119,7 +119,7 @@ export function AssetFilters({
       <NaturalSearch />
 
       {/* Search and Secondary Filter Row */}
-      <div className="rounded-2xl border border-hairline bg-surface p-4 shadow-2xs space-y-3">
+      <div className="rounded-none border border-hairline bg-surface p-4 shadow-2xs space-y-3">
         <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3">
           {/* Search Input */}
           <div className="relative flex-1">
@@ -128,7 +128,7 @@ export function AssetFilters({
               value={currentQ}
               onChange={(e) => updateParam("q", e.target.value)}
               placeholder={tCommon("searchPlaceholder", "Search assets by title, country or licence...")}
-              className="pl-9 h-10 rounded-xl border-hairline bg-canvas/30 text-sm focus-visible:ring-brand"
+              className="pl-9 h-10 rounded-none border-hairline bg-canvas/30 text-sm focus-visible:ring-brand"
             />
             {currentQ && (
               <button
@@ -148,7 +148,7 @@ export function AssetFilters({
             <select
               value={currentCountry}
               onChange={(e) => updateParam("country", e.target.value)}
-              className="h-10 rounded-xl border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
+              className="h-10 rounded-none border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
               aria-label="Filter by country"
             >
               <option value="">{tCommon("all")} {tCommon("country")}</option>
@@ -163,7 +163,7 @@ export function AssetFilters({
             <select
               value={currentLicenseType}
               onChange={(e) => updateParam("licenseType", e.target.value)}
-              className="h-10 rounded-xl border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
+              className="h-10 rounded-none border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
               aria-label="Filter by license type"
             >
               <option value="">{tCommon("all")} {t("licenseType")}</option>
@@ -178,7 +178,7 @@ export function AssetFilters({
             <select
               value={currentBusinessStatus}
               onChange={(e) => updateParam("businessStatus", e.target.value)}
-              className="h-10 rounded-xl border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
+              className="h-10 rounded-none border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
               aria-label="Filter by operational status"
             >
               <option value="">{tCommon("all")} {tCommon("status")}</option>
@@ -193,7 +193,7 @@ export function AssetFilters({
             <select
               value={currentPrice}
               onChange={(e) => updateParam("price", e.target.value)}
-              className="h-10 rounded-xl border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
+              className="h-10 rounded-none border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
               aria-label="Filter by asking price"
             >
               <option value="">{tCommon("all")} {t("askingPrice")}</option>
@@ -208,7 +208,7 @@ export function AssetFilters({
             <select
               value={currentSort}
               onChange={(e) => updateParam("sort", e.target.value)}
-              className="h-10 rounded-xl border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
+              className="h-10 rounded-none border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
               aria-label="Sort listings"
             >
               {SORT_OPTIONS.map((s) => (
@@ -224,7 +224,7 @@ export function AssetFilters({
                 variant="ghost"
                 size="sm"
                 onClick={handleReset}
-                className="h-10 gap-1 rounded-xl text-xs text-muted-foreground hover:text-ink px-2.5"
+                className="h-10 gap-1 rounded-none text-xs text-muted-foreground hover:text-ink px-2.5"
                 title="Reset all filters"
               >
                 <RotateCcw className="size-3.5" />
@@ -243,7 +243,7 @@ export function AssetFilters({
             {currentCountry && (
               <span
                 data-testid="chip-country"
-                className="inline-flex items-center gap-1 rounded-full bg-brand/10 border border-brand/20 px-2.5 py-0.5 text-xs font-medium text-brand"
+                className="inline-flex items-center gap-1 rounded-none bg-brand/10 border border-brand/20 px-2.5 py-0.5 text-xs font-medium text-brand"
               >
                 <span>Country: {currentCountry}</span>
                 <button
@@ -259,7 +259,7 @@ export function AssetFilters({
             {currentLicenseType && (
               <span
                 data-testid="chip-license"
-                className="inline-flex items-center gap-1 rounded-full bg-brand/10 border border-brand/20 px-2.5 py-0.5 text-xs font-medium text-brand"
+                className="inline-flex items-center gap-1 rounded-none bg-brand/10 border border-brand/20 px-2.5 py-0.5 text-xs font-medium text-brand"
               >
                 <span>License: {formatLicenseType(currentLicenseType)}</span>
                 <button
@@ -275,7 +275,7 @@ export function AssetFilters({
             {currentBusinessType && (
               <span
                 data-testid="chip-business"
-                className="inline-flex items-center gap-1 rounded-full bg-brand/10 border border-brand/20 px-2.5 py-0.5 text-xs font-medium text-brand"
+                className="inline-flex items-center gap-1 rounded-none bg-brand/10 border border-brand/20 px-2.5 py-0.5 text-xs font-medium text-brand"
               >
                 <span>Model: {formatEnum(currentBusinessType)}</span>
                 <button
@@ -291,7 +291,7 @@ export function AssetFilters({
             {currentBusinessStatus && (
               <span
                 data-testid="chip-status"
-                className="inline-flex items-center gap-1 rounded-full bg-brand/10 border border-brand/20 px-2.5 py-0.5 text-xs font-medium text-brand"
+                className="inline-flex items-center gap-1 rounded-none bg-brand/10 border border-brand/20 px-2.5 py-0.5 text-xs font-medium text-brand"
               >
                 <span>Status: {formatEnum(currentBusinessStatus)}</span>
                 <button
@@ -307,7 +307,7 @@ export function AssetFilters({
             {currentPrice && (
               <span
                 data-testid="chip-price"
-                className="inline-flex items-center gap-1 rounded-full bg-brand/10 border border-brand/20 px-2.5 py-0.5 text-xs font-medium text-brand"
+                className="inline-flex items-center gap-1 rounded-none bg-brand/10 border border-brand/20 px-2.5 py-0.5 text-xs font-medium text-brand"
               >
                 <span>
                   Price: {PRICE_RANGES.find((p) => p.value === currentPrice)?.label || currentPrice}
@@ -325,7 +325,7 @@ export function AssetFilters({
             {currentQ && (
               <span
                 data-testid="chip-q"
-                className="inline-flex items-center gap-1 rounded-full bg-brand/10 border border-brand/20 px-2.5 py-0.5 text-xs font-medium text-brand"
+                className="inline-flex items-center gap-1 rounded-none bg-brand/10 border border-brand/20 px-2.5 py-0.5 text-xs font-medium text-brand"
               >
                 <span>Keyword: &quot;{currentQ}&quot;</span>
                 <button
@@ -354,7 +354,7 @@ export function AssetFilters({
             type="button"
             onClick={() => updateParam("businessType", "")}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-[background-color,border-color,color,transform] duration-150 ease-out active:scale-95 border",
+              "inline-flex items-center gap-1.5 rounded-none px-3 py-1 text-xs font-medium transition-[background-color,border-color,color,transform] duration-150 ease-out active:scale-95 border",
               !currentBusinessType
                 ? "bg-brand text-white border-brand shadow-2xs font-semibold"
                 : "bg-surface text-muted-foreground border-hairline hover:border-brand/40 hover:text-ink"
@@ -363,7 +363,7 @@ export function AssetFilters({
             <span>All</span>
             <span
               className={cn(
-                "rounded-full px-1.5 py-0.2 text-[10px]",
+                "rounded-none px-1.5 py-0.2 text-[10px]",
                 !currentBusinessType ? "bg-white/20 text-white" : "bg-canvas text-muted-foreground"
               )}
             >
@@ -380,7 +380,7 @@ export function AssetFilters({
                 type="button"
                 onClick={() => toggleBusinessTypeChip(bt.value)}
                 className={cn(
-                  "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-[background-color,border-color,color,transform] duration-150 ease-out active:scale-95 border",
+                  "inline-flex items-center gap-1.5 rounded-none px-3 py-1 text-xs font-medium transition-[background-color,border-color,color,transform] duration-150 ease-out active:scale-95 border",
                   isSelected
                     ? "bg-brand text-white border-brand shadow-2xs font-semibold"
                     : "bg-surface text-muted-foreground border-hairline hover:border-brand/40 hover:text-ink"
@@ -389,7 +389,7 @@ export function AssetFilters({
                 <span>{bt.label}</span>
                 <span
                   className={cn(
-                    "rounded-full px-1.5 py-0.2 text-[10px]",
+                    "rounded-none px-1.5 py-0.2 text-[10px]",
                     isSelected ? "bg-white/20 text-white" : "bg-canvas text-muted-foreground"
                   )}
                 >

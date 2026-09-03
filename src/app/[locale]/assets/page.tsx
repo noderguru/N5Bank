@@ -222,12 +222,10 @@ export default async function AssetsPage({ params, searchParams }: Props) {
         {/* Page Header */}
         <div className="space-y-1">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+            <h1 className="display-lg text-ink">
               {tMarketplace("catalogueTitle")}
             </h1>
-            <span className="text-xs font-medium text-muted-foreground">
-              {assets.length}
-            </span>
+            <span className="tnum eyebrow text-muted-foreground">{assets.length}</span>
           </div>
           <p className="text-sm text-muted-foreground max-w-2xl leading-relaxed">
             {tMarketplace("catalogueSubtitle")}
@@ -243,7 +241,7 @@ export default async function AssetsPage({ params, searchParams }: Props) {
 
         {/* Asset Cards or Empty State */}
         {assets.length > 0 ? (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-px border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-3">
             {assets.map((asset) => (
               <AssetCard key={asset.id} asset={asset} />
             ))}

@@ -8,13 +8,13 @@ export function useSafeTranslations(namespace?: keyof typeof enMessages | string
       try {
         return t(key as never);
       } catch {
-        const ns = namespace ? (enMessages as Record<string, Record<string, string>>)[namespace] : undefined;
+        const ns = namespace ? (enMessages as unknown as Record<string, Record<string, string>>)[namespace] : undefined;
         return fallback || ns?.[key] || key;
       }
     };
   } catch {
     return (key: string, fallback?: string): string => {
-      const ns = namespace ? (enMessages as Record<string, Record<string, string>>)[namespace] : undefined;
+      const ns = namespace ? (enMessages as unknown as Record<string, Record<string, string>>)[namespace] : undefined;
       return fallback || ns?.[key] || key;
     };
   }

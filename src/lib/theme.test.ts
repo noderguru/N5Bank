@@ -11,12 +11,12 @@ describe("Dark Theme Tokens & Controls (N5B-52)", () => {
     const css = fs.readFileSync(cssPath, "utf8");
 
     expect(css).toContain(".dark {");
-    expect(css).toContain("--canvas: #090a0f;");
-    expect(css).toContain("--surface: #12141c;");
-    expect(css).toContain("--ink: #f3f5f8;");
-    expect(css).toContain("--muted-ink: #939ba8;");
-    expect(css).toContain("--brand: #4e52fe;");
-    expect(css).toContain("--hairline: #262c3d;");
+    expect(css).toContain("--canvas: #000000;");
+    expect(css).toContain("--surface: #0a0a0a;");
+    expect(css).toContain("--ink: #ffffff;");
+    expect(css).toContain("--muted-ink: #9a9aa2;");
+    expect(css).toContain("--brand: #ffffff;");
+    expect(css).toContain("--hairline: #3a3a3f;");
   });
 
   it("renders ThemeSwitcher with accessible aria-label", () => {

@@ -2,23 +2,32 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/*
+ * Design language: austere monochrome, hairline-ruled, flat.
+ * Black, white and the type do all the work — there is no decorative accent
+ * colour. Semantic colours survive only where they carry meaning (validated /
+ * suspended / rejected), never as decoration.
+ */
+
 :root {
-  --canvas: #f7f9fb;
+  /* Light surface — the "shop" side of the system. */
+  --canvas: #ffffff;
   --surface: #ffffff;
-  --ink: #050505;
-  --muted-ink: #616773;
-  --brand: #383bfe;
-  --brand-hover: #2d30e0;
-  --tint: #e7f3ff;
-  --tint-subtle: #f4f9ff;
-  --hairline: #d9d9d9;
-  --hairline-subtle: #ebebeb;
-  --success: #059669;
-  --success-tint: #ecfdf5;
-  --warning: #d97706;
-  --warning-tint: #fffbeb;
-  --destructive: #c51f3a;
-  --destructive-tint: #fef2f2;
+  --canvas-cool: #f0f0fa;
+  --ink: #000000;
+  --muted-ink: #5a5a5f;
+  --brand: #000000;
+  --brand-hover: #5a5a5f;
+  --tint: #f0f0fa;
+  --tint-subtle: #f7f7fc;
+  --hairline: #e0e0e8;
+  --hairline-subtle: #eeeef4;
+  --success: #0f7a3d;
+  --success-tint: #eef7f1;
+  --warning: #8a5a00;
+  --warning-tint: #fbf6ec;
+  --destructive: #b00020;
+  --destructive-tint: #fdf0f2;
 
   --background: var(--surface);
   --foreground: var(--ink);
@@ -28,29 +37,32 @@
   --popover-foreground: var(--ink);
   --primary: var(--brand);
   --primary-foreground: var(--surface);
-  --secondary: var(--canvas);
+  --secondary: var(--canvas-cool);
   --secondary-foreground: var(--ink);
-  --muted: var(--canvas);
+  --muted: var(--canvas-cool);
   --muted-foreground: var(--muted-ink);
   --accent: var(--tint);
-  --accent-foreground: var(--brand);
+  --accent-foreground: var(--ink);
   --border: var(--hairline);
   --input: var(--hairline);
-  --ring: var(--brand);
-  --chart-1: var(--brand);
-  --chart-2: #6c8cff;
-  --chart-3: #88b6ff;
-  --chart-4: #1f726d;
-  --chart-5: #c57c2b;
-  --radius: 0.75rem;
+  --ring: var(--ink);
+  --chart-1: var(--ink);
+  --chart-2: #5a5a5f;
+  --chart-3: #8a8a92;
+  --chart-4: #b4b4bd;
+  --chart-5: #d6d6e0;
+  --radius: 0.25rem;
 
-  --radius-chip: 8px;
-  --radius-input: 12px;
-  --radius-panel: 16px;
-  --radius-card: 24px;
+  /* Engineered geometry: near-square everywhere, pill reserved for the CTA. */
+  --radius-chip: 4px;
+  --radius-input: 4px;
+  --radius-panel: 8px;
+  --radius-card: 8px;
+  --radius-cta: 32px;
   --radius-pill: 9999px;
 
-  --shadow-floating: 0 10px 30px -5px rgba(5, 5, 5, 0.08), 0 4px 12px -2px rgba(5, 5, 5, 0.03);
+  /* Depth is hairline, not shadow. Nothing in this system casts light. */
+  --shadow-floating: 0 0 0 1px var(--hairline);
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
@@ -61,28 +73,30 @@
   --sidebar-primary: var(--brand);
   --sidebar-primary-foreground: var(--surface);
   --sidebar-accent: var(--tint);
-  --sidebar-accent-foreground: var(--brand);
+  --sidebar-accent-foreground: var(--ink);
   --sidebar-border: var(--hairline);
-  --sidebar-ring: var(--brand);
+  --sidebar-ring: var(--ink);
 }
 
 .dark {
-  --canvas: #090a0f;
-  --surface: #12141c;
-  --ink: #f3f5f8;
-  --muted-ink: #939ba8;
-  --brand: #4e52fe;
-  --brand-hover: #6366fe;
-  --tint: #1c2237;
-  --tint-subtle: #151928;
-  --hairline: #262c3d;
-  --hairline-subtle: #1c2130;
-  --success: #10b981;
-  --success-tint: #064e3b;
-  --warning: #f59e0b;
-  --warning-tint: #78350f;
-  --destructive: #ef4444;
-  --destructive-tint: #450a0a;
+  /* Night surface — the marketing canvas. Pure black, no tint. */
+  --canvas: #000000;
+  --surface: #0a0a0a;
+  --canvas-cool: #16161a;
+  --ink: #ffffff;
+  --muted-ink: #9a9aa2;
+  --brand: #ffffff;
+  --brand-hover: #f0f0fa;
+  --tint: #16161a;
+  --tint-subtle: #0f0f12;
+  --hairline: #3a3a3f;
+  --hairline-subtle: #232327;
+  --success: #4ade80;
+  --success-tint: #0d1f16;
+  --warning: #fbbf24;
+  --warning-tint: #241c08;
+  --destructive: #f87171;
+  --destructive-tint: #241010;
 
   --background: var(--surface);
   --foreground: var(--ink);
@@ -91,31 +105,37 @@
   --popover: var(--surface);
   --popover-foreground: var(--ink);
   --primary: var(--brand);
-  --primary-foreground: #ffffff;
-  --secondary: var(--canvas);
+  --primary-foreground: #000000;
+  --secondary: var(--canvas-cool);
   --secondary-foreground: var(--ink);
-  --muted: var(--canvas);
+  --muted: var(--canvas-cool);
   --muted-foreground: var(--muted-ink);
   --accent: var(--tint);
-  --accent-foreground: var(--brand);
+  --accent-foreground: var(--ink);
   --border: var(--hairline);
   --input: var(--hairline);
-  --ring: var(--brand);
+  --ring: var(--ink);
+  --chart-1: var(--ink);
+  --chart-2: #b4b4bd;
+  --chart-3: #8a8a92;
+  --chart-4: #5a5a5f;
+  --chart-5: #3a3a3f;
 
-  --shadow-floating: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 0 4px 12px -2px rgba(0, 0, 0, 0.3);
+  --shadow-floating: 0 0 0 1px var(--hairline);
 
   --sidebar: var(--surface);
   --sidebar-foreground: var(--ink);
   --sidebar-primary: var(--brand);
-  --sidebar-primary-foreground: #ffffff;
+  --sidebar-primary-foreground: #000000;
   --sidebar-accent: var(--tint);
-  --sidebar-accent-foreground: var(--brand);
+  --sidebar-accent-foreground: var(--ink);
   --sidebar-border: var(--hairline);
-  --sidebar-ring: var(--brand);
+  --sidebar-ring: var(--ink);
 }
 
 @theme inline {
   --color-canvas: var(--canvas);
+  --color-canvas-cool: var(--canvas-cool);
   --color-surface: var(--surface);
   --color-ink: var(--ink);
   --color-muted-ink: var(--muted-ink);
@@ -130,13 +150,15 @@
   --color-warning: var(--warning);
   --color-warning-tint: var(--warning-tint);
 
+  /* Display tier is a separate industrial cut; UI tier stays on Inter. */
   --font-sans: var(--font-inter), sans-serif;
-  --font-heading: var(--font-inter), sans-serif;
+  --font-heading: var(--font-display), var(--font-inter), sans-serif;
 
   --radius-chip: var(--radius-chip);
   --radius-input: var(--radius-input);
   --radius-panel: var(--radius-panel);
   --radius-card: var(--radius-card);
+  --radius-cta: var(--radius-cta);
   --radius-pill: var(--radius-pill);
 
   --shadow-floating: var(--shadow-floating);
@@ -192,8 +214,8 @@ body {
 }
 
 ::selection {
-  background: var(--brand);
-  color: var(--surface);
+  background: var(--ink);
+  color: var(--canvas);
 }
 
 @layer base {
@@ -202,7 +224,7 @@ body {
   }
 
   :focus-visible {
-    outline: 2px solid var(--brand);
+    outline: 2px solid var(--ink);
     outline-offset: 2px;
   }
 
@@ -216,6 +238,214 @@ body {
   [role="button"]:not(:disabled):active {
     transform: scale(0.97);
   }
+}
+
+/*
+ * Typography tiers.
+ * Display is uppercase, tightly leaded and positively tracked — the signature
+ * of the reference system. Tracking values are the px specs expressed in em so
+ * they hold at every clamped size.
+ */
+@layer components {
+  .display-xxl,
+  .display-xl,
+  .display-lg {
+    font-family: var(--font-display), var(--font-inter), sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+
+  .display-xxl {
+    font-size: clamp(2.5rem, 6.2vw, 5rem);
+    line-height: 0.95;
+    letter-spacing: 0.02em;
+  }
+
+  .display-xl {
+    font-size: clamp(2rem, 4.4vw, 3.75rem);
+    line-height: 1.05;
+    letter-spacing: 0.02em;
+  }
+
+  .display-lg {
+    font-size: clamp(1.625rem, 3vw, 3rem);
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+  }
+
+  /* All-caps eyebrow / nav microtext. */
+  .eyebrow {
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.6;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* All-caps control label — buttons, tabs, table headers. */
+  .caps {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    line-height: 0.94;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  .lead {
+    font-size: 1rem;
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+  }
+
+  /* Money and metrics must not jitter between rows. */
+  .tnum {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
+
+  /* Ghost outlined pill — the only marketing CTA in the system. */
+  .cta-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    border: 1px solid currentColor;
+    border-radius: var(--radius-cta);
+    padding: 1.125rem 1.5rem;
+    background: transparent;
+    transition: background-color 220ms var(--ease-out), color 220ms var(--ease-out);
+  }
+
+  .cta-ghost:hover {
+    background: currentColor;
+  }
+
+  .cta-ghost:hover > * {
+    color: var(--canvas);
+  }
+}
+
+/*
+ * Engineered backdrop. There is no photography budget here, so the hero's
+ * depth comes from a hairline survey grid fading into black rather than from a
+ * gradient scrim — the reference forbids scrims over imagery, not structure.
+ */
+.grid-field {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 96px 96px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 35%, #000 0%, transparent 78%);
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 35%, #000 0%, transparent 78%);
+}
+
+/*
+ * Entrance motion.
+ * Scroll reveal rides the native scroll timeline, so it costs zero JS and no
+ * dependency. Browsers without `animation-timeline` never see the opacity:0
+ * start state and simply render the content — the guard is load-bearing.
+ * ponytail: CSS-only reveal; swap for an IntersectionObserver only if Safari
+ * coverage of the effect becomes a requirement.
+ */
+@keyframes reveal-up {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(1.5rem);
+      animation: reveal-up linear both;
+      animation-timeline: view();
+      animation-range: entry 4% cover 26%;
+    }
+  }
+}
+
+/*
+ * Rotating hero phrase: a hairline rule under the word with a highlight
+ * travelling along it, plus a typing caret. Monochrome — the "shimmer" is a
+ * luminance sweep, not a colour one, so it stays inside the palette.
+ */
+@keyframes rule-sweep {
+  from { background-position: 200% 100%; }
+  to { background-position: -100% 100%; }
+}
+
+@keyframes caret-blink {
+  0%, 45% { opacity: 1; }
+  55%, 100% { opacity: 0; }
+}
+
+/*
+ * The rule is a background on the text itself rather than a pseudo-element, so
+ * `box-decoration-break: clone` re-draws it on every line the phrase wraps to.
+ * A pseudo-element would only underline the first fragment — which is exactly
+ * what long ru/uk phrases produce at mobile widths.
+ */
+.shimmer-rule {
+  padding-bottom: 0.1em;
+  background-image: linear-gradient(
+    90deg,
+    var(--hairline) 0%,
+    var(--ink) 38%,
+    var(--ink) 62%,
+    var(--hairline) 100%
+  );
+  /* repeat-x, not no-repeat: at 300% width the sweep would otherwise sit
+     entirely outside the line box for the whole animation range. */
+  background-size: 300% 0.06em;
+  background-repeat: repeat-x;
+  background-position: 200% 100%;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  animation: rule-sweep 3.2s linear infinite;
+}
+
+.type-caret {
+  display: inline-block;
+  width: 0.06em;
+  min-width: 2px;
+  height: 0.8em;
+  vertical-align: -0.06em;
+  margin-inline-start: 0.08em;
+  background: var(--ink);
+  animation: caret-blink 1.1s steps(1, end) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shimmer-rule {
+    background-image: linear-gradient(90deg, var(--ink), var(--ink));
+    background-size: 100% 0.06em;
+    background-position: 0 100%;
+  }
+}
+
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-hero] > * {
+    animation: hero-in 900ms var(--ease-out) both;
+  }
+
+  [data-hero] > *:nth-child(1) { animation-delay: 60ms; }
+  [data-hero] > *:nth-child(2) { animation-delay: 160ms; }
+  [data-hero] > *:nth-child(3) { animation-delay: 260ms; }
+  [data-hero] > *:nth-child(4) { animation-delay: 360ms; }
+  [data-hero] > *:nth-child(5) { animation-delay: 460ms; }
 }
 
 @media (prefers-reduced-motion: reduce) {

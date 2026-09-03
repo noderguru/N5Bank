@@ -68,7 +68,7 @@ export function AssetCard({
     <article
       data-testid="asset-card"
       className={cn(
-        "group relative flex flex-col justify-between rounded-2xl border border-hairline bg-surface p-5 transition-[transform,box-shadow,border-color] duration-200 ease-out sm:hover:-translate-y-0.5 sm:hover:shadow-md sm:hover:border-brand/60 animate-in fade-in-50 duration-200",
+        "group relative flex flex-col justify-between bg-surface p-6 transition-colors duration-200 ease-out hover:bg-tint-subtle",
         className
       )}
     >
@@ -76,7 +76,7 @@ export function AssetCard({
         {/* Top Header: Badge, Country, Price */}
         <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-tint px-2.5 py-0.5 text-xs font-semibold text-brand">
+            <span className="inline-flex items-center gap-1.5 border border-hairline px-2 py-0.5 eyebrow text-ink">
               <Globe2 className="size-3.5 shrink-0" />
               <span className="truncate max-w-[120px]">{country}</span>
             </span>
@@ -84,7 +84,7 @@ export function AssetCard({
             {validated && (
               <span
                 data-testid="validated-badge"
-                className="inline-flex items-center gap-1 rounded-full bg-success-tint px-2 py-0.5 text-[11px] font-semibold text-success"
+                className="inline-flex items-center gap-1 border border-success/40 bg-success-tint px-2 py-0.5 eyebrow text-success"
               >
                 <CheckCircle2 className="size-3 shrink-0" />
                 <span>{tCommon("validated", "Validated")}</span>
@@ -93,9 +93,9 @@ export function AssetCard({
           </div>
 
           <div className="sm:text-right shrink-0">
-            <div className="text-sm font-bold text-ink tracking-tight">{displayPrice}</div>
+            <div className="tnum font-heading text-base font-bold tracking-[0.01em] text-ink">{displayPrice}</div>
             {priceMode !== "FIXED" && (
-              <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
+              <div className="eyebrow text-muted-foreground">
                 {priceMode === "ON_LOI" ? tCommon("uponLoi") : tCommon("underNda")}
               </div>
             )}
@@ -104,7 +104,7 @@ export function AssetCard({
 
         {/* Title & Summary */}
         <div className="space-y-1.5">
-          <h3 className="text-base font-semibold text-ink leading-snug tracking-tight line-clamp-2 group-hover:text-brand transition-colors">
+          <h3 className="font-heading text-base font-medium leading-snug text-ink line-clamp-2">
             <Link href={`/assets/${id}`} prefetch={false} className="focus:outline-none">
               {title}
             </Link>
@@ -115,12 +115,12 @@ export function AssetCard({
         </div>
 
         {/* Spec Grid: Signature 4-cell layout */}
-        <div className="grid grid-cols-2 gap-2 rounded-xl border border-hairline bg-canvas/40 p-2.5 sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-y-3 border-y border-hairline py-3 sm:grid-cols-4">
           <div className="space-y-0.5">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+            <span className="eyebrow text-muted-foreground">
               {tCommon("country")}
             </span>
-            <div className="text-xs font-medium text-ink truncate" title={country}>
+            <div className="truncate text-xs font-medium text-ink" title={country}>
               {country}
             </div>
             {regulator && (
@@ -131,28 +131,28 @@ export function AssetCard({
           </div>
 
           <div className="space-y-0.5 border-l border-hairline/60 pl-2">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+            <span className="eyebrow text-muted-foreground">
               {t("licenseType")}
             </span>
-            <div className="text-xs font-medium text-ink truncate">
+            <div className="truncate text-xs font-medium text-ink">
               {formatLicenseType(licenseType)}
             </div>
           </div>
 
           <div className="space-y-0.5 border-l border-hairline/60 pl-2">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+            <span className="eyebrow text-muted-foreground">
               {t("businessType")}
             </span>
-            <div className="text-xs font-medium text-ink truncate">
+            <div className="truncate text-xs font-medium text-ink">
               {formatEnum(businessType)}
             </div>
           </div>
 
           <div className="space-y-0.5 border-l border-hairline/60 pl-2">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+            <span className="eyebrow text-muted-foreground">
               {tCommon("status")}
             </span>
-            <div className="text-xs font-medium text-ink truncate">
+            <div className="truncate text-xs font-medium text-ink">
               {formatEnum(businessStatus)}
             </div>
           </div>
@@ -165,7 +165,7 @@ export function AssetCard({
               <Badge
                 key={idx}
                 variant="outline"
-                className="rounded-full border-hairline bg-surface text-[11px] font-normal text-muted-foreground px-2 py-0.5"
+                className="rounded-none border-hairline bg-transparent px-2 py-0.5 eyebrow font-normal text-muted-foreground"
               >
                 {feat}
               </Badge>
@@ -173,7 +173,7 @@ export function AssetCard({
             {overflowCount > 0 && (
               <Badge
                 variant="outline"
-                className="rounded-full border-hairline bg-canvas text-[11px] font-medium text-muted-foreground px-2 py-0.5"
+                className="rounded-none border-hairline bg-transparent px-2 py-0.5 eyebrow text-muted-foreground"
               >
                 +{overflowCount} more
               </Badge>
@@ -183,12 +183,12 @@ export function AssetCard({
       </div>
 
       {/* Two-tier CTA Bottom Row */}
-      <div className="mt-5 flex items-center justify-between gap-3 border-t border-hairline pt-3">
+      <div className="mt-6 flex items-center justify-between gap-3 pt-1">
         <div className="flex items-center gap-1.5">
           <Button
             asChild
             variant="outline"
-            className="h-8 gap-1 rounded-xl border-hairline text-xs font-medium hover:border-brand hover:text-brand"
+            className="h-9 gap-1.5 rounded-none border-hairline caps hover:border-ink hover:bg-transparent hover:text-ink"
           >
             <Link href={`/assets/${id}`} prefetch={false}>
               <span>{tCommon("details")}</span>
@@ -202,7 +202,7 @@ export function AssetCard({
             size="icon"
             variant="ghost"
             showLabel={false}
-            className="size-8 rounded-xl"
+            className="size-9 rounded-none"
           />
         </div>
 
@@ -210,7 +210,7 @@ export function AssetCard({
           <Button
             type="button"
             onClick={() => onContact(id)}
-            className="h-8 gap-1.5 rounded-xl bg-brand text-xs font-medium text-surface hover:bg-brand/90 shadow-xs"
+            className="h-9 gap-1.5 rounded-none border border-ink bg-ink caps text-canvas transition-colors hover:bg-transparent hover:text-ink"
           >
             <MessageSquare className="size-3.5" />
             <span>{t("contactSeller")}</span>
@@ -218,7 +218,7 @@ export function AssetCard({
         ) : (
           <Button
             asChild
-            className="h-8 gap-1.5 rounded-xl bg-brand text-xs font-medium text-surface hover:bg-brand/90 shadow-xs"
+            className="h-9 gap-1.5 rounded-none border border-ink bg-ink caps text-canvas transition-colors hover:bg-transparent hover:text-ink"
           >
             <Link href={`/assets/${id}?contact=true`} prefetch={false}>
               <MessageSquare className="size-3.5" />
