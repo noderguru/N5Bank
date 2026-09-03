@@ -67,8 +67,8 @@ export function HeroEditorial({ t }: HeroEditorialProps) {
           </div>
 
           {/* Lead description & Actions */}
-          <div className="max-w-2xl space-y-4 pt-1 sm:pt-2">
-            <p className="font-lausanne text-xs sm:text-sm md:text-base text-[#516254] leading-relaxed font-normal">
+          <div className="w-full space-y-4 pt-1 sm:pt-2">
+            <p className="w-full font-lausanne text-xs sm:text-sm md:text-base text-[#516254] leading-relaxed font-normal">
               {t.lead}
             </p>
 
