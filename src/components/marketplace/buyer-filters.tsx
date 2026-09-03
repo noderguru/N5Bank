@@ -39,6 +39,7 @@ const TICKET_RANGES = [
 
 export function BuyerFilters() {
   const t = useTranslations("marketplace");
+  const tFilters = useTranslations("filters");
   const tCommon = useTranslations("common");
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -93,7 +94,7 @@ export function BuyerFilters() {
             value={currentCountry}
             onChange={(e) => updateParam("country", e.target.value)}
             className="h-10 rounded-xl border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
-            aria-label="Filter by country"
+            aria-label={tFilters("allCountries")}
           >
             <option value="">{tCommon("all")} {tCommon("country")}</option>
             {COMMON_COUNTRIES.map((c) => (
@@ -108,7 +109,7 @@ export function BuyerFilters() {
             value={currentLicense}
             onChange={(e) => updateParam("licenseType", e.target.value)}
             className="h-10 rounded-xl border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
-            aria-label="Filter by target licence"
+            aria-label={tFilters("allLicenceTypes")}
           >
             <option value="">{tCommon("all")} {t("licenseType")}</option>
             {LICENSE_TYPES.map((l) => (
@@ -123,7 +124,7 @@ export function BuyerFilters() {
             value={currentTicket}
             onChange={(e) => updateParam("ticket", e.target.value)}
             className="h-10 rounded-xl border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
-            aria-label="Filter by ticket size"
+            aria-label={t("filterByTicket")}
           >
             <option value="">{tCommon("all")} {t("ticketRange")}</option>
             {TICKET_RANGES.map((t) => (
@@ -152,7 +153,7 @@ export function BuyerFilters() {
       {hasActiveFilters && (
         <div className="flex items-center gap-2 pt-1 text-xs text-muted-foreground">
           <SlidersHorizontal className="size-3 text-brand" />
-          <span>Active filter query applied</span>
+          <span>{t("activeFilterApplied")}</span>
         </div>
       )}
     </div>

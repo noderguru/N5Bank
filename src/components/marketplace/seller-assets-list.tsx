@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -43,6 +44,7 @@ type SellerAssetsListProps = {
 };
 
 export function SellerAssetsList({ assets }: SellerAssetsListProps) {
+  const t = useTranslations("seller");
   const enumLabel = useEnumLabel();
   const { locale, price } = useFormatLabels();
   const router = useRouter();
@@ -52,8 +54,8 @@ export function SellerAssetsList({ assets }: SellerAssetsListProps) {
   if (assets.length === 0) {
     return (
       <EmptyState
-        title="No listings created yet"
-        description="You have not created any financial asset listings or drafts. Post your first asset to connect with institutional buyers."
+        title={t("noListingsTitle")}
+        description={t("noListingsDesc")}
         action={{
           label: "+ Publish First Asset",
           href: "/seller/assets/new",
@@ -171,7 +173,7 @@ export function SellerAssetsList({ assets }: SellerAssetsListProps) {
                   <div className="mt-3 flex items-start gap-2.5 rounded-xl border border-amber-300 bg-amber-100/70 p-3 text-xs text-amber-900">
                     <AlertTriangle className="h-4 w-4 shrink-0 text-amber-700 mt-0.5" />
                     <div>
-                      <strong className="font-semibold">Reason from platform compliance: </strong>
+                      <strong className="font-semibold">{t("moderationReason")} </strong>
                       <span>{asset.moderationReason}</span>
                     </div>
                   </div>
@@ -242,7 +244,7 @@ export function SellerAssetsList({ assets }: SellerAssetsListProps) {
                     disabled={isDeletePending || isTogglePending}
                     onClick={() => handleDelete(asset.id)}
                     className="h-9 px-2.5 rounded-xl text-xs text-neutral-400 hover:text-rose-600 hover:bg-rose-50"
-                    title="Remove listing"
+                    title={t("removeListing")}
                   >
                     {isDeletePending ? (
                       <Loader2 className="h-3.5 w-3.5 animate-spin" />

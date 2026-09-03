@@ -54,6 +54,7 @@ export function PillNav({ user, unreadCount = 0, overlay = false }: PillNavProps
   }
 
   const { items, cta, secondaryCta } = getRoleNavConfig(user?.role, unreadCount, tFunc);
+  const tNav = useTranslations("nav");
 
   return (
     <header
@@ -67,7 +68,7 @@ export function PillNav({ user, unreadCount = 0, overlay = false }: PillNavProps
       )}
     >
       <nav
-        aria-label="Main Navigation"
+        aria-label={tNav("mainNavigation")}
         className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:px-6"
       >
         {/* Brand Logo */}
@@ -174,13 +175,13 @@ export function PillNav({ user, unreadCount = 0, overlay = false }: PillNavProps
                   <DropdownMenuItem asChild className="rounded-lg text-xs font-medium cursor-pointer">
                     <Link href={user.role === "SELLER" ? "/seller/assets" : user.role === "BUYER" ? "/buyer" : "/admin"}>
                       <Briefcase className="mr-2 size-3.5 text-muted-foreground" />
-                      <span>Workspace Dashboard</span>
+                      <span>{tNav("workspaceDashboard")}</span>
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild className="rounded-lg text-xs font-medium cursor-pointer">
                     <Link href="/inbox">
                       <User className="mr-2 size-3.5 text-muted-foreground" />
-                      <span>Inbox & Deals</span>
+                      <span>{tNav("inboxDeals")}</span>
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator className="my-1 bg-hairline/60" />
@@ -191,7 +192,7 @@ export function PillNav({ user, unreadCount = 0, overlay = false }: PillNavProps
                     className="rounded-lg text-xs font-medium text-destructive focus:bg-destructive/10 focus:text-destructive cursor-pointer"
                   >
                     <LogOut className="mr-2 size-3.5" />
-                    <span>Sign out</span>
+                    <span>{tNav("signOut")}</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -227,14 +228,14 @@ export function PillNav({ user, unreadCount = 0, overlay = false }: PillNavProps
                   variant="ghost"
                   size="sm"
                   className="size-9 rounded-none p-0 text-ink hover:bg-tint focus-visible:ring-2 focus-visible:ring-ink"
-                  aria-label="Open mobile navigation"
+                  aria-label={tNav("openMobileNav")}
                 >
                   <Menu className="size-5" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="top" className="rounded-b-3xl border-b border-hairline bg-surface/98 p-6 shadow-floating">
                 <SheetHeader className="flex flex-row items-center justify-between pb-4 border-b border-hairline">
-                  <SheetTitle className="text-base font-bold text-ink">Navigation</SheetTitle>
+                  <SheetTitle className="font-heading text-base font-bold uppercase tracking-[0.06em] text-ink">{tNav("navigation")}</SheetTitle>
                 </SheetHeader>
 
                 <div className="flex flex-col gap-2 py-4">
@@ -271,12 +272,12 @@ export function PillNav({ user, unreadCount = 0, overlay = false }: PillNavProps
                   </div>
 
                   <div className="flex items-center justify-between pt-3 text-xs text-muted-foreground">
-                    <span>Language</span>
+                    <span>{tNav("language")}</span>
                     <LocaleSwitcher />
                   </div>
 
                   <div className="flex items-center justify-between pt-2 text-xs text-muted-foreground border-t border-hairline/60">
-                    <span>Theme</span>
+                    <span>{tNav("theme")}</span>
                     <ThemeSwitcher />
                   </div>
                 </div>

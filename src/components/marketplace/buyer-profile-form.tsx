@@ -1,6 +1,8 @@
 "use client";
 
 import { useActionState } from "react";
+import { useEnumLabel } from "@/lib/i18n-format";
+import { useTranslations } from "next-intl";
 import {
   Building2,
   Globe2,
@@ -40,24 +42,24 @@ const COMMON_COUNTRIES = [
   "Brazil",
 ];
 
-const LICENSE_TYPES: { value: LicenseType; label: string }[] = [
-  { value: "BANKING", label: "Banking License" },
-  { value: "E_MONEY", label: "E-Money / EMI" },
-  { value: "PAYMENT", label: "Payment Institution (PI)" },
-  { value: "CRYPTO", label: "Crypto / VASP" },
-  { value: "BROKERAGE", label: "Brokerage & Asset Mgmt" },
-  { value: "INSURANCE", label: "Insurance Company" },
-  { value: "OTHER", label: "Other Financial Charter" },
+const LICENSE_TYPES: LicenseType[] = [
+  "BANKING",
+  "E_MONEY",
+  "PAYMENT",
+  "CRYPTO",
+  "BROKERAGE",
+  "INSURANCE",
+  "OTHER",
 ];
 
-const BUSINESS_TYPES: { value: BusinessType; label: string }[] = [
-  { value: "BANK", label: "Bank" },
-  { value: "FINTECH", label: "Fintech Platform" },
-  { value: "PAYMENT_INSTITUTION", label: "Payment Service Provider" },
-  { value: "CRYPTO_BUSINESS", label: "Digital Asset Firm" },
-  { value: "BROKERAGE", label: "Investment Broker" },
-  { value: "INSURANCE_COMPANY", label: "Underwriter / Insurer" },
-  { value: "OTHER", label: "Other Regulated Entity" },
+const BUSINESS_TYPES: BusinessType[] = [
+  "BANK",
+  "FINTECH",
+  "PAYMENT_INSTITUTION",
+  "CRYPTO_BUSINESS",
+  "BROKERAGE",
+  "INSURANCE_COMPANY",
+  "OTHER",
 ];
 
 export type BuyerProfileFormProps = {
@@ -77,6 +79,8 @@ export type BuyerProfileFormProps = {
 };
 
 export function BuyerProfileForm({ initialProfile }: BuyerProfileFormProps) {
+  const tForm = useTranslations("buyerForm");
+  const enumLabel = useEnumLabel();
   const [state, formAction, isPending] = useActionState(
     async (prev: BuyerActionResult | null, formData: FormData) => {
       const res = await saveBuyerProfileAction(prev, formData);
@@ -129,7 +133,7 @@ export function BuyerProfileForm({ initialProfile }: BuyerProfileFormProps) {
 
         {completeness.missingFields.length > 0 && (
           <div className="flex flex-wrap items-center gap-1.5 pt-1 text-xs text-muted-foreground">
-            <span>Recommended additions:</span>
+            <span>{tForm("recommendedAdditions")}</span>
             {completeness.missingFields.map((field) => (
               <span
                 key={field}
@@ -148,7 +152,7 @@ export function BuyerProfileForm({ initialProfile }: BuyerProfileFormProps) {
         <div className="border-b border-hairline/60 pb-3">
           <h2 className="text-base font-semibold text-ink tracking-tight flex items-center gap-2">
             <Building2 className="size-4 text-brand" />
-            <span>Institution &amp; Counterparty Details</span>
+            <span>{tForm("counterpartyDetails")}</span>
           </h2>
           <p className="text-xs text-muted-foreground mt-0.5">
             Identify your fund, family office, or strategic acquiring entity.
@@ -158,13 +162,13 @@ export function BuyerProfileForm({ initialProfile }: BuyerProfileFormProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1.5">
             <Label htmlFor="company" className="text-xs font-medium text-ink">
-              Company / Fund Name <span className="text-brand">*</span>
+              {tForm("companyName")} <span className="text-brand">*</span>
             </Label>
             <Input
               id="company"
               name="company"
               defaultValue={initialProfile?.company || ""}
-              placeholder="e.g. Apex Strategic Acquisitions LLC"
+              placeholder={tForm("phCompany")}
               required
               className="h-10 rounded-xl border-hairline text-sm"
             />
@@ -178,7 +182,7 @@ export function BuyerProfileForm({ initialProfile }: BuyerProfileFormProps) {
 
           <div className="space-y-1.5">
             <Label htmlFor="country" className="text-xs font-medium text-ink">
-              Base Country / Domicile <span className="text-brand">*</span>
+              {tForm("baseCountry")} <span className="text-brand">*</span>
             </Label>
             <select
               id="country"
@@ -187,7 +191,7 @@ export function BuyerProfileForm({ initialProfile }: BuyerProfileFormProps) {
               required
               className="w-full h-10 rounded-xl border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
             >
-              <option value="">Select country</option>
+              <option value="">{tForm("selectCountry")}</option>
               {COMMON_COUNTRIES.map((c) => (
                 <option key={c} value={c}>
                   {c}
@@ -205,7 +209,7 @@ export function BuyerProfileForm({ initialProfile }: BuyerProfileFormProps) {
 
         <div className="space-y-1.5">
           <Label htmlFor="bio" className="text-xs font-medium text-ink">
-            Firm Overview &amp; Background
+            {tForm("firmOverview")}
           </Label>
           <Textarea
             id="bio"
@@ -223,7 +227,7 @@ export function BuyerProfileForm({ initialProfile }: BuyerProfileFormProps) {
           <div className="flex items-center justify-between">
             <h2 className="text-base font-semibold text-ink tracking-tight flex items-center gap-2">
               <Sparkles className="size-4 text-brand" />
-              <span>Investment Thesis (Free Text)</span>
+              <span>{tForm("investmentThesis")}</span>
             </h2>
             <Badge variant="outline" className="text-[10px] uppercase font-semibold">
               Feeds AI Scorer
@@ -256,7 +260,7 @@ export function BuyerProfileForm({ initialProfile }: BuyerProfileFormProps) {
         <div className="border-b border-hairline/60 pb-3">
           <h2 className="text-base font-semibold text-ink tracking-tight flex items-center gap-2">
             <Target className="size-4 text-brand" />
-            <span>Target Acquisition Budget &amp; Horizon</span>
+            <span>{tForm("budgetHorizon")}</span>
           </h2>
           <p className="text-xs text-muted-foreground mt-0.5">
             Specify check size envelope to filter non-fitting listings.
@@ -266,7 +270,7 @@ export function BuyerProfileForm({ initialProfile }: BuyerProfileFormProps) {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="space-y-1.5">
             <Label htmlFor="currency" className="text-xs font-medium text-ink">
-              Currency
+              {tForm("currency")}
             </Label>
             <select
               id="currency"
@@ -283,7 +287,7 @@ export function BuyerProfileForm({ initialProfile }: BuyerProfileFormProps) {
 
           <div className="space-y-1.5">
             <Label htmlFor="ticketMin" className="text-xs font-medium text-ink">
-              Minimum Ticket Size
+              {tForm("ticketMin")}
             </Label>
             <Input
               id="ticketMin"
@@ -291,14 +295,14 @@ export function BuyerProfileForm({ initialProfile }: BuyerProfileFormProps) {
               type="number"
               step="10000"
               defaultValue={initialProfile?.ticketMin ? String(initialProfile.ticketMin) : ""}
-              placeholder="e.g. 500000"
+              placeholder={tForm("phTicketMin")}
               className="h-10 rounded-xl border-hairline text-sm"
             />
           </div>
 
           <div className="space-y-1.5">
             <Label htmlFor="ticketMax" className="text-xs font-medium text-ink">
-              Maximum Ticket Size
+              {tForm("ticketMax")}
             </Label>
             <Input
               id="ticketMax"
@@ -306,7 +310,7 @@ export function BuyerProfileForm({ initialProfile }: BuyerProfileFormProps) {
               type="number"
               step="10000"
               defaultValue={initialProfile?.ticketMax ? String(initialProfile.ticketMax) : ""}
-              placeholder="e.g. 10000000"
+              placeholder={tForm("phTicketMax")}
               className="h-10 rounded-xl border-hairline text-sm"
             />
             {state?.errors?.ticketMax && (
@@ -320,7 +324,7 @@ export function BuyerProfileForm({ initialProfile }: BuyerProfileFormProps) {
 
         <div className="space-y-1.5">
           <Label htmlFor="horizon" className="text-xs font-medium text-ink">
-            Target Execution Horizon
+            {tForm("executionHorizon")}
           </Label>
           <select
             id="horizon"
@@ -328,10 +332,10 @@ export function BuyerProfileForm({ initialProfile }: BuyerProfileFormProps) {
             defaultValue={initialProfile?.horizon || "FLEXIBLE"}
             className="w-full sm:w-1/2 h-10 rounded-xl border border-hairline bg-surface px-3 text-xs font-medium text-ink focus:outline-none focus:ring-1 focus:ring-brand"
           >
-            <option value="SHORT_TERM">Short-Term (Immediate &lt; 3 months)</option>
-            <option value="MEDIUM_TERM">Medium-Term (3 – 12 months)</option>
-            <option value="LONG_TERM">Long-Term (Strategic 12+ months)</option>
-            <option value="FLEXIBLE">Flexible / Opportunistic</option>
+            <option value="SHORT_TERM">{tForm("horizonShort")}</option>
+            <option value="MEDIUM_TERM">{tForm("horizonMedium")}</option>
+            <option value="LONG_TERM">{tForm("horizonLong")}</option>
+            <option value="FLEXIBLE">{tForm("horizonFlexible")}</option>
           </select>
         </div>
       </div>
@@ -341,7 +345,7 @@ export function BuyerProfileForm({ initialProfile }: BuyerProfileFormProps) {
         <div className="border-b border-hairline/60 pb-3">
           <h2 className="text-base font-semibold text-ink tracking-tight flex items-center gap-2">
             <Globe2 className="size-4 text-brand" />
-            <span>Target Acquisition Geographies &amp; Charters</span>
+            <span>{tForm("geographiesCharters")}</span>
           </h2>
           <p className="text-xs text-muted-foreground mt-0.5">
             Select specific licenses and business structures within your scope.
@@ -351,7 +355,7 @@ export function BuyerProfileForm({ initialProfile }: BuyerProfileFormProps) {
         {/* Target Countries */}
         <div className="space-y-2">
           <Label className="text-xs font-medium text-ink">
-            Target Jurisdictions
+            {tForm("targetJurisdictions")}
           </Label>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
             {COMMON_COUNTRIES.map((c) => {
@@ -366,7 +370,7 @@ export function BuyerProfileForm({ initialProfile }: BuyerProfileFormProps) {
                     name="targetCountries"
                     value={c}
                     defaultChecked={isChecked}
-                    className="size-3.5 rounded text-brand focus:ring-brand accent-[#383BFE]"
+                    className="size-3.5 rounded text-brand focus:ring-brand accent-[currentColor]"
                   />
                   <span className="truncate">{c}</span>
                 </label>
@@ -378,25 +382,25 @@ export function BuyerProfileForm({ initialProfile }: BuyerProfileFormProps) {
         {/* Target License Types */}
         <div className="space-y-2">
           <Label className="text-xs font-medium text-ink">
-            Target License Charters
+            {tForm("targetCharters")}
           </Label>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-            {LICENSE_TYPES.map((l) => {
+            {LICENSE_TYPES.map((value) => {
               const isChecked =
-                initialProfile?.targetLicenseTypes?.includes(l.value) ?? false;
+                initialProfile?.targetLicenseTypes?.includes(value as never) ?? false;
               return (
                 <label
-                  key={l.value}
+                  key={value}
                   className="flex items-center gap-2 text-xs text-ink cursor-pointer rounded-xl border border-hairline/80 bg-canvas/30 p-2.5 hover:bg-canvas transition-colors"
                 >
                   <input
                     type="checkbox"
                     name="targetLicenseTypes"
-                    value={l.value}
+                    value={value}
                     defaultChecked={isChecked}
-                    className="size-3.5 rounded text-brand focus:ring-brand accent-[#383BFE]"
+                    className="size-3.5 rounded text-brand focus:ring-brand accent-[currentColor]"
                   />
-                  <span>{l.label}</span>
+                  <span>{enumLabel("licenseType", value)}</span>
                 </label>
               );
             })}
@@ -406,25 +410,25 @@ export function BuyerProfileForm({ initialProfile }: BuyerProfileFormProps) {
         {/* Target Business Types */}
         <div className="space-y-2">
           <Label className="text-xs font-medium text-ink">
-            Target Corporate Structure
+            {tForm("targetStructure")}
           </Label>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-            {BUSINESS_TYPES.map((b) => {
+            {BUSINESS_TYPES.map((value) => {
               const isChecked =
-                initialProfile?.targetBusinessTypes?.includes(b.value) ?? false;
+                initialProfile?.targetBusinessTypes?.includes(value as never) ?? false;
               return (
                 <label
-                  key={b.value}
+                  key={value}
                   className="flex items-center gap-2 text-xs text-ink cursor-pointer rounded-xl border border-hairline/80 bg-canvas/30 p-2.5 hover:bg-canvas transition-colors"
                 >
                   <input
                     type="checkbox"
                     name="targetBusinessTypes"
-                    value={b.value}
+                    value={value}
                     defaultChecked={isChecked}
-                    className="size-3.5 rounded text-brand focus:ring-brand accent-[#383BFE]"
+                    className="size-3.5 rounded text-brand focus:ring-brand accent-[currentColor]"
                   />
-                  <span>{b.label}</span>
+                  <span>{enumLabel("businessType", value)}</span>
                 </label>
               );
             })}

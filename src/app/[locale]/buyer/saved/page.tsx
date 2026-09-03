@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { ArrowLeft, Bookmark } from "lucide-react";
 import { readSession } from "@/lib/auth/session";
@@ -13,6 +14,7 @@ export const metadata = {
 };
 
 export default async function SavedAssetsPage() {
+  const t = await getTranslations("buyerWorkspace");
   const session = await readSession();
 
   if (!session) {
@@ -74,12 +76,12 @@ export default async function SavedAssetsPage() {
                 className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground hover:text-brand transition-colors"
               >
                 <ArrowLeft className="size-3.5" />
-                <span>All Assets</span>
+                <span>{t("allAssets")}</span>
               </Link>
             </div>
             <h1 className="text-2xl font-bold tracking-tight text-ink sm:text-3xl flex items-center gap-2.5">
               <Bookmark className="size-6 text-brand fill-brand" />
-              <span>Saved Assets</span>
+              <span>{t("savedAssets")}</span>
             </h1>
             <p className="text-sm text-muted-foreground max-w-xl leading-relaxed">
               Curated watchlist of institutions, payment charters, and crypto licenses saved for your acquisition pipeline.
@@ -100,8 +102,8 @@ export default async function SavedAssetsPage() {
           </div>
         ) : (
           <EmptyState
-            title="No saved assets yet"
-            description="Bookmark assets from the catalogue to build your acquisition pipeline and track deal changes."
+            title={t("noSavedTitle")}
+            description={t("noSavedDesc")}
             action={{
               label: "Explore Catalogue",
               href: "/assets",

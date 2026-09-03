@@ -175,8 +175,8 @@ export default async function BuyersPage({ params, searchParams }: Props) {
           />
         ) : (
           <EmptyState
-            title="No active institutional buyers"
-            description="Verified buyer mandates will appear here once profiles are registered."
+            title={t("noBuyersTitle")}
+            description={t("noBuyersDesc")}
           />
         )}
       </div>

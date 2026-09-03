@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { ArrowRight, Sparkles, AlertCircle, ShieldCheck, Sliders } from "lucide-react";
 import { readSession } from "@/lib/auth/session";
@@ -16,6 +17,7 @@ export const metadata = {
 };
 
 export default async function MatchesPage() {
+  const t = await getTranslations("buyerWorkspace");
   const session = await readSession();
 
   if (!session) {
@@ -54,7 +56,7 @@ export default async function MatchesPage() {
 
           <div className="rounded-2xl border border-hairline bg-surface p-5 text-left space-y-3 shadow-2xs">
             <div className="flex items-center justify-between text-xs">
-              <span className="font-semibold text-ink">Profile Readiness</span>
+              <span className="font-semibold text-ink">{t("profileReadiness")}</span>
               <span className="font-semibold text-brand">{completeness.score}%</span>
             </div>
 
@@ -86,7 +88,7 @@ export default async function MatchesPage() {
               className="h-11 px-6 rounded-xl bg-brand hover:bg-brand/90 text-white font-medium shadow-xs"
             >
               <Link href="/buyer">
-                <span>Complete Mandate Profile</span>
+                <span>{t("completeMandate")}</span>
                 <ArrowRight className="ml-2 size-4" />
               </Link>
             </Button>
@@ -128,18 +130,18 @@ export default async function MatchesPage() {
             <div className="flex items-center gap-2">
               <h1 className="text-2xl font-bold tracking-tight text-ink sm:text-3xl flex items-center gap-2">
                 <Sparkles className="size-6 text-brand" />
-                <span>Target Asset Matches</span>
+                <span>{t("targetMatches")}</span>
               </h1>
 
               {matchingResult.engine === "ai" ? (
                 <span className="inline-flex items-center gap-1 rounded-full bg-purple-500/10 px-2.5 py-0.5 text-xs font-semibold text-purple-700 border border-purple-500/20">
                   <Sparkles className="size-3" />
-                  <span>AI Matching Active</span>
+                  <span>{t("aiMatchingActive")}</span>
                 </span>
               ) : (
                 <span className="inline-flex items-center gap-1 rounded-full bg-slate-500/10 px-2.5 py-0.5 text-xs font-semibold text-slate-700 border border-slate-500/20">
                   <ShieldCheck className="size-3" />
-                  <span>Deterministic Rule Scorer</span>
+                  <span>{t("deterministicScorer")}</span>
                 </span>
               )}
             </div>
@@ -169,7 +171,7 @@ export default async function MatchesPage() {
           </div>
 
           <Button asChild variant="outline" className="rounded-xl border-hairline text-xs font-medium shrink-0">
-            <Link href="/buyer">Edit Mandate</Link>
+            <Link href="/buyer">{t("editMandate")}</Link>
           </Button>
         </div>
 
@@ -181,7 +183,7 @@ export default async function MatchesPage() {
                 Found <strong className="text-ink font-semibold">{matchingResult.matches.length}</strong> compatible{" "}
                 {matchingResult.matches.length === 1 ? "opportunity" : "opportunities"}
               </span>
-              <span>Sorted by highest compatibility score</span>
+              <span>{t("sortedByScore")}</span>
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -196,8 +198,8 @@ export default async function MatchesPage() {
           </div>
         ) : (
           <EmptyState
-            title="No matches found for current mandate criteria"
-            description="Try expanding your target jurisdictions, permitted charter licenses, or budget parameters in your investment profile."
+            title={t("noMatchesTitle")}
+            description={t("noMatchesDesc")}
             action={{
               label: "Update Mandate Profile",
               href: "/buyer",

@@ -29,13 +29,13 @@ export function Footer() {
 
             <div className="flex items-center gap-1.5 pt-1 text-xs text-[#9a9aa2]">
               <ShieldCheck className="size-4 text-white" />
-              <span>Strict bilateral NDAs & LOI escrow coordination</span>
+              <span>{t("ndaNotice")}</span>
             </div>
           </div>
 
           {/* Directory Links */}
           <div className="space-y-3">
-            <h4 className="eyebrow text-white">Marketplace</h4>
+            <h4 className="eyebrow text-white">{tNav("marketplaceSection")}</h4>
             <ul className="space-y-2 text-xs text-[#9a9aa2]">
               <li>
                 <Link href="/assets?license=E_MONEY" className="transition-colors hover:text-white">
@@ -62,7 +62,7 @@ export function Footer() {
 
           {/* Regulatory & Legal */}
           <div className="space-y-3">
-            <h4 className="eyebrow text-white">Compliance</h4>
+            <h4 className="eyebrow text-white">{tNav("compliance")}</h4>
             <ul className="space-y-2 text-xs text-[#9a9aa2]">
               <li>
                 <Link href="/#faq" className="transition-colors hover:text-white">

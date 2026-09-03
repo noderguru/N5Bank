@@ -134,7 +134,7 @@ export function AssetFilters({
                 type="button"
                 onClick={() => updateParam("q", "")}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-ink"
-                aria-label="Clear search"
+                aria-label={tCommon("clearSearch")}
               >
                 <X className="size-3.5" />
               </button>
@@ -224,7 +224,7 @@ export function AssetFilters({
                 size="sm"
                 onClick={handleReset}
                 className="h-10 gap-1 rounded-none text-xs text-muted-foreground hover:text-ink px-2.5"
-                title="Reset all filters"
+                title={tCommon("resetAllFilters")}
               >
                 <RotateCcw className="size-3.5" />
                 <span className="hidden sm:inline">{tCommon("reset")}</span>
@@ -265,7 +265,7 @@ export function AssetFilters({
                   type="button"
                   onClick={() => updateParam("licenseType", "")}
                   className="hover:text-ink focus:outline-none ml-0.5"
-                  aria-label="Remove license filter"
+                  aria-label={tCommon("removeFilter")}
                 >
                   <X className="size-3" />
                 </button>
@@ -281,7 +281,7 @@ export function AssetFilters({
                   type="button"
                   onClick={() => updateParam("businessType", "")}
                   className="hover:text-ink focus:outline-none ml-0.5"
-                  aria-label="Remove business model filter"
+                  aria-label={tCommon("removeFilter")}
                 >
                   <X className="size-3" />
                 </button>
@@ -297,7 +297,7 @@ export function AssetFilters({
                   type="button"
                   onClick={() => updateParam("businessStatus", "")}
                   className="hover:text-ink focus:outline-none ml-0.5"
-                  aria-label="Remove status filter"
+                  aria-label={tCommon("removeFilter")}
                 >
                   <X className="size-3" />
                 </button>
@@ -319,7 +319,7 @@ export function AssetFilters({
                   type="button"
                   onClick={() => updateParam("price", "")}
                   className="hover:text-ink focus:outline-none ml-0.5"
-                  aria-label="Remove price filter"
+                  aria-label={tCommon("removeFilter")}
                 >
                   <X className="size-3" />
                 </button>
@@ -335,7 +335,7 @@ export function AssetFilters({
                   type="button"
                   onClick={() => updateParam("q", "")}
                   className="hover:text-ink focus:outline-none ml-0.5"
-                  aria-label="Remove keyword search"
+                  aria-label={tCommon("removeFilter")}
                 >
                   <X className="size-3" />
                 </button>
@@ -363,7 +363,7 @@ export function AssetFilters({
                 : "bg-surface text-muted-foreground border-hairline hover:border-brand/40 hover:text-ink"
             )}
           >
-            <span>All</span>
+            <span>{tCommon("all")}</span>
             <span
               className={cn(
                 "rounded-none px-1.5 py-0.2 text-[10px]",

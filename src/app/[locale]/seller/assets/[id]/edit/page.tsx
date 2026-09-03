@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { assertOwnership, requireRole } from "@/lib/auth/guard";
 import { prisma } from "@/lib/db/prisma";
 import { AppShell } from "@/components/layout/app-shell";
@@ -16,6 +17,7 @@ type Props = {
 };
 
 export default async function EditAssetPage({ params }: Props) {
+  const t = await getTranslations("seller");
   const { id } = await params;
   const session = await requireRole("SELLER");
 
@@ -56,7 +58,7 @@ export default async function EditAssetPage({ params }: Props) {
           <div className="rounded-[24px] border border-amber-200 bg-amber-50 p-6 sm:p-8 space-y-3">
             <div className="flex items-center gap-2.5 text-amber-800 font-semibold">
               <AlertCircle className="h-5 w-5 shrink-0" />
-              <span>Listing Under Compliance Action</span>
+              <span>{t("underComplianceAction")}</span>
             </div>
             <p className="text-sm text-amber-700 leading-relaxed">
               This listing has been suspended or removed by platform compliance. Changes cannot be published while under moderation. Please review the moderation log or contact platform support.

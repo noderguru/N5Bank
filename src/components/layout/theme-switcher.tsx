@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function ThemeSwitcher() {
+  const t = useTranslations("common");
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
@@ -54,7 +56,7 @@ export function ThemeSwitcher() {
         variant="ghost"
         size="icon"
         className="size-8 rounded-full text-muted-foreground hover:bg-canvas hover:text-ink focus-visible:ring-2 focus-visible:ring-brand"
-        aria-label="Toggle theme"
+        aria-label={t("toggleTheme")}
       >
         <span className="size-4" />
       </Button>

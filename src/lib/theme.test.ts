@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import fs from "fs";
 import path from "path";
 import React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
+import { renderWithIntl } from "@/lib/render-test";
 import { ThemeSwitcher } from "@/components/layout/theme-switcher";
 
 describe("Dark Theme Tokens & Controls (N5B-52)", () => {
@@ -20,7 +20,7 @@ describe("Dark Theme Tokens & Controls (N5B-52)", () => {
   });
 
   it("renders ThemeSwitcher with accessible aria-label", () => {
-    const html = renderToStaticMarkup(React.createElement(ThemeSwitcher));
+    const html = renderWithIntl(React.createElement(ThemeSwitcher));
     expect(html).toContain('aria-label="Toggle theme"');
   });
 

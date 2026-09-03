@@ -249,16 +249,16 @@ export default async function AssetsPage({ params, searchParams }: Props) {
         ) : hasActiveFilters ? (
           /* N5B-73: Empty state with active filter explanation and 1-click reset */
           <NoResultsState
-            title="No matching assets found"
-            description="No published opportunities match your criteria. Try loosening your price threshold, license filters, or reset all parameters."
+            title={tMarketplace("noResultsTitle")}
+            description={tMarketplace("noResultsDesc")}
             query={q}
             resetHref="/assets"
             resetLabel="Clear all filters"
           />
         ) : (
           <EmptyState
-            title="No assets available yet"
-            description="New regulated asset offerings are added as institutional sellers complete compliance checks. Check back shortly or post a mandate."
+            title={tMarketplace("noAssetsTitle")}
+            description={tMarketplace("noAssetsDesc")}
             action={{
               label: "Explore Buyer Demand",
               href: "/buyers",

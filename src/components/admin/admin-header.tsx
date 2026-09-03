@@ -61,7 +61,7 @@ export function AdminHeader({ stats, activeTab }: AdminHeaderProps) {
               <CheckCircle2 className="h-3 w-3" />
               Platform Compliance & Governance
             </span>
-            <span className="text-xs text-muted-foreground">• Confidential Console</span>
+            <span className="text-xs text-muted-foreground">• {t("confidentialConsole")}</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-ink">
             {t("oversightTitle")}

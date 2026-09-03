@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -75,22 +76,24 @@ type AssetsTableProps = {
 };
 
 const STATUSES = [
-  { value: "ALL", label: "All Statuses" },
-  { value: "PUBLISHED", label: "Published" },
-  { value: "DRAFT", label: "Draft" },
-  { value: "SUSPENDED", label: "Suspended" },
-  { value: "REMOVED", label: "Removed" },
+  { value: "ALL", key: "allStatuses" },
+  { value: "PUBLISHED", key: "statusPublished" },
+  { value: "DRAFT", key: "statusDraft" },
+  { value: "SUSPENDED", key: "statusSuspended" },
+  { value: "REMOVED", key: "statusRemoved" },
 ];
 
 const SORTS = [
-  { value: "newest", label: "Listed: Newest" },
-  { value: "oldest", label: "Listed: Oldest" },
-  { value: "price_desc", label: "Price: High to Low" },
-  { value: "price_asc", label: "Price: Low to High" },
-  { value: "views", label: "Most Viewed" },
+  { value: "newest", key: "sortListedNewest" },
+  { value: "oldest", key: "sortListedOldest" },
+  { value: "price_desc", key: "sortPriceDesc" },
+  { value: "price_asc", key: "sortPriceAsc" },
+  { value: "views", key: "sortMostViewed" },
 ];
 
 export function AssetsTable({ assets, totalCount, sellers }: AssetsTableProps) {
+  const tAdmin = useTranslations("adminFilters");
+  const tAdminNs = useTranslations("admin");
   const enumLabel = useEnumLabel();
   const { locale, price } = useFormatLabels();
   const router = useRouter();
@@ -163,14 +166,14 @@ export function AssetsTable({ assets, totalCount, sellers }: AssetsTableProps) {
           <Input
             value={currentQ}
             onChange={(e) => updateParam("q", e.target.value)}
-            placeholder="Search title, summary, country..."
+            placeholder={tAdmin("searchAssets")}
             className="pl-9 pr-8 h-9 text-sm rounded-xl border-hairline bg-canvas"
           />
           {currentQ && (
             <button
               onClick={() => updateParam("q", "")}
               className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-ink transition-colors"
-              aria-label="Clear search"
+              aria-label={tAdmin("clearSearch")}
             >
               <X className="h-3.5 w-3.5" />
             </button>
@@ -184,11 +187,11 @@ export function AssetsTable({ assets, totalCount, sellers }: AssetsTableProps) {
             value={currentStatus}
             onChange={(e) => updateParam("status", e.target.value)}
             className="h-9 rounded-xl border border-hairline bg-canvas px-3 text-xs font-medium text-ink focus:outline-none focus:ring-1 focus:ring-brand"
-            aria-label="Filter by status"
+            aria-label={tAdmin("filterByStatus")}
           >
             {STATUSES.map((s) => (
               <option key={s.value} value={s.value}>
-                {s.label}
+                {tAdmin(s.key)}
               </option>
             ))}
           </select>
@@ -198,9 +201,9 @@ export function AssetsTable({ assets, totalCount, sellers }: AssetsTableProps) {
             value={currentSellerId}
             onChange={(e) => updateParam("sellerId", e.target.value)}
             className="h-9 max-w-[200px] rounded-xl border border-hairline bg-canvas px-3 text-xs font-medium text-ink focus:outline-none focus:ring-1 focus:ring-brand truncate"
-            aria-label="Filter by seller"
+            aria-label={tAdmin("filterBySeller")}
           >
-            <option value="ALL">All Sellers</option>
+            <option value="ALL">{tAdmin("allSellers")}</option>
             {sellers.map((s) => (
               <option key={s.id} value={s.id}>
                 {s.company ? `${s.company} (${s.name})` : s.name}
@@ -213,11 +216,11 @@ export function AssetsTable({ assets, totalCount, sellers }: AssetsTableProps) {
             value={currentSort}
             onChange={(e) => updateParam("sort", e.target.value)}
             className="h-9 rounded-xl border border-hairline bg-canvas px-3 text-xs font-medium text-ink focus:outline-none focus:ring-1 focus:ring-brand"
-            aria-label="Sort listings"
+            aria-label={tAdmin("sortListings")}
           >
             {SORTS.map((s) => (
               <option key={s.value} value={s.value}>
-                {s.label}
+                {tAdmin(s.key)}
               </option>
             ))}
           </select>
@@ -396,7 +399,7 @@ export function AssetsTable({ assets, totalCount, sellers }: AssetsTableProps) {
                             href={`/assets/${asset.id}`}
                             className="inline-flex items-center gap-1 rounded-lg border border-hairline px-2 py-1 text-xs font-medium text-brand hover:bg-canvas transition-colors"
                           >
-                            <span>View</span>
+                            <span>{tAdmin("view")}</span>
                             <ExternalLink className="h-3 w-3" />
                           </Link>
 
@@ -443,7 +446,7 @@ export function AssetsTable({ assets, totalCount, sellers }: AssetsTableProps) {
                                 variant="ghost"
                                 size="sm"
                                 className="h-7 w-7 p-0 rounded-lg text-muted-foreground hover:text-ink"
-                                aria-label="More options"
+                                aria-label={tAdmin("moreOptions")}
                               >
                                 <MoreHorizontal className="h-3.5 w-3.5" />
                               </Button>
@@ -457,7 +460,7 @@ export function AssetsTable({ assets, totalCount, sellers }: AssetsTableProps) {
                                   className="flex items-center gap-2 cursor-pointer text-emerald-700"
                                 >
                                   <CheckCircle2 className="h-3.5 w-3.5" />
-                                  <span>Verify Charter</span>
+                                  <span>{tAdmin("verifyCharter")}</span>
                                 </DropdownMenuItem>
                               )}
 
@@ -471,7 +474,7 @@ export function AssetsTable({ assets, totalCount, sellers }: AssetsTableProps) {
                                     className="flex items-center gap-2 text-rose-700 cursor-pointer focus:text-rose-700 focus:bg-rose-50"
                                   >
                                     <Trash2 className="h-3.5 w-3.5" />
-                                    <span>Remove Listing</span>
+                                    <span>{tAdminNs("removeAsset")}</span>
                                   </DropdownMenuItem>
                                 </>
                               )}
@@ -488,7 +491,7 @@ export function AssetsTable({ assets, totalCount, sellers }: AssetsTableProps) {
         </div>
       ) : (
         <NoResultsState
-          title="No assets found"
+          title={tAdmin("noAssetsFound")}
           description="No listings matched your active search query, seller filter, or status filter. Reset parameters to view all marketplace listings."
           query={currentQ}
           resetHref="/admin/assets"

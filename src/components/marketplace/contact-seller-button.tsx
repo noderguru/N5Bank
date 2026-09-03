@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { AlertCircle, Loader2, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
@@ -20,6 +21,7 @@ export function ContactSellerButton({
   isSuspended = false,
   sellerName = "the seller",
 }: ContactSellerButtonProps) {
+  const t = useTranslations("marketplace");
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -34,7 +36,7 @@ export function ContactSellerButton({
           className="h-11 w-full sm:w-auto px-6 rounded-xl border-amber-300 bg-amber-50 text-amber-800 cursor-not-allowed opacity-80"
         >
           <AlertCircle className="mr-2 size-4 text-amber-600" />
-          <span>Contact Unavailable (Suspended Seller)</span>
+          <span>{t("contactUnavailable")}</span>
         </Button>
         <p className="text-xs text-amber-700">
           This seller account has been temporarily suspended by compliance. Inquiries are closed.

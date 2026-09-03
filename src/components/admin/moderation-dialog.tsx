@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -39,6 +40,7 @@ export function ModerationDialog({
   action,
   onSuccess,
 }: ModerationDialogProps) {
+  const tAdmin = useTranslations("adminFilters");
   const [reason, setReason] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -168,7 +170,7 @@ export function ModerationDialog({
                   setError(null);
                 }
               }}
-              placeholder="State the compliance policy violation, KYC discrepancy, or verification rationale..."
+              placeholder={tAdmin("reasonPlaceholder")}
               className="h-24 text-xs rounded-xl border-hairline bg-canvas/50 resize-none"
               autoFocus
             />

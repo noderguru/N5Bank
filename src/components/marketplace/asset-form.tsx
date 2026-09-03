@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useEnumLabel } from "@/lib/i18n-format";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Check, Info, Loader2, Sparkles, AlertCircle } from "lucide-react";
@@ -39,48 +41,31 @@ type AssetFormProps = {
 };
 
 const LICENSE_TYPES = [
-  { value: "BANKING", label: "Banking" },
-  { value: "E_MONEY", label: "Electronic Money Institution (EMI)" },
-  { value: "PAYMENT", label: "Payment Institution (PI)" },
-  { value: "CRYPTO", label: "Crypto / VASP" },
-  { value: "BROKERAGE", label: "Brokerage / Investment" },
-  { value: "INSURANCE", label: "Insurance" },
-  { value: "OTHER", label: "Other Financial License" },
+  "BANKING",
+  "E_MONEY",
+  "PAYMENT",
+  "CRYPTO",
+  "BROKERAGE",
+  "INSURANCE",
+  "OTHER",
 ];
 
 const BUSINESS_TYPES = [
-  { value: "BANK", label: "Bank" },
-  { value: "FINTECH", label: "Fintech Platform" },
-  { value: "PAYMENT_INSTITUTION", label: "Payment Institution" },
-  { value: "CRYPTO_BUSINESS", label: "Crypto / Web3 Entity" },
-  { value: "BROKERAGE", label: "Brokerage" },
-  { value: "INSURANCE_COMPANY", label: "Insurance Company" },
-  { value: "OTHER", label: "Other Entity" },
+  "BANK",
+  "FINTECH",
+  "PAYMENT_INSTITUTION",
+  "CRYPTO_BUSINESS",
+  "BROKERAGE",
+  "INSURANCE_COMPANY",
+  "OTHER",
 ];
 
-const BUSINESS_STATUSES = [
-  { value: "OPERATING", label: "Fully Operating" },
-  { value: "PRE_LAUNCH", label: "Pre-launch / Ready to launch" },
-  { value: "DORMANT", label: "Dormant / Inactive" },
-  { value: "DISTRESSED", label: "Distressed / Restructuring" },
-];
+const BUSINESS_STATUSES = ["OPERATING", "PRE_LAUNCH", "DORMANT", "DISTRESSED"];
 
 const PRICE_MODES = [
-  {
-    value: "FIXED",
-    label: "Fixed Asking Price",
-    description: "Publicly visible price in the catalogue",
-  },
-  {
-    value: "ON_LOI",
-    label: "Upon LOI",
-    description: "Disclosed upon Letter of Intent",
-  },
-  {
-    value: "NDA",
-    label: "Under NDA",
-    description: "Price and sensitive data protected by NDA",
-  },
+  { value: "FIXED", labelKey: "priceFixed", descKey: "priceFixedDesc" },
+  { value: "ON_LOI", labelKey: "priceLoi", descKey: "priceLoiDesc" },
+  { value: "NDA", labelKey: "priceNda", descKey: "priceNdaDesc" },
 ] as const;
 
 export function AssetForm({
@@ -88,6 +73,8 @@ export function AssetForm({
   isEdit = false,
   canUseAi = false,
 }: AssetFormProps) {
+  const tForm = useTranslations("assetForm");
+  const enumLabel = useEnumLabel();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
@@ -264,13 +251,13 @@ export function AssetForm({
         <div className="space-y-4">
           <div>
             <Label htmlFor="title" className="text-sm font-medium text-neutral-800">
-              Listing Title <span className="text-rose-500">*</span>
+              {tForm("listingTitle")} <span className="text-rose-500">*</span>
             </Label>
             <Input
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="e.g. Operational Electronic Money Institution (EMI)"
+              placeholder={tForm("phTitle")}
               className="mt-1.5 h-11 rounded-xl"
               disabled={isPending}
               aria-invalid={Boolean(errors.title)}
@@ -286,13 +273,13 @@ export function AssetForm({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="country" className="text-sm font-medium text-neutral-800">
-                Jurisdiction / Country <span className="text-rose-500">*</span>
+                {tForm("jurisdictionCountry")} <span className="text-rose-500">*</span>
               </Label>
               <Input
                 id="country"
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
-                placeholder="e.g. Lithuania, United Kingdom, Cyprus"
+                placeholder={tForm("phCountry")}
                 className="mt-1.5 h-11 rounded-xl"
                 disabled={isPending}
                 aria-invalid={Boolean(errors.country)}
@@ -307,7 +294,7 @@ export function AssetForm({
 
             <div>
               <Label htmlFor="licenseType" className="text-sm font-medium text-neutral-800">
-                License Type <span className="text-rose-500">*</span>
+                {tForm("licenseType")} <span className="text-rose-500">*</span>
               </Label>
               <select
                 id="licenseType"
@@ -316,9 +303,9 @@ export function AssetForm({
                 className="mt-1.5 flex h-11 w-full rounded-xl border border-input bg-transparent px-3 py-2 text-sm shadow-xs transition-colors focus-visible:border-ring focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
                 disabled={isPending}
               >
-                {LICENSE_TYPES.map((l) => (
-                  <option key={l.value} value={l.value}>
-                    {l.label}
+                {LICENSE_TYPES.map((value) => (
+                  <option key={value} value={value}>
+                    {enumLabel("licenseType", value)}
                   </option>
                 ))}
               </select>
@@ -333,7 +320,7 @@ export function AssetForm({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="businessType" className="text-sm font-medium text-neutral-800">
-                Business Type <span className="text-rose-500">*</span>
+                {tForm("businessType")} <span className="text-rose-500">*</span>
               </Label>
               <select
                 id="businessType"
@@ -342,9 +329,9 @@ export function AssetForm({
                 className="mt-1.5 flex h-11 w-full rounded-xl border border-input bg-transparent px-3 py-2 text-sm shadow-xs transition-colors focus-visible:border-ring focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
                 disabled={isPending}
               >
-                {BUSINESS_TYPES.map((b) => (
-                  <option key={b.value} value={b.value}>
-                    {b.label}
+                {BUSINESS_TYPES.map((value) => (
+                  <option key={value} value={value}>
+                    {enumLabel("businessType", value)}
                   </option>
                 ))}
               </select>
@@ -357,7 +344,7 @@ export function AssetForm({
 
             <div>
               <Label htmlFor="businessStatus" className="text-sm font-medium text-neutral-800">
-                Operational Status <span className="text-rose-500">*</span>
+                {tForm("operationalStatus")} <span className="text-rose-500">*</span>
               </Label>
               <select
                 id="businessStatus"
@@ -366,9 +353,9 @@ export function AssetForm({
                 className="mt-1.5 flex h-11 w-full rounded-xl border border-input bg-transparent px-3 py-2 text-sm shadow-xs transition-colors focus-visible:border-ring focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
                 disabled={isPending}
               >
-                {BUSINESS_STATUSES.map((s) => (
-                  <option key={s.value} value={s.value}>
-                    {s.label}
+                {BUSINESS_STATUSES.map((value) => (
+                  <option key={value} value={value}>
+                    {enumLabel("businessStatus", value)}
                   </option>
                 ))}
               </select>
@@ -395,7 +382,7 @@ export function AssetForm({
 
         <div className="space-y-4">
           <Label className="text-sm font-medium text-ink">
-            Price Disclosure Mode <span className="text-rose-500">*</span>
+            {tForm("priceDisclosureMode")} <span className="text-rose-500">*</span>
           </Label>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -424,7 +411,7 @@ export function AssetForm({
                         isSelected ? "text-brand" : "text-ink"
                       }`}
                     >
-                      {pm.label}
+                      {tForm(pm.labelKey)}
                     </span>
                     {isSelected && (
                       <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#383BFE] text-white">
@@ -433,7 +420,7 @@ export function AssetForm({
                     )}
                   </div>
                   <span className="mt-1 text-xs text-neutral-500">
-                    {pm.description}
+                    {tForm(pm.descKey)}
                   </span>
                 </button>
               );
@@ -447,7 +434,7 @@ export function AssetForm({
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
               <div className="sm:col-span-2">
                 <Label htmlFor="askingPrice" className="text-sm font-medium text-neutral-800">
-                  Asking Price <span className="text-rose-500">*</span>
+                  {tForm("askingPrice")} <span className="text-rose-500">*</span>
                 </Label>
                 <div className="relative mt-1.5">
                   <Input
@@ -457,7 +444,7 @@ export function AssetForm({
                     step="any"
                     value={askingPrice}
                     onChange={(e) => setAskingPrice(e.target.value)}
-                    placeholder="e.g. 2500000"
+                    placeholder={tForm("phPrice")}
                     className="h-11 rounded-xl pr-14"
                     disabled={isPending}
                     aria-invalid={Boolean(errors.askingPrice)}
@@ -476,7 +463,7 @@ export function AssetForm({
 
               <div>
                 <Label htmlFor="currency" className="text-sm font-medium text-neutral-800">
-                  Currency <span className="text-rose-500">*</span>
+                  {tForm("currency")} <span className="text-rose-500">*</span>
                 </Label>
                 <select
                   id="currency"
@@ -523,7 +510,7 @@ export function AssetForm({
             <div className="flex justify-between items-center mb-1.5">
               <div className="flex items-center gap-2">
                 <Label htmlFor="summary" className="text-sm font-medium text-ink">
-                  Short Summary <span className="text-rose-500">*</span>
+                  {tForm("shortSummary")} <span className="text-rose-500">*</span>
                 </Label>
                 {canUseAi && (
                   <Button
@@ -552,9 +539,9 @@ export function AssetForm({
                 <div className="flex items-center justify-between font-semibold text-purple-900">
                   <div className="flex items-center gap-1.5">
                     <Sparkles className="size-3.5 text-purple-600" />
-                    <span>Suggested AI Summary Proposal</span>
+                    <span>{tForm("aiSummaryProposal")}</span>
                   </div>
-                  <span className="text-[11px] font-normal text-purple-700">Editable before saving</span>
+                  <span className="text-[11px] font-normal text-muted-foreground">{tForm("editableBeforeSaving")}</span>
                 </div>
                 <p className="text-ink italic bg-surface/90 p-2.5 rounded-lg border border-hairline">
                   &ldquo;{proposedSummary}&rdquo;
@@ -589,7 +576,7 @@ export function AssetForm({
               id="summary"
               value={summary}
               onChange={(e) => setSummary(e.target.value)}
-              placeholder="e.g. Fully operational European EMI with SEPA Instant integration and 12 staff members."
+              placeholder={tForm("phSummary")}
               maxLength={300}
               className="h-11 rounded-xl"
               disabled={isPending}
@@ -605,13 +592,13 @@ export function AssetForm({
 
           <div>
             <Label htmlFor="description" className="text-sm font-medium text-neutral-800">
-              Full Description & Tech Stack <span className="text-rose-500">*</span>
+              {tForm("fullDescription")} <span className="text-rose-500">*</span>
             </Label>
             <Textarea
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Detail the operational history, core banking rails, licenses, clean compliance record, active customers, software stack, and terms of transfer..."
+              placeholder={tForm("phDescription")}
               rows={5}
               className="mt-1.5 rounded-xl resize-y"
               disabled={isPending}
@@ -627,13 +614,13 @@ export function AssetForm({
 
           <div>
             <Label htmlFor="features" className="text-sm font-medium text-neutral-800">
-              Key Features / Tags (comma-separated)
+              {tForm("keyFeatures")}
             </Label>
             <Input
               id="features"
               value={features}
               onChange={(e) => setFeatures(e.target.value)}
-              placeholder="e.g. SEPA Instant, Tier 1 Banking, Mastercard Principal, API-first"
+              placeholder={tForm("phFeatures")}
               className="mt-1.5 h-11 rounded-xl"
               disabled={isPending}
             />
@@ -658,7 +645,7 @@ export function AssetForm({
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
             <Label htmlFor="yearOfIssue" className="text-sm font-medium text-ink">
-              Year of License Issue
+              {tForm("yearOfIssue")}
             </Label>
             <Input
               id="yearOfIssue"
@@ -667,7 +654,7 @@ export function AssetForm({
               max={new Date().getFullYear() + 1}
               value={yearOfIssue}
               onChange={(e) => setYearOfIssue(e.target.value)}
-              placeholder="e.g. 2021"
+              placeholder={tForm("phYear")}
               className="mt-1.5 h-11 rounded-xl"
               disabled={isPending}
             />
@@ -680,7 +667,7 @@ export function AssetForm({
 
           <div>
             <Label htmlFor="employees" className="text-sm font-medium text-neutral-800">
-              Staff / Employees
+              {tForm("employees")}
             </Label>
             <Input
               id="employees"
@@ -688,7 +675,7 @@ export function AssetForm({
               min="0"
               value={employees}
               onChange={(e) => setEmployees(e.target.value)}
-              placeholder="e.g. 15"
+              placeholder={tForm("phEmployees")}
               className="mt-1.5 h-11 rounded-xl"
               disabled={isPending}
             />
@@ -701,13 +688,13 @@ export function AssetForm({
 
           <div>
             <Label htmlFor="regulator" className="text-sm font-medium text-neutral-800">
-              Supervisory Authority
+              {tForm("regulator")}
             </Label>
             <Input
               id="regulator"
               value={regulator}
               onChange={(e) => setRegulator(e.target.value)}
-              placeholder="e.g. Bank of Lithuania"
+              placeholder={tForm("phRegulator")}
               className="mt-1.5 h-11 rounded-xl"
               disabled={isPending}
             />
@@ -728,9 +715,9 @@ export function AssetForm({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Info className="size-4 text-brand" />
-            <h3 className="text-sm font-semibold text-ink">Smart Listing Advisory</h3>
+            <h3 className="text-sm font-semibold text-ink">{tForm("smartAdvisory")}</h3>
           </div>
-          <span className="text-xs text-muted-foreground">Institutional diligence check</span>
+          <span className="text-xs text-muted-foreground">{tForm("diligenceCheck")}</span>
         </div>
 
         {completenessWarnings.length > 0 ? (

@@ -28,7 +28,7 @@ describe("Accessibility Standards (N5B-44)", () => {
     expect(html).toContain('<main id="main-content"');
     expect(html).toContain("<header");
     expect(html).toContain("<footer");
-    expect(html).toContain('aria-label="Main Navigation"');
+    expect(html).toContain('aria-label="Main navigation"');
   });
 
   it("ensures icon-only buttons have explicit aria-label", () => {

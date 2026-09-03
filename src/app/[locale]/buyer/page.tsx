@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { ArrowRight, Bookmark, MessageSquare, Search } from "lucide-react";
 import { readSession } from "@/lib/auth/session";
@@ -12,6 +13,7 @@ export const metadata = {
 };
 
 export default async function BuyerDashboardPage() {
+  const t = await getTranslations("buyerWorkspace");
   const session = await readSession();
 
   if (!session) {
@@ -94,7 +96,7 @@ export default async function BuyerDashboardPage() {
               <ArrowRight className="size-3.5 text-muted-foreground group-hover:translate-x-0.5 group-hover:text-brand transition-all" />
             </div>
             <div className="mt-3">
-              <div className="text-sm font-semibold text-ink">Catalogue</div>
+              <div className="text-sm font-semibold text-ink">{t("catalogue")}</div>
               <div className="text-xs text-muted-foreground">
                 {publishedAssetsCount} active opportunities
               </div>
@@ -110,7 +112,7 @@ export default async function BuyerDashboardPage() {
               <ArrowRight className="size-3.5 text-muted-foreground group-hover:translate-x-0.5 group-hover:text-brand transition-all" />
             </div>
             <div className="mt-3">
-              <div className="text-sm font-semibold text-ink">Watchlist</div>
+              <div className="text-sm font-semibold text-ink">{t("watchlist")}</div>
               <div className="text-xs text-muted-foreground">
                 {savedCount} saved {savedCount === 1 ? "asset" : "assets"}
               </div>
@@ -126,7 +128,7 @@ export default async function BuyerDashboardPage() {
               <ArrowRight className="size-3.5 text-muted-foreground group-hover:translate-x-0.5 group-hover:text-brand transition-all" />
             </div>
             <div className="mt-3">
-              <div className="text-sm font-semibold text-ink">Inbox</div>
+              <div className="text-sm font-semibold text-ink">{t("inbox")}</div>
               <div className="text-xs text-muted-foreground">
                 {unreadCount > 0 ? `${unreadCount} unread` : "Deal messages"}
               </div>

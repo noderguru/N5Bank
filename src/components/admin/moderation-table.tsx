@@ -1,7 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -54,20 +54,21 @@ type ModerationTableProps = {
 };
 
 const ACTION_FILTERS = [
-  { value: "ALL", label: "All Actions" },
-  { value: "SUSPEND", label: "Suspensions" },
-  { value: "RESTORE", label: "Reinstatements" },
-  { value: "REMOVE", label: "Removals" },
-  { value: "VALIDATE", label: "Verifications" },
+  { value: "ALL", key: "allActions" },
+  { value: "SUSPEND", key: "actionSuspensions" },
+  { value: "RESTORE", key: "actionReinstatements" },
+  { value: "REMOVE", key: "actionRemovals" },
+  { value: "VALIDATE", key: "actionVerifications" },
 ];
 
 const TARGET_FILTERS = [
-  { value: "ALL", label: "All Targets" },
-  { value: "USER", label: "Participants" },
-  { value: "ASSET", label: "Listings" },
+  { value: "ALL", key: "allTargets" },
+  { value: "USER", key: "targetParticipants" },
+  { value: "ASSET", key: "targetListings" },
 ];
 
 export function ModerationTable({ logs, totalCount }: ModerationTableProps) {
+  const tAdmin = useTranslations("adminFilters");
   const locale = useLocale();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -112,14 +113,14 @@ export function ModerationTable({ logs, totalCount }: ModerationTableProps) {
           <Input
             value={currentQ}
             onChange={(e) => updateParam("q", e.target.value)}
-            placeholder="Search reason or operator..."
+            placeholder={tAdmin("searchLogs")}
             className="pl-9 pr-8 h-9 text-sm rounded-xl border-hairline bg-canvas"
           />
           {currentQ && (
             <button
               onClick={() => updateParam("q", "")}
               className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-ink transition-colors"
-              aria-label="Clear search"
+              aria-label={tAdmin("clearSearch")}
             >
               <X className="h-3.5 w-3.5" />
             </button>
@@ -133,11 +134,11 @@ export function ModerationTable({ logs, totalCount }: ModerationTableProps) {
             value={currentTarget}
             onChange={(e) => updateParam("target", e.target.value)}
             className="h-9 rounded-xl border border-hairline bg-canvas px-3 text-xs font-medium text-ink focus:outline-none focus:ring-1 focus:ring-brand"
-            aria-label="Filter by target type"
+            aria-label={tAdmin("filterByTargetType")}
           >
             {TARGET_FILTERS.map((t) => (
               <option key={t.value} value={t.value}>
-                {t.label}
+                {tAdmin(t.key)}
               </option>
             ))}
           </select>
@@ -147,11 +148,11 @@ export function ModerationTable({ logs, totalCount }: ModerationTableProps) {
             value={currentAction}
             onChange={(e) => updateParam("action", e.target.value)}
             className="h-9 rounded-xl border border-hairline bg-canvas px-3 text-xs font-medium text-ink focus:outline-none focus:ring-1 focus:ring-brand"
-            aria-label="Filter by action"
+            aria-label={tAdmin("filterByAction")}
           >
             {ACTION_FILTERS.map((a) => (
               <option key={a.value} value={a.value}>
-                {a.label}
+                {tAdmin(a.key)}
               </option>
             ))}
           </select>
@@ -297,7 +298,7 @@ export function ModerationTable({ logs, totalCount }: ModerationTableProps) {
         </div>
       ) : hasActiveFilters ? (
         <NoResultsState
-          title="No log entries found"
+          title={tAdmin("noLogsFound")}
           description="No moderation entries matched your active search query or filter parameters. Reset filters to view all audit entries."
           query={currentQ}
           resetHref="/admin/moderation"
@@ -306,7 +307,7 @@ export function ModerationTable({ logs, totalCount }: ModerationTableProps) {
       ) : (
         /* Acceptance Criterion: Пустое состояние осмысленное */
         <EmptyState
-          title="No compliance actions recorded yet"
+          title={tAdmin("noActionsYet")}
           description="Every reversible moderation intervention (user suspension, reinstatement, listing removal, or charter validation) will be logged here with mandatory compliance justification."
           action={{
             label: "Explore Participants Directory",

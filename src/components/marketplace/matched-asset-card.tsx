@@ -23,6 +23,8 @@ export async function MatchedAssetCard({ item, isFavorite }: MatchedAssetCardPro
   const locale = await getLocale();
   const tEnums = await getTranslations("enums");
   const tCommon = await getTranslations("common");
+  const tMatching = await getTranslations("matching");
+  const tMarketplace = await getTranslations("marketplace");
   const price = {
     onRequest: tCommon("priceOnRequest"),
     uponLoi: tCommon("uponLoi"),
@@ -65,12 +67,12 @@ export async function MatchedAssetCard({ item, isFavorite }: MatchedAssetCardPro
             {engine === "ai" ? (
               <span className="inline-flex items-center gap-1 rounded-full bg-purple-500/10 px-2 py-0.5 text-[11px] font-semibold text-purple-700 border border-purple-500/20">
                 <Sparkles className="size-3" />
-                <span>AI Curated</span>
+                <span>{tMatching("aiCurated")}</span>
               </span>
             ) : (
               <span className="inline-flex items-center gap-1 rounded-full bg-slate-500/10 px-2 py-0.5 text-[11px] font-semibold text-slate-700 border border-slate-500/20">
                 <ShieldCheck className="size-3" />
-                <span>Algorithmic Match</span>
+                <span>{tMatching("algorithmicMatch")}</span>
               </span>
             )}
           </div>
@@ -110,7 +112,7 @@ export async function MatchedAssetCard({ item, isFavorite }: MatchedAssetCardPro
             <div className="space-y-1">
               <div className="flex items-center gap-1.5 text-[11px] font-semibold text-purple-700">
                 <Sparkles className="size-3.5 shrink-0" />
-                <span>AI Thesis Alignment</span>
+                <span>{tMatching("thesisAlignment")}</span>
               </div>
               <p className="text-xs text-ink/90 italic leading-relaxed">
                 &ldquo;{aiExplanation}&rdquo;
@@ -154,11 +156,11 @@ export async function MatchedAssetCard({ item, isFavorite }: MatchedAssetCardPro
         {/* Mini Spec strip */}
         <div className="grid grid-cols-2 gap-2 text-[11px] text-muted-foreground bg-surface rounded-lg p-2 border border-hairline">
           <div>
-            <span className="font-semibold text-ink">Model: </span>
+            <span className="font-semibold text-ink">{tMatching("modelLabel")} </span>
             {enumLabel("businessType", asset.businessType)}
           </div>
           <div>
-            <span className="font-semibold text-ink">Status: </span>
+            <span className="font-semibold text-ink">{tMatching("statusLabel")} </span>
             {enumLabel("businessStatus", asset.businessStatus)}
           </div>
         </div>
@@ -173,7 +175,7 @@ export async function MatchedAssetCard({ item, isFavorite }: MatchedAssetCardPro
             className="h-8 gap-1 rounded-xl border-hairline text-xs font-medium hover:border-brand hover:text-brand"
           >
             <Link href={`/assets/${asset.id}`} prefetch={false}>
-              <span>View specs</span>
+              <span>{tMatching("viewSpecs")}</span>
               <ArrowUpRight className="size-3.5" />
             </Link>
           </Button>
@@ -194,7 +196,7 @@ export async function MatchedAssetCard({ item, isFavorite }: MatchedAssetCardPro
         >
           <Link href={`/assets/${asset.id}?contact=true`} prefetch={false}>
             <MessageSquare className="size-3.5" />
-            <span>Contact seller</span>
+            <span>{tMarketplace("contactSeller")}</span>
           </Link>
         </Button>
       </div>

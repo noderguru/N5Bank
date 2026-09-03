@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -60,27 +60,29 @@ type UsersTableProps = {
 };
 
 const ROLES = [
-  { value: "ALL", label: "All Roles" },
-  { value: "BUYER", label: "Buyers" },
-  { value: "SELLER", label: "Sellers" },
-  { value: "MANAGER", label: "Managers" },
+  { value: "ALL", key: "allRoles" },
+  { value: "BUYER", key: "roleBuyers" },
+  { value: "SELLER", key: "roleSellers" },
+  { value: "MANAGER", key: "roleManagers" },
 ];
 
 const STATUSES = [
-  { value: "ALL", label: "All Statuses" },
-  { value: "ACTIVE", label: "Active" },
-  { value: "SUSPENDED", label: "Suspended" },
-  { value: "REMOVED", label: "Removed" },
+  { value: "ALL", key: "allStatuses" },
+  { value: "ACTIVE", key: "statusActive" },
+  { value: "SUSPENDED", key: "statusSuspended" },
+  { value: "REMOVED", key: "statusRemoved" },
 ];
 
 const SORTS = [
-  { value: "newest", label: "Registered: Newest" },
-  { value: "oldest", label: "Registered: Oldest" },
-  { value: "name_asc", label: "Name: A to Z" },
-  { value: "name_desc", label: "Name: Z to A" },
+  { value: "newest", key: "sortRegisteredNewest" },
+  { value: "oldest", key: "sortRegisteredOldest" },
+  { value: "name_asc", key: "sortNameAsc" },
+  { value: "name_desc", key: "sortNameDesc" },
 ];
 
 export function UsersTable({ users, totalCount, currentUserId }: UsersTableProps) {
+  const tAdmin = useTranslations("adminFilters");
+  const tAdminNs = useTranslations("admin");
   const locale = useLocale();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -152,14 +154,14 @@ export function UsersTable({ users, totalCount, currentUserId }: UsersTableProps
           <Input
             value={currentQ}
             onChange={(e) => updateParam("q", e.target.value)}
-            placeholder="Search email, name, or company..."
+            placeholder={tAdmin("searchUsers")}
             className="pl-9 pr-8 h-9 text-sm rounded-xl border-hairline bg-canvas"
           />
           {currentQ && (
             <button
               onClick={() => updateParam("q", "")}
               className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-ink transition-colors"
-              aria-label="Clear search"
+              aria-label={tAdmin("clearSearch")}
             >
               <X className="h-3.5 w-3.5" />
             </button>
@@ -173,11 +175,11 @@ export function UsersTable({ users, totalCount, currentUserId }: UsersTableProps
             value={currentRole}
             onChange={(e) => updateParam("role", e.target.value)}
             className="h-9 rounded-xl border border-hairline bg-canvas px-3 text-xs font-medium text-ink focus:outline-none focus:ring-1 focus:ring-brand"
-            aria-label="Filter by role"
+            aria-label={tAdmin("filterByRole")}
           >
             {ROLES.map((r) => (
               <option key={r.value} value={r.value}>
-                {r.label}
+                {tAdmin(r.key)}
               </option>
             ))}
           </select>
@@ -187,11 +189,11 @@ export function UsersTable({ users, totalCount, currentUserId }: UsersTableProps
             value={currentStatus}
             onChange={(e) => updateParam("status", e.target.value)}
             className="h-9 rounded-xl border border-hairline bg-canvas px-3 text-xs font-medium text-ink focus:outline-none focus:ring-1 focus:ring-brand"
-            aria-label="Filter by status"
+            aria-label={tAdmin("filterByStatus")}
           >
             {STATUSES.map((s) => (
               <option key={s.value} value={s.value}>
-                {s.label}
+                {tAdmin(s.key)}
               </option>
             ))}
           </select>
@@ -201,11 +203,11 @@ export function UsersTable({ users, totalCount, currentUserId }: UsersTableProps
             value={currentSort}
             onChange={(e) => updateParam("sort", e.target.value)}
             className="h-9 rounded-xl border border-hairline bg-canvas px-3 text-xs font-medium text-ink focus:outline-none focus:ring-1 focus:ring-brand"
-            aria-label="Sort users"
+            aria-label={tAdmin("sortUsers")}
           >
             {SORTS.map((s) => (
               <option key={s.value} value={s.value}>
-                {s.label}
+                {tAdmin(s.key)}
               </option>
             ))}
           </select>
@@ -434,7 +436,7 @@ export function UsersTable({ users, totalCount, currentUserId }: UsersTableProps
                                     variant="ghost"
                                     size="sm"
                                     className="h-7 w-7 p-0 rounded-lg text-muted-foreground hover:text-ink"
-                                    aria-label="More options"
+                                    aria-label={tAdmin("moreOptions")}
                                   >
                                     <MoreHorizontal className="h-3.5 w-3.5" />
                                   </Button>
@@ -447,7 +449,7 @@ export function UsersTable({ users, totalCount, currentUserId }: UsersTableProps
                                         className="flex items-center gap-2 cursor-pointer"
                                       >
                                         <ExternalLink className="h-3.5 w-3.5 text-muted-foreground" />
-                                        <span>View Mandate</span>
+                                        <span>{tAdmin("viewMandate")}</span>
                                       </Link>
                                     </DropdownMenuItem>
                                   )}
@@ -471,7 +473,7 @@ export function UsersTable({ users, totalCount, currentUserId }: UsersTableProps
                                       className="flex items-center gap-2 text-rose-700 cursor-pointer focus:text-rose-700 focus:bg-rose-50"
                                     >
                                       <Trash2 className="h-3.5 w-3.5" />
-                                      <span>Remove Participant</span>
+                                      <span>{tAdminNs("removeParticipant")}</span>
                                     </DropdownMenuItem>
                                   )}
                                 </DropdownMenuContent>
@@ -489,7 +491,7 @@ export function UsersTable({ users, totalCount, currentUserId }: UsersTableProps
         </div>
       ) : (
         <NoResultsState
-          title="No participants found"
+          title={tAdmin("noParticipantsFound")}
           description="No users matched your active search query or role/status filters. Reset filters to view all platform participants."
           query={currentQ}
           resetHref="/admin/users"

@@ -1,8 +1,10 @@
 "use client";
 
 import { useTransition } from "react";
+import { useTranslations } from "next-intl";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Globe } from "lucide-react";
+import { LOCALES as routingLocales } from "@/i18n/locales";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,13 +13,22 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 
-const LOCALES = [
-  { code: "en", label: "English", short: "EN" },
-  { code: "uk", label: "Українська", short: "UK" },
-  { code: "ru", label: "Русский", short: "RU" },
-] as const;
+// Display names only — the supported set itself comes from the routing config.
+const LOCALE_NAMES: Record<string, { label: string; short: string }> = {
+  en: { label: "English", short: "EN" },
+  uk: { label: "Українська", short: "UK" },
+  ru: { label: "Русский", short: "RU" },
+};
+
+const LOCALES = routingLocales.map((code) => ({
+  code,
+  ...LOCALE_NAMES[code],
+}));
+
+const FALLBACK_LOCALE = LOCALES[0]!;
 
 export function LocaleSwitcher() {
+  const t = useTranslations("common");
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -27,7 +38,7 @@ export function LocaleSwitcher() {
   const currentLocaleCode =
     LOCALES.find((l) => l.code === segments[0])?.code || "en";
   const activeLocale =
-    LOCALES.find((l) => l.code === currentLocaleCode) || LOCALES[0];
+    LOCALES.find((l) => l.code === currentLocaleCode) ?? FALLBACK_LOCALE;
 
   const handleSelect = (code: string) => {
     if (code === currentLocaleCode) return;
@@ -56,7 +67,7 @@ export function LocaleSwitcher() {
           size="sm"
           disabled={isPending}
           className="h-8 gap-1 rounded-full px-2.5 text-xs font-semibold text-muted-foreground hover:bg-canvas hover:text-ink focus-visible:ring-2 focus-visible:ring-brand"
-          aria-label="Select Language"
+          aria-label={t("selectLanguage")}
         >
           <Globe className="size-3.5" />
           <span>{activeLocale.short}</span>

@@ -1,10 +1,10 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getRoleDashboard } from "./lib/auth/roles";
 import { SESSION_COOKIE_NAME, verifySession } from "./lib/auth/token";
+import { LOCALES, DEFAULT_LOCALE, type Locale } from "./i18n/locales";
 
-export const LOCALES = ["en", "uk", "ru"] as const;
-export type AppLocale = (typeof LOCALES)[number];
-export const DEFAULT_LOCALE: AppLocale = "en";
+export { LOCALES, DEFAULT_LOCALE } from "./i18n/locales";
+export type AppLocale = Locale;
 
 const ROLE_PROTECTED_PREFIXES = [
   { prefix: "/admin", allowedRoles: ["MANAGER"] },

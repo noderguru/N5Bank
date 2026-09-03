@@ -1,4 +1,5 @@
 import { requireRole } from "@/lib/auth/guard";
+import { getTranslations } from "next-intl/server";
 import { AppShell } from "@/components/layout/app-shell";
 import { EmptyState } from "@/components/marketplace/empty-state";
 
@@ -8,6 +9,7 @@ export const metadata = {
 };
 
 export default async function AdminDealsPage() {
+  const tAdmin = await getTranslations("adminFilters");
   const session = await requireRole("MANAGER");
 
   return (
@@ -29,10 +31,10 @@ export default async function AdminDealsPage() {
         </div>
 
         <EmptyState
-          title="Escrow & settlement module in pre-launch"
-          description="Formal escrow management and multi-sig milestone disbursements are scheduled for phase two. In-app bilateral negotiations and counterparty due diligence are managed via the Inbox."
+          title={tAdmin("escrowTitle")}
+          description={tAdmin("escrowDesc")}
           action={{
-            label: "View Active Inquiries",
+            label: tAdmin("viewActiveInquiries"),
             href: "/inbox",
           }}
         />
