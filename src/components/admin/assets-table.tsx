@@ -36,7 +36,7 @@ import {
 } from "@/components/ui/table";
 import { NoResultsState } from "@/components/marketplace/no-results-state";
 import { ModerationDialog } from "@/components/admin/moderation-dialog";
-import { formatPrice, formatLicenseType, formatEnum } from "@/lib/formatters";
+import { formatPrice, formatLicenseType, formatEnum, formatDate } from "@/lib/formatters";
 import { cn } from "@/lib/utils";
 import type { PriceMode, AssetStatus, LicenseType, BusinessType } from "@prisma/client";
 
@@ -135,18 +135,6 @@ export function AssetsTable({ assets, totalCount, sellers }: AssetsTableProps) {
     startTransition(() => {
       router.push("/admin/assets");
     });
-  };
-
-  const formatDate = (iso: string) => {
-    try {
-      return new Intl.DateTimeFormat("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      }).format(new Date(iso));
-    } catch {
-      return iso;
-    }
   };
 
   const openModeration = (

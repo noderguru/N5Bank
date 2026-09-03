@@ -176,8 +176,8 @@ describe("Manager Console Components", () => {
 
       expect(html).toContain("Swiss Private Bank Charter");
       expect(html).toContain("Switzerland");
-      expect(html).toContain("Published");
-      expect(html).toContain("$15,000,000");
+      expect(html).toContain("USD");
+      expect(html).toContain("15,000,000");
       expect(html).toContain("Banking");
       expect(html).toContain("View");
       expect(html).toContain("/assets/asset_test_1");

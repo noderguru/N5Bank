@@ -29,7 +29,8 @@ describe("marketplace cards", () => {
       expect(html).toContain("E-Money / EMI");
       expect(html).toContain("Fintech");
       expect(html).toContain("Validated");
-      expect(html).toContain("€2,850,000");
+      expect(html).toContain("EUR");
+      expect(html).toContain("2,850,000");
     });
 
     it("handles empty price, 150-char long title, and 7 feature chips without breaking (Criterion 1)", () => {
@@ -135,7 +136,9 @@ describe("marketplace cards", () => {
       expect(html).toContain("Nordic Capital Partners");
       expect(html).toContain("Elena Rostova");
       expect(html).toContain("Sweden");
-      expect(html).toContain("€1,000,000 – €5,000,000");
+      expect(html).toContain("EUR");
+      expect(html).toContain("1,000,000");
+      expect(html).toContain("5,000,000");
       expect(html).toContain("Seeking European EMI licenses");
       expect(html).toContain("Lithuania");
       expect(html).toContain("+1"); // 4 countries, 3 shown, +1 overflow

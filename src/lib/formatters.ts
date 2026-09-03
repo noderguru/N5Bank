@@ -14,14 +14,17 @@ export function formatCurrency(
     return "Price on request";
   }
 
+  const cleanCurrency = currency?.toUpperCase() || "USD";
+
   try {
     return new Intl.NumberFormat(locale, {
       style: "currency",
-      currency: currency.toUpperCase(),
+      currency: cleanCurrency,
+      currencyDisplay: "code",
       maximumFractionDigits: 0,
     }).format(num);
   } catch {
-    return `${currency.toUpperCase()} ${num.toLocaleString(locale)}`;
+    return `${cleanCurrency} ${num.toLocaleString(locale)}`;
   }
 }
 
@@ -40,6 +43,54 @@ export function formatPrice(
     default:
       return formatCurrency(amount, currency, locale);
   }
+}
+
+export function formatNumber(
+  value: number | string | null | undefined,
+  locale = "en-US",
+  options?: Intl.NumberFormatOptions
+): string {
+  if (value === null || value === undefined || value === "") return "—";
+  const num = typeof value === "string" ? parseFloat(value) : value;
+  if (isNaN(num)) return "—";
+
+  return new Intl.NumberFormat(locale, options).format(num);
+}
+
+export function formatDate(
+  date: Date | string | number | null | undefined,
+  locale = "en-US",
+  options?: Intl.DateTimeFormatOptions
+): string {
+  if (!date) return "—";
+  const d = typeof date === "object" && date instanceof Date ? date : new Date(date);
+  if (isNaN(d.getTime())) return "—";
+
+  return new Intl.DateTimeFormat(locale, {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    ...options,
+  }).format(d);
+}
+
+export function formatDateTime(
+  date: Date | string | number | null | undefined,
+  locale = "en-US",
+  options?: Intl.DateTimeFormatOptions
+): string {
+  if (!date) return "—";
+  const d = typeof date === "object" && date instanceof Date ? date : new Date(date);
+  if (isNaN(d.getTime())) return "—";
+
+  return new Intl.DateTimeFormat(locale, {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    ...options,
+  }).format(d);
 }
 
 export function formatEnum(value: string | null | undefined): string {

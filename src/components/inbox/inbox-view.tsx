@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { sendMessageAction } from "@/app/actions/conversations";
+import { formatDate, formatDateTime } from "@/lib/formatters";
 
 export type InboxMessage = {
   id: string;
@@ -182,7 +183,7 @@ export function InboxView({
                         </span>
                       )}
                       <span className="text-[10px] text-muted-foreground">
-                        {new Date(conv.updatedAt).toLocaleDateString([], {
+                        {formatDate(conv.updatedAt, undefined, {
                           month: "short",
                           day: "numeric",
                         })}
@@ -298,7 +299,7 @@ export function InboxView({
                           </div>
                         ) : (
                           <span>
-                            {new Date(msg.createdAt).toLocaleTimeString([], {
+                            {formatDateTime(msg.createdAt, undefined, {
                               hour: "2-digit",
                               minute: "2-digit",
                             })}

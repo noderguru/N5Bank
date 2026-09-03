@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/table";
 import { NoResultsState } from "@/components/marketplace/no-results-state";
 import { EmptyState } from "@/components/marketplace/empty-state";
+import { formatDateTime } from "@/lib/formatters";
 import type { ModerationAction, ModerationTarget } from "@prisma/client";
 
 export type ModerationLogRow = {
@@ -97,20 +98,6 @@ export function ModerationTable({ logs, totalCount }: ModerationTableProps) {
     startTransition(() => {
       router.push("/admin/moderation");
     });
-  };
-
-  const formatDate = (iso: string) => {
-    try {
-      return new Intl.DateTimeFormat("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }).format(new Date(iso));
-    } catch {
-      return iso;
-    }
   };
 
   return (
@@ -224,7 +211,7 @@ export function ModerationTable({ logs, totalCount }: ModerationTableProps) {
                       <TableCell className="py-3.5">
                         <div className="flex items-center gap-1.5 text-xs text-muted-foreground whitespace-nowrap">
                           <Clock className="h-3.5 w-3.5 text-muted-foreground/70 shrink-0" />
-                          <span>{formatDate(log.createdAt)}</span>
+                          <span>{formatDateTime(log.createdAt)}</span>
                         </div>
                       </TableCell>
 

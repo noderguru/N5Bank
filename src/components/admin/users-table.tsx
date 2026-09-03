@@ -34,6 +34,7 @@ import {
 } from "@/components/ui/table";
 import { NoResultsState } from "@/components/marketplace/no-results-state";
 import { ModerationDialog } from "@/components/admin/moderation-dialog";
+import { formatDate } from "@/lib/formatters";
 import { cn } from "@/lib/utils";
 
 export type AdminUserRow = {
@@ -124,18 +125,6 @@ export function UsersTable({ users, totalCount, currentUserId }: UsersTableProps
     startTransition(() => {
       router.push("/admin/users");
     });
-  };
-
-  const formatDate = (iso: string) => {
-    try {
-      return new Intl.DateTimeFormat("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      }).format(new Date(iso));
-    } catch {
-      return iso;
-    }
   };
 
   const openModeration = (

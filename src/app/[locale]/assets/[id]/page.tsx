@@ -18,10 +18,11 @@ import { Badge } from "@/components/ui/badge";
 import { Sparkline } from "@/components/marketplace/sparkline";
 import { FavoriteButton } from "@/components/marketplace/favorite-button";
 import { ContactSellerButton } from "@/components/marketplace/contact-seller-button";
-import { formatEnum, formatLicenseType, formatPrice } from "@/lib/formatters";
+import { formatEnum, formatLicenseType, formatPrice, formatDate } from "@/lib/formatters";
 
 type Props = {
   params: Promise<{
+    locale: string;
     id: string;
   }>;
 };
@@ -44,7 +45,7 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default async function AssetDetailPage({ params }: Props) {
-  const { id } = await params;
+  const { id, locale } = await params;
   const session = await readSession();
 
   const asset = await prisma.asset.findUnique({
@@ -191,7 +192,7 @@ export default async function AssetDetailPage({ params }: Props) {
             </div>
 
             <div className="text-xs text-muted-foreground">
-              Listed on {new Date(asset.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+              Listed on {formatDate(asset.createdAt, locale)}
             </div>
           </div>
         </div>
