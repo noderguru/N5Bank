@@ -81,28 +81,28 @@ export function PillarsSection() {
       className="relative h-[220vh] border-y border-[#232924] paper-dark text-[#fafffa]"
     >
       {/* Sticky Pinned Stage */}
-      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden py-12">
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden py-4 sm:py-6">
         <div className="relative z-10 mx-auto max-w-6xl w-full px-6 sm:px-8">
           {/* Section Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-[#232924]">
-            <div className="space-y-2">
-              <div className="flex items-center gap-2.5">
-                <span className="inline-block size-2 bg-[#2bee4b]" />
-                <span className="font-lausanne text-xs font-semibold uppercase tracking-widest text-[#c8d2c8]">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 sm:pb-5 border-b border-[#232924]">
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2">
+                <span className="inline-block size-1.5 sm:size-2 bg-[#2bee4b]" />
+                <span className="font-lausanne text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-[#c8d2c8]">
                   {t("architectureEyebrow")}
                 </span>
               </div>
-              <h2 className="font-mondwest text-4xl sm:text-5xl md:text-6xl font-normal tracking-tight text-[#fafffa] leading-[0.95]">
+              <h2 className="font-mondwest text-3xl sm:text-4xl md:text-5xl font-normal tracking-tight text-[#fafffa] leading-[0.95]">
                 {t("architectureTitle")}
               </h2>
             </div>
-            <p className="max-w-md font-lausanne text-xs sm:text-sm text-[#c8d2c8] leading-relaxed">
+            <p className="max-w-sm sm:max-w-md font-lausanne text-xs sm:text-[13px] text-[#c8d2c8] leading-relaxed">
               {t("architectureDesc")}
             </p>
           </div>
 
           {/* Tab Selectors */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#232924] my-6 border border-[#232924]">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#232924] my-3 sm:my-4 border border-[#232924]">
             {pillars.map((p, idx) => {
               const isSelected = activeTab === idx;
               return (
@@ -114,23 +114,23 @@ export function PillarsSection() {
                     setActiveTab(idx);
                   }}
                   className={cn(
-                    "group relative flex flex-col justify-between p-5 sm:p-6 text-left transition-all duration-300",
+                    "group relative flex flex-col justify-between p-3.5 sm:p-4 text-left transition-all duration-300",
                     isSelected ? "bg-[#1a201c] text-[#fafffa]" : "bg-[#121613] text-[#c8d2c8] hover:bg-[#161b17]"
                   )}
                 >
                   {/* Active indicator bar */}
                   <span
                     className={cn(
-                      "absolute top-0 left-0 h-[3px] w-full transition-all duration-300",
+                      "absolute top-0 left-0 h-[2.5px] w-full transition-all duration-300",
                       isSelected ? "bg-[#2bee4b]" : "bg-transparent group-hover:bg-[#2bee4b]/40"
                     )}
                   />
 
-                  <div className="flex items-baseline justify-between w-full mb-3">
-                    <span className="font-mono text-xs text-[#516254]">{p.number}</span>
+                  <div className="flex items-baseline justify-between w-full mb-1.5 sm:mb-2">
+                    <span className="font-mono text-[11px] text-[#516254]">{p.number}</span>
                     <span
                       className={cn(
-                        "font-lausanne text-[10px] uppercase tracking-widest px-2 py-0.5 rounded",
+                        "font-lausanne text-[9px] sm:text-[10px] uppercase tracking-widest px-1.5 py-0.5 rounded",
                         isSelected ? "bg-[#2bee4b] text-black font-semibold" : "bg-[#232924] text-[#c8d2c8]"
                       )}
                     >
@@ -138,7 +138,7 @@ export function PillarsSection() {
                     </span>
                   </div>
 
-                  <h3 className="font-lausanne text-base sm:text-lg font-bold tracking-tight">
+                  <h3 className="font-lausanne text-sm sm:text-base font-bold tracking-tight">
                     {p.title}
                   </h3>
                 </button>
@@ -147,33 +147,33 @@ export function PillarsSection() {
           </div>
 
           {/* Selected Pillar Content View */}
-          <div className="relative overflow-hidden rounded-[10px] border border-[#232924] bg-[#121613] p-6 sm:p-10 lg:p-12 shadow-2xl">
+          <div className="relative overflow-hidden rounded-[8px] sm:rounded-[10px] border border-[#232924] bg-[#121613] p-4 sm:p-6 lg:p-7 shadow-2xl">
             {/* Subtle background texture tile */}
             <div
               className="absolute inset-0 bg-cover bg-center opacity-20 mix-blend-luminosity pointer-events-none transition-all duration-700"
               style={{ backgroundImage: `url(${current.bgImage})` }}
             />
 
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-center">
               {/* Pillar Left Details */}
-              <div className="lg:col-span-7 space-y-5">
-                <div className="inline-flex items-center gap-2 rounded border border-[#232924] bg-[#161b17] px-3 py-1 font-lausanne text-[11px] uppercase tracking-widest text-[#2bee4b]">
+              <div className="lg:col-span-7 space-y-3 sm:space-y-4">
+                <div className="inline-flex items-center gap-1.5 rounded border border-[#232924] bg-[#161b17] px-2.5 py-0.5 font-lausanne text-[10px] sm:text-[11px] uppercase tracking-widest text-[#2bee4b]">
                   {t("charterSpec")} · {current.tag}
                 </div>
 
-                <h4 className="font-mondwest text-2xl sm:text-3xl lg:text-4xl font-normal text-[#fafffa] leading-tight">
+                <h4 className="font-mondwest text-xl sm:text-2xl lg:text-3xl font-normal text-[#fafffa] leading-tight">
                   {current.title}
                 </h4>
 
-                <p className="font-lausanne text-xs sm:text-sm text-[#c8d2c8] leading-relaxed max-w-xl">
+                <p className="font-lausanne text-xs sm:text-[13px] text-[#c8d2c8] leading-relaxed max-w-xl">
                   {current.description}
                 </p>
 
-                <div className="flex flex-wrap items-center gap-4 pt-2">
+                <div className="flex flex-wrap items-center gap-3 pt-1">
                   <Link
                     href="/assets"
                     prefetch={false}
-                    className="btn-highlighter text-xs py-3 px-6"
+                    className="btn-highlighter text-xs !py-2 !px-4"
                   >
                     <span>{t("exploreMatching")}</span>
                     <PixelArrow />
@@ -182,7 +182,7 @@ export function PillarsSection() {
                   <Link
                     href="/buyers"
                     prefetch={false}
-                    className="btn-ghost-dark text-xs py-3 px-5"
+                    className="btn-ghost-dark text-xs !py-2 !px-3.5"
                   >
                     {t("viewDemand")}
                   </Link>
@@ -190,15 +190,15 @@ export function PillarsSection() {
               </div>
 
               {/* Pillar Right Spec Box with Venn diagram center highlight */}
-              <div className="lg:col-span-5 rounded-[8px] border border-[#232924] bg-[#161b17]/90 p-5 sm:p-6 space-y-4 backdrop-blur-sm">
-                <div className="flex items-center justify-between border-b border-[#232924] pb-3">
-                  <span className="font-lausanne text-[11px] font-semibold uppercase tracking-widest text-[#fafffa]">
+              <div className="lg:col-span-5 rounded-[6px] sm:rounded-[8px] border border-[#232924] bg-[#161b17]/90 p-4 sm:p-5 space-y-3 backdrop-blur-sm">
+                <div className="flex items-center justify-between border-b border-[#232924] pb-2.5">
+                  <span className="font-lausanne text-[10px] sm:text-[11px] font-semibold uppercase tracking-widest text-[#fafffa]">
                     {t("verifiedInclusions")}
                   </span>
                   
                   {/* Central Green Venn Highlight icon */}
                   <div className="flex items-center gap-1.5 text-xs text-[#2bee4b]">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <circle cx="9" cy="9" r="6" stroke="#2bee4b" strokeWidth="1.5" strokeOpacity="0.4" fill="#2bee4b" fillOpacity="0.1" />
                       <circle cx="15" cy="9" r="6" stroke="#2bee4b" strokeWidth="1.5" strokeOpacity="0.4" fill="#2bee4b" fillOpacity="0.1" />
                       <circle cx="12" cy="14" r="6" stroke="#2bee4b" strokeWidth="1.5" strokeOpacity="0.8" fill="#2bee4b" fillOpacity="0.35" />
@@ -206,16 +206,16 @@ export function PillarsSection() {
                   </div>
                 </div>
 
-                <ul className="space-y-2.5 font-lausanne text-xs text-[#c8d2c8]">
+                <ul className="space-y-1.5 sm:space-y-2 font-lausanne text-xs text-[#c8d2c8]">
                   {current.details.map((detail, dIdx) => (
-                    <li key={dIdx} className="flex items-start gap-2.5">
-                      <span className="size-1.5 rounded-full bg-[#2bee4b] mt-1.5 shrink-0" />
-                      <span className="leading-relaxed">{detail}</span>
+                    <li key={dIdx} className="flex items-start gap-2">
+                      <span className="size-1.5 rounded-full bg-[#2bee4b] mt-1 shrink-0" />
+                      <span className="leading-snug">{detail}</span>
                     </li>
                   ))}
                 </ul>
 
-                <div className="border-t border-[#232924] pt-3 flex items-center justify-between text-[11px] text-[#516254]">
+                <div className="border-t border-[#232924] pt-2 sm:pt-2.5 flex items-center justify-between text-[10px] sm:text-[11px] text-[#516254]">
                   <span>{t("directProtocol")}</span>
                   <span className="text-[#2bee4b] font-mono">{t("ndaProtected")}</span>
                 </div>
