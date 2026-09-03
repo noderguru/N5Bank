@@ -186,7 +186,7 @@ export function AssetCard({
       </div>
 
       {/* Two-tier CTA Bottom Row */}
-      <div className="mt-6 flex items-center justify-between gap-3 pt-1">
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-2 pt-1">
         <div className="flex items-center gap-1.5">
           <Button
             asChild
@@ -213,19 +213,19 @@ export function AssetCard({
           <Button
             type="button"
             onClick={() => onContact(id)}
-            className="h-9 gap-1.5 rounded-none border border-ink bg-ink caps text-canvas transition-colors hover:bg-transparent hover:text-ink"
+            className="h-9 min-w-0 flex-1 gap-1.5 rounded-none border border-ink bg-ink caps text-canvas transition-colors hover:bg-transparent hover:text-ink sm:flex-none"
           >
             <MessageSquare className="size-3.5" />
-            <span>{t("contactSeller")}</span>
+            <span className="truncate">{t("contactSeller")}</span>
           </Button>
         ) : (
           <Button
             asChild
-            className="h-9 gap-1.5 rounded-none border border-ink bg-ink caps text-canvas transition-colors hover:bg-transparent hover:text-ink"
+            className="h-9 min-w-0 flex-1 gap-1.5 rounded-none border border-ink bg-ink caps text-canvas transition-colors hover:bg-transparent hover:text-ink sm:flex-none"
           >
             <Link href={`/assets/${id}?contact=true`} prefetch={false}>
               <MessageSquare className="size-3.5" />
-              <span>{t("contactSeller")}</span>
+              <span className="truncate">{t("contactSeller")}</span>
             </Link>
           </Button>
         )}
