@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight, CheckCircle2, Shield, Sparkles } from "lucide-react";
 import { readSession } from "@/lib/auth/session";
 import { AppShell } from "@/components/layout/app-shell";
@@ -130,49 +129,6 @@ export default async function Home() {
           <div className="flex items-center gap-1.5">
             <CheckCircle2 className="size-4 text-success" />
             <span>Zero Public Balance Leaks</span>
-          </div>
-        </div>
-
-        {/* Visual Hero Art Banner */}
-        <div className="relative mt-8 overflow-hidden rounded-3xl border border-hairline bg-surface shadow-xl">
-          <div className="relative aspect-[16/9] w-full overflow-hidden">
-            <Image
-              src="/images/hero_finance_art.jpg"
-              alt="N5Deal Institutional Financial Architecture & M&A Network"
-              fill
-              priority
-              className="object-cover transition-transform duration-700 hover:scale-[1.02]"
-              sizes="(max-width: 1200px) 100vw, 1200px"
-            />
-            {/* Subtle Gradient Vignette */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
-
-            {/* Floating Glass Meta Badges */}
-            <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-left">
-              <div className="space-y-1">
-                <div className="inline-flex items-center gap-2 rounded-full bg-brand/30 backdrop-blur-md border border-brand/40 px-3 py-1 text-xs font-semibold text-white">
-                  <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
-                  Live Regulated Charters & Liquidity Nodes
-                </div>
-                <h3 className="text-lg sm:text-2xl font-bold text-white tracking-tight drop-shadow-md">
-                  European Banking &amp; Fintech M&amp;A Network
-                </h3>
-                <p className="text-xs sm:text-sm text-neutral-300 max-w-xl line-clamp-1 drop-shadow-sm">
-                  Connecting Tier-1 capital acquirers with licensed institutions under bilateral NDA protection.
-                </p>
-              </div>
-
-              <Button
-                asChild
-                size="sm"
-                className="rounded-full bg-white/95 hover:bg-white text-ink font-semibold text-xs shadow-lg backdrop-blur-md shrink-0"
-              >
-                <Link href="/assets">
-                  <span>Explore Marketplace</span>
-                  <ArrowRight className="ml-1.5 size-3.5" />
-                </Link>
-              </Button>
-            </div>
           </div>
         </div>
       </section>

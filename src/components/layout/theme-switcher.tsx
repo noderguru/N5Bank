@@ -1,18 +1,36 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function ThemeSwitcher() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     setMounted(true);
-    const isDark = document.documentElement.classList.contains("dark");
-    setTheme(isDark ? "dark" : "light");
-  }, []);
+    try {
+      const saved = localStorage.getItem("theme");
+      let active: "light" | "dark" = "light";
+      if (saved === "dark" || saved === "light") {
+        active = saved;
+      } else {
+        const isCookieDark = document.cookie.includes("theme=dark");
+        const isDomDark = document.documentElement.classList.contains("dark");
+        active = isCookieDark || isDomDark ? "dark" : "light";
+      }
+
+      setTheme(active);
+      if (active === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    } catch {}
+  }, [pathname]);
 
   const toggleTheme = () => {
     const nextTheme = theme === "dark" ? "light" : "dark";
