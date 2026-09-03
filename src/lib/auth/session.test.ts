@@ -6,8 +6,18 @@ const cookieStore = vi.hoisted(() => ({
   set: vi.fn(),
 }));
 
+const prismaMock = vi.hoisted(() => ({
+  user: {
+    findUnique: vi.fn(),
+  },
+}));
+
 vi.mock("next/headers", () => ({
   cookies: vi.fn(async () => cookieStore),
+}));
+
+vi.mock("@/lib/db/prisma", () => ({
+  prisma: prismaMock,
 }));
 
 import {
@@ -15,6 +25,7 @@ import {
   createSession,
   destroySession,
   readSession,
+  resolveSession,
   verifySession,
 } from "./session";
 
@@ -26,6 +37,7 @@ describe("cookie sessions", () => {
     cookieStore.delete.mockReset();
     cookieStore.get.mockReset();
     cookieStore.set.mockReset();
+    prismaMock.user.findUnique.mockReset();
   });
 
   afterEach(() => {
@@ -56,13 +68,66 @@ describe("cookie sessions", () => {
     expect(cookieStore.set.mock.calls[0]?.[2]).toMatchObject({ secure: true });
   });
 
-  it("reads the token from cookies and rejects a modified token", async () => {
+  it("reads and resolves the session for an active user", async () => {
     await createSession(session);
     const token = cookieStore.set.mock.calls[0]?.[1] as string;
     cookieStore.get.mockReturnValue({ value: token });
+    prismaMock.user.findUnique.mockResolvedValue({
+      id: session.userId,
+      role: session.role,
+      status: "ACTIVE",
+    });
 
     await expect(readSession()).resolves.toEqual(session);
+    expect(prismaMock.user.findUnique).toHaveBeenCalledWith({
+      where: { id: session.userId },
+      select: { id: true, role: true, status: true },
+    });
+  });
+
+  it("rejects a modified token", async () => {
+    await createSession(session);
+    const token = cookieStore.set.mock.calls[0]?.[1] as string;
+
     await expect(verifySession(`${token}modified`)).resolves.toBeNull();
+    await expect(resolveSession(`${token}modified`)).resolves.toBeNull();
+  });
+
+  it("blocks suspended users upon session resolution", async () => {
+    await createSession(session);
+    const token = cookieStore.set.mock.calls[0]?.[1] as string;
+    cookieStore.get.mockReturnValue({ value: token });
+    prismaMock.user.findUnique.mockResolvedValue({
+      id: session.userId,
+      role: session.role,
+      status: "SUSPENDED",
+    });
+
+    await expect(readSession()).resolves.toBeNull();
+    await expect(resolveSession(token)).resolves.toBeNull();
+  });
+
+  it("blocks removed users upon session resolution", async () => {
+    await createSession(session);
+    const token = cookieStore.set.mock.calls[0]?.[1] as string;
+    cookieStore.get.mockReturnValue({ value: token });
+    prismaMock.user.findUnique.mockResolvedValue({
+      id: session.userId,
+      role: session.role,
+      status: "REMOVED",
+    });
+
+    await expect(readSession()).resolves.toBeNull();
+    await expect(resolveSession(token)).resolves.toBeNull();
+  });
+
+  it("rejects session when user does not exist in database", async () => {
+    await createSession(session);
+    const token = cookieStore.set.mock.calls[0]?.[1] as string;
+    cookieStore.get.mockReturnValue({ value: token });
+    prismaMock.user.findUnique.mockResolvedValue(null);
+
+    await expect(readSession()).resolves.toBeNull();
   });
 
   it("returns null when the session cookie is absent", async () => {

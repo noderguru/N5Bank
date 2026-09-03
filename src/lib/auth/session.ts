@@ -1,6 +1,7 @@
 import type { UserRole } from "@prisma/client";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
+import { prisma } from "@/lib/db/prisma";
 
 export const SESSION_COOKIE_NAME = "n5deal_session";
 
@@ -73,12 +74,31 @@ export async function verifySession(token: string): Promise<Session | null> {
   }
 }
 
+export async function resolveSession(token: string): Promise<Session | null> {
+  const verified = await verifySession(token);
+  if (!verified) {
+    return null;
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: verified.userId },
+    select: { id: true, role: true, status: true },
+  });
+
+  if (!user || user.status !== "ACTIVE") {
+    return null;
+  }
+
+  return { userId: user.id, role: user.role };
+}
+
 export async function readSession(): Promise<Session | null> {
   const token = (await cookies()).get(SESSION_COOKIE_NAME)?.value;
 
-  return token ? verifySession(token) : null;
+  return token ? resolveSession(token) : null;
 }
 
 export async function destroySession(): Promise<void> {
   (await cookies()).delete(SESSION_COOKIE_NAME);
 }
+
