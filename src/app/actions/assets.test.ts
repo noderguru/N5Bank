@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const revalidatePathMock = vi.hoisted(() => vi.fn());
 const guardMock = vi.hoisted(() => ({
   requireRole: vi.fn(),
+  requireUser: vi.fn(),
   assertOwnership: vi.fn(),
 }));
 
@@ -12,6 +13,11 @@ const prismaMock = vi.hoisted(() => ({
     findUnique: vi.fn(),
     update: vi.fn(),
   },
+  favorite: {
+    findUnique: vi.fn(),
+    create: vi.fn(),
+    delete: vi.fn(),
+  },
 }));
 
 vi.mock("next/cache", () => ({
@@ -20,6 +26,7 @@ vi.mock("next/cache", () => ({
 
 vi.mock("@/lib/auth/guard", () => ({
   requireRole: guardMock.requireRole,
+  requireUser: guardMock.requireUser,
   assertOwnership: guardMock.assertOwnership,
 }));
 
@@ -31,6 +38,7 @@ import {
   createAssetAction,
   removeAssetAction,
   toggleAssetStatusAction,
+  toggleFavoriteAction,
   updateAssetAction,
 } from "./assets";
 
@@ -43,6 +51,7 @@ describe("asset server actions", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     guardMock.requireRole.mockResolvedValue(sellerSession);
+    guardMock.requireUser.mockResolvedValue(sellerSession);
     guardMock.assertOwnership.mockReturnValue(undefined);
   });
 
@@ -230,4 +239,65 @@ describe("asset server actions", () => {
       });
     });
   });
+
+  describe("toggleFavoriteAction", () => {
+    it("adds asset to favorites when not previously favorited", async () => {
+      prismaMock.asset.findUnique.mockResolvedValue({
+        id: "ast_1",
+        status: "PUBLISHED",
+        seller: { status: "ACTIVE" },
+      });
+      prismaMock.favorite.findUnique.mockResolvedValue(null);
+      prismaMock.favorite.create.mockResolvedValue({
+        userId: "seller_1",
+        assetId: "ast_1",
+      });
+
+      const res = await toggleFavoriteAction("ast_1");
+      expect(res.success).toBe(true);
+      expect(res.isFavorite).toBe(true);
+      expect(prismaMock.favorite.create).toHaveBeenCalledWith({
+        data: { userId: "seller_1", assetId: "ast_1" },
+      });
+    });
+
+    it("removes asset from favorites when already favorited", async () => {
+      prismaMock.asset.findUnique.mockResolvedValue({
+        id: "ast_1",
+        status: "PUBLISHED",
+        seller: { status: "ACTIVE" },
+      });
+      prismaMock.favorite.findUnique.mockResolvedValue({
+        userId: "seller_1",
+        assetId: "ast_1",
+      });
+      prismaMock.favorite.delete.mockResolvedValue({
+        userId: "seller_1",
+        assetId: "ast_1",
+      });
+
+      const res = await toggleFavoriteAction("ast_1");
+      expect(res.success).toBe(true);
+      expect(res.isFavorite).toBe(false);
+      expect(prismaMock.favorite.delete).toHaveBeenCalledWith({
+        where: {
+          userId_assetId: { userId: "seller_1", assetId: "ast_1" },
+        },
+      });
+    });
+
+    it("rejects favorite toggle if asset is not published", async () => {
+      prismaMock.asset.findUnique.mockResolvedValue({
+        id: "ast_draft",
+        status: "DRAFT",
+        seller: { status: "ACTIVE" },
+      });
+
+      const res = await toggleFavoriteAction("ast_draft");
+      expect(res.success).toBe(false);
+      expect(res.error).toBe("Asset not available.");
+      expect(prismaMock.favorite.create).not.toHaveBeenCalled();
+    });
+  });
 });
+

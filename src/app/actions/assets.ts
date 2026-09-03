@@ -2,7 +2,7 @@
 
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
-import { assertOwnership, requireRole } from "@/lib/auth/guard";
+import { assertOwnership, requireRole, requireUser } from "@/lib/auth/guard";
 import { prisma } from "@/lib/db/prisma";
 import { assetFormSchema } from "@/lib/validation/asset";
 
@@ -277,3 +277,75 @@ export async function removeAssetAction(
     message: "Listing removed",
   };
 }
+
+export type FavoriteActionResult = {
+  success: boolean;
+  isFavorite?: boolean;
+  error?: string;
+};
+
+export async function toggleFavoriteAction(
+  assetId: string
+): Promise<FavoriteActionResult> {
+  const session = await requireUser();
+
+  const asset = await prisma.asset.findUnique({
+    where: { id: assetId },
+    select: { id: true, status: true, seller: { select: { status: true } } },
+  });
+
+  if (!asset || asset.status !== "PUBLISHED" || asset.seller.status !== "ACTIVE") {
+    return { success: false, error: "Asset not available." };
+  }
+
+  const existing = await prisma.favorite.findUnique({
+    where: {
+      userId_assetId: {
+        userId: session.userId,
+        assetId,
+      },
+    },
+  });
+
+  if (existing) {
+    await prisma.favorite.delete({
+      where: {
+        userId_assetId: {
+          userId: session.userId,
+          assetId,
+        },
+      },
+    });
+
+    revalidatePath("/assets");
+    revalidatePath(`/assets/${assetId}`);
+    revalidatePath("/buyer/saved");
+
+    return { success: true, isFavorite: false };
+  }
+
+  await prisma.favorite.create({
+    data: {
+      userId: session.userId,
+      assetId,
+    },
+  });
+
+  revalidatePath("/assets");
+  revalidatePath(`/assets/${assetId}`);
+  revalidatePath("/buyer/saved");
+
+  return { success: true, isFavorite: true };
+}
+
+export async function recordAssetViewAction(assetId: string): Promise<void> {
+  try {
+    await prisma.asset.update({
+      where: { id: assetId },
+      data: { views: { increment: 1 } },
+    });
+  } catch {
+    // Non-blocking
+  }
+}
+

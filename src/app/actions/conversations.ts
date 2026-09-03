@@ -10,35 +10,59 @@ export type ConversationActionResult = {
 };
 
 export async function getOrCreateConversationAction(
-  buyerId: string,
+  targetId: string,
   assetId?: string
 ): Promise<ConversationActionResult> {
   const session = await requireUser();
 
-  const buyer = await prisma.user.findUnique({
-    where: { id: buyerId },
-    select: { id: true, role: true, status: true },
-  });
-
-  if (!buyer) {
-    return { success: false, error: "Buyer account not found." };
-  }
-
-  if (buyer.status === "SUSPENDED" || buyer.status === "REMOVED") {
-    return {
-      success: false,
-      error: "This counterparty is suspended by platform compliance and cannot be contacted.",
-    };
-  }
-
-  if (session.userId === buyerId) {
+  if (session.userId === targetId) {
     return {
       success: false,
       error: "Cannot start a deal thread with yourself.",
     };
   }
 
-  const sellerId = session.userId;
+  const targetUser = await prisma.user.findUnique({
+    where: { id: targetId },
+    select: { id: true, role: true, status: true },
+  });
+
+  if (!targetUser) {
+    return { success: false, error: "Counterparty account not found." };
+  }
+
+  if (targetUser.status === "SUSPENDED" || targetUser.status === "REMOVED") {
+    return {
+      success: false,
+      error: "This counterparty is suspended by platform compliance and cannot be contacted.",
+    };
+  }
+
+  let buyerId: string;
+  let sellerId: string;
+
+  if (assetId) {
+    const asset = await prisma.asset.findUnique({
+      where: { id: assetId },
+      select: { id: true, sellerId: true, status: true },
+    });
+
+    if (!asset || asset.status === "REMOVED") {
+      return { success: false, error: "Referenced asset is unavailable." };
+    }
+
+    sellerId = asset.sellerId;
+    buyerId = session.userId === sellerId ? targetId : session.userId;
+  } else {
+    // If target is seller, current user is buyer; otherwise current user is seller
+    if (targetUser.role === "SELLER") {
+      sellerId = targetUser.id;
+      buyerId = session.userId;
+    } else {
+      buyerId = targetUser.id;
+      sellerId = session.userId;
+    }
+  }
 
   // Check if existing thread already exists between counterparty pair
   const existing = await prisma.conversation.findFirst({
@@ -70,6 +94,7 @@ export async function getOrCreateConversationAction(
     conversationId: created.id,
   };
 }
+
 
 export async function sendMessageAction(
   conversationId: string,

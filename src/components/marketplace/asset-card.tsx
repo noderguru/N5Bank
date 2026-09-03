@@ -3,6 +3,7 @@ import type { AssetStatus, BusinessStatus, BusinessType, LicenseType, PriceMode 
 import { CheckCircle2, Globe2, MessageSquare, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { FavoriteButton } from "@/components/marketplace/favorite-button";
 import { formatEnum, formatLicenseType, formatPrice } from "@/lib/formatters";
 import { cn } from "@/lib/utils";
 
@@ -22,6 +23,7 @@ export type AssetCardData = {
   validated?: boolean;
   views?: number;
   regulator?: string | null;
+  isFavorite?: boolean;
 };
 
 export type AssetCardProps = {
@@ -177,16 +179,27 @@ export function AssetCard({
 
       {/* Two-tier CTA Bottom Row */}
       <div className="mt-5 flex items-center justify-between gap-3 border-t border-hairline pt-3">
-        <Button
-          asChild
-          variant="outline"
-          className="h-8 gap-1 rounded-xl border-hairline text-xs font-medium hover:border-brand hover:text-brand"
-        >
-          <Link href={`/assets/${id}`} prefetch={false}>
-            <span>View specs</span>
-            <ArrowUpRight className="size-3.5" />
-          </Link>
-        </Button>
+        <div className="flex items-center gap-1.5">
+          <Button
+            asChild
+            variant="outline"
+            className="h-8 gap-1 rounded-xl border-hairline text-xs font-medium hover:border-brand hover:text-brand"
+          >
+            <Link href={`/assets/${id}`} prefetch={false}>
+              <span>View specs</span>
+              <ArrowUpRight className="size-3.5" />
+            </Link>
+          </Button>
+
+          <FavoriteButton
+            assetId={id}
+            initialFavorite={asset.isFavorite}
+            size="icon"
+            variant="ghost"
+            showLabel={false}
+            className="size-8 rounded-xl"
+          />
+        </div>
 
         {onContact ? (
           <Button
