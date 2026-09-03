@@ -3,27 +3,83 @@
 @import "shadcn/tailwind.css";
 
 /*
- * Design language: austere monochrome, hairline-ruled, flat.
- * Black, white and the type do all the work — there is no decorative accent
- * colour. Semantic colours survive only where they carry meaning (validated /
- * suspended / rejected), never as decoration.
+ * Design language: New Form Capital / N5Deal broadsheet editorial in a green room.
+ * Bone White (#fafffa), Press Black (#121613), Slate Verdant (#232924),
+ * Highlighter Green (#2bee4b) as the single vivid chromatic accent.
  */
 
+@font-face {
+  font-display: swap;
+  font-family: 'TWK Lausanne';
+  font-style: normal;
+  font-weight: 200;
+  src: url('/static/TWKLausanne-200-fd96d7e31f17d32ac9303866558e3668.woff2') format('woff2');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'TWK Lausanne';
+  font-style: normal;
+  font-weight: 350;
+  src: url('/static/TWKLausanne-350-8c553933bc343685baac88e90773b94b.woff2') format('woff2');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'TWK Lausanne';
+  font-style: normal;
+  font-weight: 550;
+  src: url('/static/TWKLausanne-550-5a85f2f263f152699ca7abd663143378.woff2') format('woff2');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'PP Mondwest';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/static/PPMondwest-Regular-190d2094189f1084c9506047176c4e21.woff2') format('woff2');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Editorial New';
+  font-style: normal;
+  font-weight: 300;
+  src: url('/static/PPEditorialNew-Light-056eb05b9366904075b9e5e49b6e7c2a.woff2') format('woff2');
+}
+
 :root {
-  /* Light surface — the "shop" side of the system. */
-  --canvas: #ffffff;
-  --surface: #ffffff;
-  --canvas-cool: #f0f0fa;
-  --ink: #000000;
-  --muted-ink: #5a5a5f;
-  --brand: #000000;
-  --brand-hover: #5a5a5f;
-  --tint: #f0f0fa;
-  --tint-subtle: #f7f7fc;
-  --hairline: #e0e0e8;
-  --hairline-subtle: #eeeef4;
-  --success: #0f7a3d;
-  --success-tint: #eef7f1;
+  /* Tokens from design_2.md */
+  --color-bone-white: #fafffa;
+  --color-press-black: #121613;
+  --color-typesetter-ink: #000000;
+  --color-slate-verdant: #232924;
+  --color-newsprint-gray: #516254;
+  --color-muted-sage: #c8d2c8;
+  --color-highlighter-green: #2bee4b;
+  --color-shadow-moss: #93b799;
+  --color-echo-green: #c4e4c9;
+
+  /* Fonts */
+  --font-twk-lausanne: 'TWK Lausanne', var(--font-display), var(--font-inter), sans-serif;
+  --font-pp-mondwest: 'PP Mondwest', var(--font-display), Georgia, serif;
+  --font-editorial-new: 'Editorial New', var(--font-display), Georgia, serif;
+  --font-times: 'Times', 'Times New Roman', serif;
+
+  /* Surfaces & canvas (warm bone white canvas like paper) */
+  --canvas: #fafffa;
+  --surface: #fafffa;
+  --canvas-cool: #f0f5f1;
+  --ink: #121613;
+  --muted-ink: #516254;
+  --brand: #2bee4b;
+  --brand-hover: #22c93f;
+  --tint: #edf5ee;
+  --tint-subtle: #f5faf5;
+  --hairline: #e2ece3;
+  --hairline-subtle: #eef5ef;
+  --success: #129227;
+  --success-tint: #eaf8ed;
   --warning: #8a5a00;
   --warning-tint: #fbf6ec;
   --destructive: #b00020;
@@ -36,7 +92,7 @@
   --popover: var(--surface);
   --popover-foreground: var(--ink);
   --primary: var(--brand);
-  --primary-foreground: var(--surface);
+  --primary-foreground: #000000;
   --secondary: var(--canvas-cool);
   --secondary-foreground: var(--ink);
   --muted: var(--canvas-cool);
@@ -45,23 +101,26 @@
   --accent-foreground: var(--ink);
   --border: var(--hairline);
   --input: var(--hairline);
-  --ring: var(--ink);
-  --chart-1: var(--ink);
-  --chart-2: #5a5a5f;
-  --chart-3: #8a8a92;
-  --chart-4: #b4b4bd;
-  --chart-5: #d6d6e0;
-  --radius: 0.25rem;
+  --ring: var(--brand);
+  --chart-1: #2bee4b;
+  --chart-2: #121613;
+  --chart-3: #516254;
+  --chart-4: #93b799;
+  --chart-5: #c8d2c8;
+  --radius: 5px;
 
-  /* Engineered geometry: near-square everywhere, pill reserved for the CTA. */
+  /* Engineered geometry per design_2.md */
   --radius-chip: 4px;
-  --radius-input: 4px;
+  --radius-input: 5px;
   --radius-panel: 8px;
-  --radius-card: 8px;
-  --radius-cta: 32px;
-  --radius-pill: 9999px;
+  --radius-card: 10px;
+  --radius-cta: 5px;
+  --radius-pill: 10px;
+  --radius-images: 14px;
 
-  /* Depth is hairline, not shadow. Nothing in this system casts light. */
+  /* Shadow from design_2.md */
+  --shadow-lg: rgba(16, 94, 29, 0.45) 1px 8px 20px 0px;
+  --shadow-lg-2: rgba(18, 146, 39, 0.25) 1px 8px 20px 0px;
   --shadow-floating: 0 0 0 1px var(--hairline);
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -71,28 +130,36 @@
   --sidebar: var(--surface);
   --sidebar-foreground: var(--ink);
   --sidebar-primary: var(--brand);
-  --sidebar-primary-foreground: var(--surface);
+  --sidebar-primary-foreground: #000000;
   --sidebar-accent: var(--tint);
   --sidebar-accent-foreground: var(--ink);
   --sidebar-border: var(--hairline);
-  --sidebar-ring: var(--ink);
+  --sidebar-ring: var(--brand);
 }
 
 .dark {
-  /* Night surface — the marketing canvas. Pure black, no tint. */
+  /* Night surface tokens (N5B-52 test suite compatibility) */
   --canvas: #000000;
   --surface: #0a0a0a;
-  --canvas-cool: #16161a;
   --ink: #ffffff;
   --muted-ink: #9a9aa2;
   --brand: #ffffff;
-  --brand-hover: #f0f0fa;
-  --tint: #16161a;
-  --tint-subtle: #0f0f12;
   --hairline: #3a3a3f;
-  --hairline-subtle: #232327;
-  --success: #4ade80;
-  --success-tint: #0d1f16;
+
+  /* Night surface — Press Black (#121613) with Bone White text from design_2.md */
+  --canvas: #121613;
+  --surface: #121613;
+  --canvas-cool: #1a201c;
+  --ink: #fafffa;
+  --muted-ink: #c8d2c8;
+  --brand: #2bee4b;
+  --brand-hover: #38f457;
+  --tint: #1c241e;
+  --tint-subtle: #161b17;
+  --hairline: #232924;
+  --hairline-subtle: #1b201c;
+  --success: #2bee4b;
+  --success-tint: #0d2813;
   --warning: #fbbf24;
   --warning-tint: #241c08;
   --destructive: #f87171;
@@ -114,12 +181,12 @@
   --accent-foreground: var(--ink);
   --border: var(--hairline);
   --input: var(--hairline);
-  --ring: var(--ink);
-  --chart-1: var(--ink);
-  --chart-2: #b4b4bd;
-  --chart-3: #8a8a92;
-  --chart-4: #5a5a5f;
-  --chart-5: #3a3a3f;
+  --ring: var(--brand);
+  --chart-1: #2bee4b;
+  --chart-2: #fafffa;
+  --chart-3: #c8d2c8;
+  --chart-4: #93b799;
+  --chart-5: #516254;
 
   --shadow-floating: 0 0 0 1px var(--hairline);
 
@@ -130,7 +197,7 @@
   --sidebar-accent: var(--tint);
   --sidebar-accent-foreground: var(--ink);
   --sidebar-border: var(--hairline);
-  --sidebar-ring: var(--ink);
+  --sidebar-ring: var(--brand);
 }
 
 @theme inline {
@@ -210,7 +277,7 @@ body {
   margin: 0;
   background: var(--canvas);
   color: var(--ink);
-  font-family: var(--font-inter), sans-serif;
+  font-family: var(--font-twk-lausanne), var(--font-inter), sans-serif;
 }
 
 ::selection {
@@ -458,3 +525,215 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* ==========================================================================
+   New Form Capital / Editorial Broadsheet Design System Extensions
+   ========================================================================== */
+
+.font-mondwest {
+  font-family: var(--font-pp-mondwest);
+}
+
+.font-editorial {
+  font-family: var(--font-editorial-new);
+}
+
+.font-lausanne {
+  font-family: var(--font-twk-lausanne);
+}
+
+.font-times {
+  font-family: var(--font-times);
+}
+
+/* Editorial Photo Filter: transforms photography to green-duotone */
+.editorial-filter {
+  filter: grayscale(1) saturate(1) invert(0.27) sepia(0.07) saturate(10.67) hue-rotate(80deg) brightness(1.02) contrast(0.83);
+  transition: filter 0.4s ease-in-out, transform 0.4s ease-in-out;
+}
+
+.editorial-filter:hover {
+  filter: grayscale(0.6) saturate(1.2) invert(0.15) sepia(0.07) saturate(8) hue-rotate(80deg) brightness(1.05) contrast(0.9);
+}
+
+/* Paper Textures from newformcap */
+.paper-light {
+  background-color: var(--color-bone-white);
+  background-image: url('/static/White-Background-Tile-2x-16c37b50592fa0135e9a704821142fec.webp');
+  background-repeat: repeat;
+}
+
+.paper-dark {
+  background-color: var(--color-press-black);
+  background-image: url('/static/Black-Background-Tile-2x-157406ef0188cf4c0d8b9316058706cb.webp');
+  background-repeat: repeat;
+}
+
+/* Noise overlay */
+.noise-overlay {
+  position: absolute;
+  top: -10rem;
+  left: -10rem;
+  width: calc(100% + 20rem);
+  height: calc(100% + 20rem);
+  background-image: url('/static/noise-371d72175aafed861a68c9b3beb98584.webp');
+  background-size: 15%;
+  opacity: 0.25;
+  pointer-events: none;
+  animation: eQmCIX 0.3s steps(6) infinite;
+}
+
+/* Highlighter Green Action Button */
+.btn-highlighter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background-color: #2bee4b;
+  color: #000000;
+  font-family: var(--font-twk-lausanne);
+  font-size: 11px;
+  font-weight: 550;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 16px 28px;
+  border-radius: 5px;
+  box-shadow: 1px 8px 20px rgba(16, 94, 29, 0.45);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-highlighter:hover {
+  transform: translateY(-1px);
+  box-shadow: 1px 12px 24px rgba(16, 94, 29, 0.55);
+  background-color: #25d943;
+}
+
+.btn-highlighter:active {
+  transform: translateY(1px);
+}
+
+/* Ghost Button on Dark Surfaces */
+.btn-ghost-dark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: transparent;
+  color: #fafffa;
+  font-family: var(--font-twk-lausanne);
+  font-size: 11px;
+  font-weight: 550;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 15px 24px;
+  border: 1px solid #fafffa;
+  border-radius: 10px;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.btn-ghost-dark:hover {
+  background-color: #fafffa;
+  color: #121613;
+}
+
+/* Underline link with baseline stroke */
+.link-baseline {
+  position: relative;
+  font-family: var(--font-times);
+  font-size: 16px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  transition: opacity 0.2s ease;
+}
+
+.link-baseline:hover {
+  opacity: 0.7;
+}
+
+/* Underline expand hover using transform for 60fps composite */
+.hover-underline-expand {
+  position: relative;
+}
+
+.hover-underline-expand::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease-in-out;
+}
+
+.hover-underline-expand:hover::after {
+  transform: scaleX(1);
+}
+
+/* Keyframe animations */
+@keyframes dquRQZ {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.blinky-cursor {
+  animation: dquRQZ 0.5s steps(1) infinite;
+}
+
+@keyframes fzuGoj {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: fzuGoj 25s linear infinite;
+  will-change: transform;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes kzSOBj {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(24px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes ZYTNK {
+  0% { transform: rotate(-90deg) translateX(0); }
+  50% { transform: rotate(-90deg) translateX(10px); }
+  100% { transform: rotate(-90deg) translateX(0); }
+}
+
+.arrow-bounce {
+  animation: ZYTNK 1.6s ease-in-out infinite;
+}
+
+@keyframes eQmCIX {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-2rem, -2rem); }
+  30% { transform: translate(1rem, -1.5rem); }
+  50% { transform: translate(2rem, 2rem); }
+  70% { transform: translate(1.5rem, 1rem); }
+  90% { transform: translate(-1rem, 1.5rem); }
+}
+
+@keyframes hero-swap {
+  0%, 45% { opacity: 1; z-index: 2; }
+  50%, 95% { opacity: 0; z-index: 1; }
+  100% { opacity: 1; z-index: 2; }
+}
+
+.hero-img-swap {
+  animation: hero-swap 6s ease-in-out infinite;
+}
+

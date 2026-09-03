@@ -71,7 +71,7 @@ export function AssetCard({
     <article
       data-testid="asset-card"
       className={cn(
-        "group relative flex flex-col justify-between bg-surface p-6 transition-colors duration-200 ease-out hover:bg-tint-subtle",
+        "group relative flex flex-col justify-between bg-surface p-6 rounded-[5px] border border-hairline transition-all duration-200 ease-out hover:border-[#2bee4b]/60 hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)]",
         className
       )}
     >
@@ -96,7 +96,7 @@ export function AssetCard({
           </div>
 
           <div className="sm:text-right shrink-0">
-            <div className="tnum font-heading text-base font-bold tracking-[0.01em] text-ink">{displayPrice}</div>
+            <div className="tnum font-lausanne text-base font-bold text-ink tracking-[0.01em] text-ink">{displayPrice}</div>
             {priceMode !== "FIXED" && (
               <div className="eyebrow text-muted-foreground">
                 {priceMode === "ON_LOI" ? tCommon("uponLoi") : tCommon("underNda")}
@@ -107,7 +107,7 @@ export function AssetCard({
 
         {/* Title & Summary */}
         <div className="space-y-1.5">
-          <h3 className="font-heading text-base font-medium leading-snug text-ink line-clamp-2">
+          <h3 className="font-lausanne text-base font-semibold leading-snug text-ink line-clamp-2">
             <Link href={`/assets/${id}`} prefetch={false} className="focus:outline-none">
               {title}
             </Link>
@@ -169,7 +169,7 @@ export function AssetCard({
               <Badge
                 key={idx}
                 variant="outline"
-                className="rounded-none border-hairline bg-transparent px-2 py-0.5 eyebrow font-normal text-muted-foreground"
+                className="rounded-[4px] border-hairline bg-transparent px-2 py-0.5 eyebrow font-normal text-muted-foreground"
               >
                 {feat}
               </Badge>
@@ -177,7 +177,7 @@ export function AssetCard({
             {overflowCount > 0 && (
               <Badge
                 variant="outline"
-                className="rounded-none border-hairline bg-transparent px-2 py-0.5 eyebrow text-muted-foreground"
+                className="rounded-[4px] border-hairline bg-transparent px-2 py-0.5 eyebrow text-muted-foreground"
               >
                 {tCommon("andMore", { count: overflowCount })}
               </Badge>
@@ -192,7 +192,7 @@ export function AssetCard({
           <Button
             asChild
             variant="outline"
-            className="h-9 gap-1.5 rounded-none border-hairline caps hover:border-ink hover:bg-transparent hover:text-ink"
+            className="h-9 gap-1.5 rounded-[4px] border-hairline caps hover:border-ink hover:bg-transparent hover:text-ink"
           >
             <Link href={`/assets/${id}`} prefetch={false}>
               <span>{tCommon("details")}</span>
@@ -214,7 +214,7 @@ export function AssetCard({
           <Button
             type="button"
             onClick={() => onContact(id)}
-            className="h-9 min-w-0 flex-1 gap-1.5 rounded-none border border-ink bg-ink caps text-canvas transition-colors hover:bg-transparent hover:text-ink sm:flex-none"
+            className="h-9 min-w-0 flex-1 gap-1.5 rounded-[5px] border border-ink bg-ink caps text-canvas transition-colors hover:bg-transparent hover:text-ink sm:flex-none"
           >
             <MessageSquare className="size-3.5" />
             <span className="truncate">{t("contactSeller")}</span>
@@ -222,7 +222,7 @@ export function AssetCard({
         ) : (
           <Button
             asChild
-            className="h-9 min-w-0 flex-1 gap-1.5 rounded-none border border-ink bg-ink caps text-canvas transition-colors hover:bg-transparent hover:text-ink sm:flex-none"
+            className="h-9 min-w-0 flex-1 gap-1.5 rounded-[5px] border border-ink bg-ink caps text-canvas transition-colors hover:bg-transparent hover:text-ink sm:flex-none"
           >
             <Link href={`/assets/${id}?contact=true`} prefetch={false}>
               <MessageSquare className="size-3.5" />

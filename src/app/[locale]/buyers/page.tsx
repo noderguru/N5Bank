@@ -146,7 +146,7 @@ export default async function BuyersPage({ params, searchParams }: Props) {
           </span>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="display-lg text-ink">
+              <h1 className="font-mondwest text-4xl sm:text-6xl text-ink leading-none">
                 {t("buyerDemandTitle")} ({buyers.length})
               </h1>
               <p className="text-sm text-muted-foreground mt-1">
@@ -161,7 +161,7 @@ export default async function BuyersPage({ params, searchParams }: Props) {
 
         {/* Buyers Grid or Empty States */}
         {buyers.length > 0 ? (
-          <div className="grid grid-cols-1 gap-px border border-hairline bg-hairline md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {buyers.map((buyer) => (
               <BuyerCard key={buyer.id} buyer={buyer} />
             ))}

@@ -148,7 +148,7 @@ export default async function AssetDetailPage({ params }: Props) {
         </div>
 
         {/* Title and Pricing Header */}
-        <div className="rounded-3xl border border-hairline bg-surface p-6 sm:p-8 shadow-xs space-y-6">
+        <div className="rounded-[5px] border border-hairline bg-surface p-6 sm:p-10 space-y-6">
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
             <div className="space-y-3 flex-1">
               <div className="flex flex-wrap items-center gap-2">
@@ -164,7 +164,7 @@ export default async function AssetDetailPage({ params }: Props) {
                 </Badge>
               </div>
 
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-ink leading-tight">
+              <h1 className="font-mondwest text-3xl sm:text-5xl tracking-tight text-ink leading-tight">
                 {asset.title}
               </h1>
 
@@ -174,7 +174,7 @@ export default async function AssetDetailPage({ params }: Props) {
             </div>
 
             {/* Price Box */}
-            <div className="rounded-2xl border border-hairline bg-canvas/40 p-5 sm:min-w-[240px] shrink-0 text-left md:text-right space-y-1">
+            <div className="rounded-[5px] border border-hairline bg-canvas/40 p-5 sm:min-w-[240px] shrink-0 text-left md:text-right space-y-1">
               <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                 {tMarketplace("askingPrice")}
               </span>
@@ -214,7 +214,7 @@ export default async function AssetDetailPage({ params }: Props) {
 
         {/* 4-Cell Signature Spec Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="rounded-2xl border border-hairline bg-surface p-4 shadow-2xs space-y-1">
+          <div className="rounded-[5px] border border-hairline bg-surface p-5 space-y-1">
             <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
               <Globe2 className="size-3.5 text-brand" />
               <span>{t("jurisdiction")}</span>
@@ -227,7 +227,7 @@ export default async function AssetDetailPage({ params }: Props) {
             )}
           </div>
 
-          <div className="rounded-2xl border border-hairline bg-surface p-4 shadow-2xs space-y-1">
+          <div className="rounded-[5px] border border-hairline bg-surface p-5 space-y-1">
             <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
               <ShieldCheck className="size-3.5 text-brand" />
               <span>{tMarketplace("licenseType")}</span>
@@ -240,7 +240,7 @@ export default async function AssetDetailPage({ params }: Props) {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-hairline bg-surface p-4 shadow-2xs space-y-1">
+          <div className="rounded-[5px] border border-hairline bg-surface p-5 space-y-1">
             <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
               <Calendar className="size-3.5 text-brand" />
               <span>{t("yearEstablished")}</span>
@@ -251,7 +251,7 @@ export default async function AssetDetailPage({ params }: Props) {
             <div className="text-xs text-muted-foreground">{t("operatingHistory")}</div>
           </div>
 
-          <div className="rounded-2xl border border-hairline bg-surface p-4 shadow-2xs space-y-1">
+          <div className="rounded-[5px] border border-hairline bg-surface p-5 space-y-1">
             <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
               <Users className="size-3.5 text-brand" />
               <span>{t("headcount")}</span>

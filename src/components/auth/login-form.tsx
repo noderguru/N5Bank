@@ -27,13 +27,13 @@ export function LoginForm({ returnTo }: { returnTo?: string }) {
           <span className="size-2 rounded-full bg-brand" />
           N5Deal Marketplace
         </div>
-        <h1 className="text-2xl font-bold tracking-tight text-ink">{t("welcomeBack")}</h1>
+        <h1 className="font-mondwest text-3xl font-normal tracking-tight text-ink">{t("welcomeBack")}</h1>
         <p className="text-sm text-muted-foreground">
           {t("loginDescription")}
         </p>
       </div>
 
-      <div className="rounded-2xl border border-hairline bg-surface p-6 shadow-xs space-y-6">
+      <div className="rounded-[5px] border border-hairline bg-surface p-8 shadow-sm space-y-6">
         <DemoLoginButtons returnTo={returnTo} />
 
         <div className="relative flex items-center justify-center">
@@ -72,7 +72,7 @@ export function LoginForm({ returnTo }: { returnTo?: string }) {
               placeholder={t("emailFieldPlaceholder")}
               aria-invalid={!!emailError}
               aria-describedby={emailError ? "email-error" : undefined}
-              className="h-10 rounded-xl"
+              className="h-10 rounded-[5px]"
             />
             {emailError && (
               <p id="email-error" className="text-xs text-destructive">
@@ -96,7 +96,7 @@ export function LoginForm({ returnTo }: { returnTo?: string }) {
               placeholder="••••••••"
               aria-invalid={!!passwordError}
               aria-describedby={passwordError ? "password-error" : undefined}
-              className="h-10 rounded-xl"
+              className="h-10 rounded-[5px]"
             />
             {passwordError && (
               <p id="password-error" className="text-xs text-destructive">

@@ -15,6 +15,16 @@ const ROLE_PROTECTED_PREFIXES = [
 export async function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
+  // Bypass static files, images, next internal chunks, and API
+  if (
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/api") ||
+    pathname.startsWith("/static") ||
+    pathname.includes(".")
+  ) {
+    return NextResponse.next();
+  }
+
   const segments = pathname.split("/").filter(Boolean);
   const firstSegment = segments[0];
   const hasLocalePrefix = LOCALES.includes(firstSegment as AppLocale);

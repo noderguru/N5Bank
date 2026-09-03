@@ -33,13 +33,13 @@ export function RegisterForm() {
           <span className="size-2 rounded-full bg-brand" />
           {t("joinBadge")}
         </div>
-        <h1 className="display-lg text-ink">{t("registerHeadline")}</h1>
+        <h1 className="font-mondwest text-3xl sm:text-4xl text-ink leading-tight">{t("registerHeadline")}</h1>
         <p className="text-sm text-muted-foreground">
           {t("registerSubtitle")}
         </p>
       </div>
 
-      <div className="rounded-2xl border border-hairline bg-surface p-6 shadow-xs space-y-6">
+      <div className="rounded-[5px] border border-hairline bg-surface p-8 shadow-sm space-y-6">
         {formError && (
           <div
             role="alert"
@@ -63,7 +63,7 @@ export function RegisterForm() {
                 type="button"
                 onClick={() => setSelectedRole("BUYER")}
                 className={cn(
-                  "relative flex flex-col justify-between rounded-xl border p-3.5 text-left transition-all",
+                  "relative flex flex-col justify-between rounded-[5px] border p-3.5 text-left transition-all",
                   selectedRole === "BUYER"
                     ? "border-brand bg-tint/40 shadow-xs"
                     : "border-hairline bg-surface hover:border-hairline/80"
@@ -98,7 +98,7 @@ export function RegisterForm() {
                 type="button"
                 onClick={() => setSelectedRole("SELLER")}
                 className={cn(
-                  "relative flex flex-col justify-between rounded-xl border p-3.5 text-left transition-all",
+                  "relative flex flex-col justify-between rounded-[5px] border p-3.5 text-left transition-all",
                   selectedRole === "SELLER"
                     ? "border-brand bg-tint/40 shadow-xs"
                     : "border-hairline bg-surface hover:border-hairline/80"
@@ -144,7 +144,7 @@ export function RegisterForm() {
                 placeholder={t("namePlaceholder")}
                 aria-invalid={!!nameError}
                 aria-describedby={nameError ? "name-error" : undefined}
-                className="h-10 rounded-xl"
+                className="h-10 rounded-[5px]"
               />
               {nameError && (
                 <p id="name-error" className="text-xs text-destructive">
@@ -165,7 +165,7 @@ export function RegisterForm() {
                 placeholder={t("emailPlaceholder")}
                 aria-invalid={!!emailError}
                 aria-describedby={emailError ? "email-error" : undefined}
-                className="h-10 rounded-xl"
+                className="h-10 rounded-[5px]"
               />
               {emailError && (
                 <p id="email-error" className="text-xs text-destructive">
@@ -187,7 +187,7 @@ export function RegisterForm() {
               placeholder="••••••••"
               aria-invalid={!!passwordError}
               aria-describedby={passwordError ? "password-error" : undefined}
-              className="h-10 rounded-xl"
+              className="h-10 rounded-[5px]"
             />
             {passwordError && (
               <p id="password-error" className="text-xs text-destructive">
@@ -208,7 +208,7 @@ export function RegisterForm() {
                 placeholder={t("companyPlaceholder")}
                 aria-invalid={!!companyError}
                 aria-describedby={companyError ? "company-error" : undefined}
-                className="h-10 rounded-xl"
+                className="h-10 rounded-[5px]"
               />
               {companyError && (
                 <p id="company-error" className="text-xs text-destructive">
@@ -228,7 +228,7 @@ export function RegisterForm() {
                 placeholder={t("countryPlaceholder")}
                 aria-invalid={!!countryError}
                 aria-describedby={countryError ? "country-error" : undefined}
-                className="h-10 rounded-xl"
+                className="h-10 rounded-[5px]"
               />
               {countryError && (
                 <p id="country-error" className="text-xs text-destructive">

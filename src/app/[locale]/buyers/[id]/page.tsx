@@ -102,15 +102,15 @@ export default async function BuyerDetailPage({ params }: Props) {
         )}
 
         {/* Main Profile Header Card */}
-        <div className="rounded-[24px] border border-[#D9D9D9] bg-white p-6 sm:p-8 space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-6 border-b border-[#D9D9D9] pb-6">
+        <div className="rounded-[5px] border border-hairline bg-surface p-6 sm:p-8 space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-6 border-b border-hairline pb-6">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F4F9FF] text-[#383BFE] border border-[#E7F3FF]">
                   <Building2 className="h-5 w-5" />
                 </span>
                 <div>
-                  <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900">
+                  <h1 className="font-mondwest text-2xl sm:text-4xl tracking-tight text-ink">
                     {buyer.company}
                   </h1>
                   <div className="flex items-center gap-2 text-xs text-neutral-500 mt-0.5">
@@ -145,7 +145,7 @@ export default async function BuyerDetailPage({ params }: Props) {
             <h2 className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
               Investment & Acquisition Thesis
             </h2>
-            <div className="rounded-2xl border border-[#D9D9D9] bg-[#F7F9FB] p-5">
+            <div className="rounded-2xl border border-hairline bg-[#F7F9FB] p-5">
               <p className="text-base text-neutral-900 leading-relaxed font-normal">
                 {buyer.thesis || "Active strategic buyer open to bilateral M&A conversations."}
               </p>
@@ -231,7 +231,7 @@ export default async function BuyerDetailPage({ params }: Props) {
 
           {/* Background / Bio if available */}
           {buyer.bio && (
-            <div className="space-y-2 pt-2 border-t border-[#D9D9D9]">
+            <div className="space-y-2 pt-2 border-t border-hairline">
               <h3 className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
                 About the Acquirer
               </h3>
@@ -242,7 +242,7 @@ export default async function BuyerDetailPage({ params }: Props) {
           )}
 
           {/* CTA Row */}
-          <div className="pt-4 border-t border-[#D9D9D9] flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="pt-4 border-t border-hairline flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="text-xs text-neutral-500">
               All communications are confidential and conducted within bilateral encrypted threads.
             </div>

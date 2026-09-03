@@ -60,7 +60,7 @@ export function BuyerCard({
     <article
       data-testid="buyer-card"
       className={cn(
-        "group relative flex flex-col justify-between bg-surface p-6 transition-colors duration-200 ease-out hover:bg-tint-subtle",
+        "group relative flex flex-col justify-between bg-surface p-6 rounded-[5px] border border-hairline transition-all duration-200 ease-out hover:border-[#2bee4b]/60 hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)]",
         className
       )}
     >
@@ -70,7 +70,7 @@ export function BuyerCard({
           <div className="space-y-1 min-w-0">
             <div className="flex items-center gap-1.5">
               <Building2 className="size-4 shrink-0 text-ink" />
-              <h3 className="text-base font-semibold text-ink leading-tight tracking-tight truncate" title={company}>
+              <h3 className="font-lausanne text-base font-semibold text-ink leading-tight tracking-tight truncate" title={company}>
                 <Link href={`/buyers/${id}`} className="hover:underline">
                   {company}
                 </Link>
@@ -89,7 +89,7 @@ export function BuyerCard({
           <div className="sm:text-right shrink-0">
             <Badge
               variant="outline"
-              className="rounded-none border-hairline bg-transparent px-2 py-0.5 eyebrow text-ink"
+              className="rounded-[4px] border-hairline bg-transparent px-2 py-0.5 eyebrow text-ink"
             >
               {ticketDisplay}
             </Badge>
@@ -174,7 +174,7 @@ export function BuyerCard({
           <Button
             type="button"
             onClick={() => onSendMemo(id)}
-            className="h-9 gap-1.5 rounded-none border border-ink bg-ink caps text-canvas transition-colors hover:bg-transparent hover:text-ink"
+            className="h-9 gap-1.5 rounded-[5px] border border-ink bg-ink caps text-canvas transition-colors hover:bg-transparent hover:text-ink"
           >
             <Send className="size-3.5" />
             <span>{t("sendDealMemo")}</span>
@@ -182,7 +182,7 @@ export function BuyerCard({
         ) : (
           <Button
             asChild
-            className="h-9 gap-1.5 rounded-none border border-ink bg-ink caps text-canvas transition-colors hover:bg-transparent hover:text-ink"
+            className="h-9 gap-1.5 rounded-[5px] border border-ink bg-ink caps text-canvas transition-colors hover:bg-transparent hover:text-ink"
           >
             <Link href={`/inbox?recipient=${id}`}>
               <Send className="size-3.5" />
