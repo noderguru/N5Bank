@@ -23,36 +23,36 @@ export function MarqueeBanner({ dark = false, speed = "normal" }: MarqueeBannerP
   return (
     <div
       className={cn(
-        "relative w-full overflow-hidden border-y py-8 sm:py-12 select-none",
+        "relative w-full overflow-hidden border-y py-3 sm:py-4 select-none",
         dark
           ? "border-[#232924] bg-[#121613] text-[#fafffa]"
           : "border-[#e2ece3] bg-[#fafffa] text-[#121613]"
       )}
     >
-      <div className={cn("marquee-track flex items-center gap-12 sm:gap-16", durationClass)}>
+      <div className={cn("marquee-track flex items-center gap-8 sm:gap-12", durationClass)}>
         {[...items, ...items, ...items].map((item, idx) => (
-          <div key={idx} className="flex items-center gap-6 sm:gap-10 shrink-0">
-            <span className="font-editorial text-4xl sm:text-6xl md:text-7xl font-light italic opacity-75 whitespace-nowrap">
+          <div key={idx} className="flex items-center gap-3 sm:gap-5 shrink-0">
+            <span className="font-editorial text-lg sm:text-2xl md:text-3xl font-light italic opacity-75 whitespace-nowrap">
               {item.editorial}
             </span>
 
             {item.img && (
-              <div className="relative size-14 sm:size-20 overflow-hidden rounded-[10px] border border-[#232924]/30 shrink-0">
+              <div className="relative size-7 sm:size-9 overflow-hidden rounded-[6px] border border-[#232924]/30 shrink-0">
                 <Image
                   src={item.img}
                   alt="Editorial tile"
                   fill
-                  sizes="80px"
+                  sizes="36px"
                   className="object-cover editorial-filter"
                 />
               </div>
             )}
 
-            <span className="font-mondwest text-4xl sm:text-6xl md:text-7xl font-normal tracking-tight whitespace-nowrap">
+            <span className="font-mondwest text-lg sm:text-2xl md:text-3xl font-normal tracking-tight whitespace-nowrap">
               {item.mondwest}
             </span>
 
-            <span className="size-2 sm:size-3 rounded-full bg-[#2bee4b] shrink-0 mx-2" />
+            <span className="size-1.5 sm:size-2 rounded-full bg-[#2bee4b] shrink-0 mx-2" />
           </div>
         ))}
       </div>
