@@ -40,11 +40,37 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var saved = localStorage.getItem('theme');
+                  var cookies = document.cookie.split(';');
+                  var cookieTheme = null;
+                  for (var i = 0; i < cookies.length; i++) {
+                    var parts = cookies[i].trim().split('=');
+                    if (parts[0] === 'theme') { cookieTheme = parts[1]; break; }
+                  }
+                  var current = saved || cookieTheme;
+                  var prefDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  if (current === 'dark' || (!current && prefDark)) {
+                    document.documentElement.classList.add('dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className={`${inter.variable} antialiased`}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <TooltipProvider>{children}</TooltipProvider>
-          <Toaster theme="light" />
+          <Toaster />
         </NextIntlClientProvider>
       </body>
     </html>

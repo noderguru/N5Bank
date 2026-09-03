@@ -84,7 +84,7 @@ export function BuyerFilters() {
         </div>
 
         {/* Filter Dropdowns */}
-        <div className="flex flex-wrap sm:flex-nowrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {/* Country Dropdown */}
           <select
             value={currentCountry}

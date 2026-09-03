@@ -70,12 +70,12 @@ export function AdminHeader({ stats, activeTab }: AdminHeaderProps) {
       {/* N5B-87: Сводка по площадке (4 Contextual Cards) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Card 1: Participants */}
-        <div className="rounded-2xl border border-hairline bg-white p-5 space-y-3 shadow-xs">
+        <div className="rounded-2xl border border-hairline bg-surface p-5 space-y-3 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
               Total Participants
             </span>
-            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-500/10 text-blue-500">
               <Users className="h-4 w-4" />
             </span>
           </div>
@@ -90,12 +90,12 @@ export function AdminHeader({ stats, activeTab }: AdminHeaderProps) {
         </div>
 
         {/* Card 2: Assets */}
-        <div className="rounded-2xl border border-hairline bg-white p-5 space-y-3 shadow-xs">
+        <div className="rounded-2xl border border-hairline bg-surface p-5 space-y-3 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
               Market Listings
             </span>
-            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-500">
               <FileText className="h-4 w-4" />
             </span>
           </div>
@@ -110,12 +110,12 @@ export function AdminHeader({ stats, activeTab }: AdminHeaderProps) {
         </div>
 
         {/* Card 3: Inquiries & Conversations */}
-        <div className="rounded-2xl border border-hairline bg-white p-5 space-y-3 shadow-xs">
+        <div className="rounded-2xl border border-hairline bg-surface p-5 space-y-3 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
               Deal Inquiries
             </span>
-            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-500/10 text-violet-500">
               <MessageSquare className="h-4 w-4" />
             </span>
           </div>
@@ -134,8 +134,8 @@ export function AdminHeader({ stats, activeTab }: AdminHeaderProps) {
           className={cn(
             "rounded-2xl border p-5 space-y-3 shadow-xs transition-colors",
             complianceIssuesCount > 0
-              ? "border-amber-200 bg-amber-50/50"
-              : "border-hairline bg-white"
+              ? "border-amber-500/30 bg-amber-500/10"
+              : "border-hairline bg-surface"
           )}
         >
           <div className="flex items-center justify-between">

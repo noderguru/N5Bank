@@ -52,16 +52,16 @@ test.describe("Seller End-to-End Journey", () => {
     // 3. Browse buyers catalog and test URL-persisted filter
     await page.goto("/buyers");
     const searchInput = page.getByPlaceholder(/Search by buyer company/i);
-    await searchInput.fill("Northstar");
-    await expect(page).toHaveURL(/q=Northstar/);
+    await searchInput.fill("Rhein");
+    await expect(page).toHaveURL(/q=Rhein/);
     await page.reload();
-    await expect(page).toHaveURL(/q=Northstar/);
+    await expect(page).toHaveURL(/q=Rhein/);
 
     // 4. Inspect buyer mandate details
-    const buyerCardLink = page.getByRole("link", { name: /Northstar/i }).first();
+    const buyerCardLink = page.getByRole("link", { name: /Rhein/i }).first();
     await buyerCardLink.click();
     await expect(page).toHaveURL(/\/buyers\//);
-    await expect(page.getByRole("heading", { name: /Northstar/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Rhein/i })).toBeVisible();
 
     // 5. Initiate conversation and verify inbox thread
     const contactBtn = page.getByRole("button", { name: /Initiate Deal Discussion/i });
@@ -74,9 +74,11 @@ test.describe("Seller End-to-End Journey", () => {
     await messageInput.fill(testMessage);
     await page.getByRole("button", { name: /Send Message/i }).click();
 
-    await expect(page.getByText(testMessage)).toBeVisible();
+    const streamMsg = page.getByTestId("messages-stream").getByText(testMessage);
+    await expect(streamMsg).toBeVisible();
+    await expect(page.getByText("Sending...")).not.toBeVisible();
     await page.reload();
-    await expect(page.getByText(testMessage)).toBeVisible();
+    await expect(streamMsg).toBeVisible();
 
     // Assert zero console errors throughout the journey
     expect(consoleErrors).toHaveLength(0);

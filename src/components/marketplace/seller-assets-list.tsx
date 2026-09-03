@@ -114,8 +114,8 @@ export function SellerAssetsList({ assets }: SellerAssetsListProps) {
             key={asset.id}
             className={`rounded-[24px] border p-5 sm:p-6 transition-all ${
               isSuspended
-                ? "border-amber-300 bg-amber-50/50"
-                : "border-[#D9D9D9] bg-white hover:border-neutral-300"
+                ? "border-amber-500/30 bg-amber-500/10"
+                : "border-hairline bg-surface hover:border-brand/40"
             }`}
           >
             <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">

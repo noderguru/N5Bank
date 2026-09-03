@@ -24,6 +24,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Badge } from "@/components/ui/badge";
 import { useTranslations } from "next-intl";
 import { LocaleSwitcher } from "./locale-switcher";
+import { ThemeSwitcher } from "./theme-switcher";
 import { getRoleNavConfig } from "./nav-data";
 import { logoutAction } from "@/app/actions/auth";
 import { cn } from "@/lib/utils";
@@ -107,8 +108,9 @@ export function PillNav({ user, unreadCount = 0 }: PillNavProps) {
           })}
         </div>
 
-        {/* Right Section: Locale, CTA, User profile or Sign in */}
-        <div className="flex items-center gap-2 sm:gap-2.5">
+        {/* Right Section: Locale, Theme, CTA, User profile or Sign in */}
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <ThemeSwitcher />
           <div className="hidden sm:block">
             <LocaleSwitcher />
           </div>
@@ -259,6 +261,11 @@ export function PillNav({ user, unreadCount = 0 }: PillNavProps) {
                   <div className="flex items-center justify-between pt-3 text-xs text-muted-foreground">
                     <span>Language</span>
                     <LocaleSwitcher />
+                  </div>
+
+                  <div className="flex items-center justify-between pt-2 text-xs text-muted-foreground border-t border-hairline/60">
+                    <span>Theme</span>
+                    <ThemeSwitcher />
                   </div>
                 </div>
               </SheetContent>

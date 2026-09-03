@@ -153,7 +153,7 @@ export function AssetsTable({ assets, totalCount, sellers }: AssetsTableProps) {
   return (
     <div className="space-y-4">
       {/* Search and Filters Bar */}
-      <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between rounded-2xl border border-hairline bg-white p-4 shadow-xs">
+      <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between rounded-2xl border border-hairline bg-surface p-4 shadow-xs">
         {/* Search */}
         <div className="relative flex-1 min-w-[240px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
@@ -243,7 +243,7 @@ export function AssetsTable({ assets, totalCount, sellers }: AssetsTableProps) {
 
       {/* Table Container - N5B-39: Responsive, doesn't break at 1024px */}
       {assets.length > 0 ? (
-        <div className="rounded-2xl border border-hairline bg-white shadow-xs overflow-hidden">
+        <div className="rounded-2xl border border-hairline bg-surface shadow-xs overflow-hidden">
           <div className="overflow-x-auto">
             <Table className="min-w-[880px]">
               <TableHeader>

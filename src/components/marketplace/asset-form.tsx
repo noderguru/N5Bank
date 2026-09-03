@@ -251,12 +251,12 @@ export function AssetForm({
       )}
 
       {/* Section 1: Overview */}
-      <div className="rounded-[24px] border border-[#D9D9D9] bg-white p-6 sm:p-8 space-y-6">
+      <div className="rounded-[24px] border border-hairline bg-surface p-6 sm:p-8 space-y-6">
         <div>
-          <h2 className="text-xl font-semibold text-black tracking-tight">
+          <h2 className="text-xl font-semibold text-ink tracking-tight">
             Listing Overview
           </h2>
-          <p className="text-sm text-neutral-500 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Specify the core asset proposition and regulatory classification.
           </p>
         </div>
@@ -383,18 +383,18 @@ export function AssetForm({
       </div>
 
       {/* Section 2: Valuation & Price Structure */}
-      <div className="rounded-[24px] border border-[#D9D9D9] bg-white p-6 sm:p-8 space-y-6">
+      <div className="rounded-[24px] border border-hairline bg-surface p-6 sm:p-8 space-y-6">
         <div>
-          <h2 className="text-xl font-semibold text-black tracking-tight">
+          <h2 className="text-xl font-semibold text-ink tracking-tight">
             Valuation & Price Structure
           </h2>
-          <p className="text-sm text-neutral-500 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Choose whether to publish a transparent asking price or protect valuation behind NDA/LOI.
           </p>
         </div>
 
         <div className="space-y-4">
-          <Label className="text-sm font-medium text-neutral-800">
+          <Label className="text-sm font-medium text-ink">
             Price Disclosure Mode <span className="text-rose-500">*</span>
           </Label>
 
@@ -414,14 +414,14 @@ export function AssetForm({
                   disabled={isPending}
                   className={`flex flex-col items-start p-4 rounded-xl border text-left transition-all ${
                     isSelected
-                      ? "border-[#383BFE] bg-[#F4F9FF] ring-2 ring-[#383BFE]/20"
-                      : "border-[#D9D9D9] hover:border-neutral-400 bg-white"
+                      ? "border-brand bg-tint ring-2 ring-brand/20"
+                      : "border-hairline hover:border-brand/40 bg-surface"
                   }`}
                 >
                   <div className="flex w-full items-center justify-between">
                     <span
                       className={`text-sm font-semibold ${
-                        isSelected ? "text-[#383BFE]" : "text-neutral-900"
+                        isSelected ? "text-brand" : "text-ink"
                       }`}
                     >
                       {pm.label}
@@ -508,12 +508,12 @@ export function AssetForm({
       </div>
 
       {/* Section 3: Summary and Description */}
-      <div className="rounded-[24px] border border-[#D9D9D9] bg-white p-6 sm:p-8 space-y-6">
+      <div className="rounded-[24px] border border-hairline bg-surface p-6 sm:p-8 space-y-6">
         <div>
-          <h2 className="text-xl font-semibold text-black tracking-tight">
+          <h2 className="text-xl font-semibold text-ink tracking-tight">
             Detailed Presentation
           </h2>
-          <p className="text-sm text-neutral-500 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Provide succinct pitch details for catalogue cards and deep technical context for detail views.
           </p>
         </div>
@@ -522,7 +522,7 @@ export function AssetForm({
           <div>
             <div className="flex justify-between items-center mb-1.5">
               <div className="flex items-center gap-2">
-                <Label htmlFor="summary" className="text-sm font-medium text-neutral-800">
+                <Label htmlFor="summary" className="text-sm font-medium text-ink">
                   Short Summary <span className="text-rose-500">*</span>
                 </Label>
                 {canUseAi && (
@@ -556,7 +556,7 @@ export function AssetForm({
                   </div>
                   <span className="text-[11px] font-normal text-purple-700">Editable before saving</span>
                 </div>
-                <p className="text-neutral-800 italic bg-white/90 p-2.5 rounded-lg border border-purple-100">
+                <p className="text-ink italic bg-surface/90 p-2.5 rounded-lg border border-hairline">
                   &ldquo;{proposedSummary}&rdquo;
                 </p>
                 <div className="flex items-center gap-2 pt-1">
@@ -645,19 +645,19 @@ export function AssetForm({
       </div>
 
       {/* Section 4: Operational Metrics */}
-      <div className="rounded-[24px] border border-[#D9D9D9] bg-white p-6 sm:p-8 space-y-6">
+      <div className="rounded-[24px] border border-hairline bg-surface p-6 sm:p-8 space-y-6">
         <div>
-          <h2 className="text-xl font-semibold text-black tracking-tight">
+          <h2 className="text-xl font-semibold text-ink tracking-tight">
             Operational Metrics
           </h2>
-          <p className="text-sm text-neutral-500 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Structured data points that feed institutional buyer filter criteria.
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <Label htmlFor="yearOfIssue" className="text-sm font-medium text-neutral-800">
+            <Label htmlFor="yearOfIssue" className="text-sm font-medium text-ink">
               Year of License Issue
             </Label>
             <Input
@@ -756,10 +756,10 @@ export function AssetForm({
       </div>
 
       {/* Sticky Bottom Actions Bar */}
-      <div className="sticky bottom-4 z-20 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-2xl border border-[#D9D9D9] bg-white/95 p-4 shadow-lg backdrop-blur-md">
+      <div className="sticky bottom-4 z-20 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-2xl border border-hairline bg-surface/95 p-4 shadow-lg backdrop-blur-md">
         <Link
           href="/seller/assets"
-          className="inline-flex items-center text-sm font-medium text-neutral-600 hover:text-black transition-colors"
+          className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-ink transition-colors"
         >
           <ArrowLeft className="mr-1.5 h-4 w-4" />
           Cancel and return
@@ -771,7 +771,7 @@ export function AssetForm({
             variant="outline"
             onClick={() => handleSubmit("DRAFT")}
             disabled={isPending}
-            className="flex-1 sm:flex-initial h-11 px-5 rounded-xl border-[#D9D9D9] hover:bg-neutral-50 font-medium"
+            className="flex-1 sm:flex-initial h-11 px-5 rounded-xl border-hairline hover:bg-canvas font-medium text-ink"
           >
             {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Save Draft
