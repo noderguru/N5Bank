@@ -78,7 +78,7 @@ export function PillNav({ user, unreadCount = 0 }: PillNavProps) {
         </div>
 
         {/* Desktop Navigation Links */}
-        <div className="hidden items-center gap-1 md:flex">
+        <div className="hidden items-center gap-1 lg:flex">
           {items.map((item) => {
             const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(`${item.href}/`));
 
@@ -208,7 +208,7 @@ export function PillNav({ user, unreadCount = 0 }: PillNavProps) {
           )}
 
           {/* Mobile Sheet Trigger */}
-          <div className="flex md:hidden">
+          <div className="flex lg:hidden">
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>
                 <Button
