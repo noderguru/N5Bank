@@ -13,4 +13,8 @@ export default defineConfig({
   esbuild: {
     jsx: "automatic",
   },
+  test: {
+    include: ["src/**/*.test.{ts,tsx}"],
+    exclude: ["tests/**", "node_modules/**"],
+  },
 });
