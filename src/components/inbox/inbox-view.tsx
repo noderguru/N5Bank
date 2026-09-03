@@ -2,6 +2,7 @@
 
 import { useState, useTransition, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useSafeTranslations } from "@/lib/i18n-client";
 import {
   AlertTriangle,
   Building2,
@@ -50,6 +51,7 @@ export function InboxView({
   conversations,
   selectedConversationId,
 }: InboxViewProps) {
+  const t = useSafeTranslations("inbox");
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [messageText, setMessageText] = useState("");
@@ -142,7 +144,7 @@ export function InboxView({
         <div className="p-4 border-b border-hairline bg-surface flex items-center justify-between">
           <h2 className="text-base font-bold text-ink tracking-tight flex items-center gap-2">
             <MessageSquare className="size-4 text-brand" />
-            <span>Deal Conversations ({conversations.length})</span>
+            <span>{t("title")} ({conversations.length})</span>
           </h2>
         </div>
 
@@ -322,7 +324,7 @@ export function InboxView({
                 >
                   <AlertTriangle className="size-4 shrink-0 text-amber-600" />
                   <span>
-                    This counterparty is currently suspended by compliance. Outgoing messages are disabled.
+                    {t("userSuspended")}
                   </span>
                 </div>
               ) : (
@@ -336,7 +338,7 @@ export function InboxView({
                         handleSendMessage();
                       }
                     }}
-                    placeholder="Type your message... (Press Enter to send, Shift+Enter for newline)"
+                    placeholder={t("writeMessagePlaceholder")}
                     className="min-h-[80px] rounded-xl resize-none text-sm border-hairline"
                     disabled={isPending}
                     data-testid="message-input"
@@ -359,7 +361,7 @@ export function InboxView({
                       ) : (
                         <Send className="mr-1.5 size-3.5" />
                       )}
-                      <span>Send Message</span>
+                      <span>{isPending ? t("sending") : t("sendMessage")}</span>
                     </Button>
                   </div>
                 </div>
@@ -368,7 +370,7 @@ export function InboxView({
           </>
         ) : (
           <div className="flex-1 flex items-center justify-center p-8 text-muted-foreground text-sm">
-            Select a conversation to view deal history
+            {t("emptyThread")}
           </div>
         )}
       </div>

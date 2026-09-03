@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
+import { useSafeTranslations } from "@/lib/i18n-client";
 import { AlertCircle, ArrowRight, Loader2 } from "lucide-react";
 import { loginAction, type AuthFormState } from "@/app/actions/auth";
 import { DemoLoginButtons } from "@/components/auth/demo-login-buttons";
@@ -12,6 +13,7 @@ import { Label } from "@/components/ui/label";
 const initialState: AuthFormState = {};
 
 export function LoginForm({ returnTo }: { returnTo?: string }) {
+  const t = useSafeTranslations("auth");
   const [state, formAction, isPending] = useActionState(loginAction, initialState);
 
   const formError = state?.errors?._form?.[0];
@@ -25,9 +27,9 @@ export function LoginForm({ returnTo }: { returnTo?: string }) {
           <span className="size-2 rounded-full bg-brand" />
           N5Deal Marketplace
         </div>
-        <h1 className="text-2xl font-bold tracking-tight text-ink">Sign in to your account</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-ink">{t("welcomeBack")}</h1>
         <p className="text-sm text-muted-foreground">
-          Access your buyer interests, asset listings, or manager console
+          {t("loginDescription")}
         </p>
       </div>
 
@@ -59,7 +61,7 @@ export function LoginForm({ returnTo }: { returnTo?: string }) {
 
           <div className="space-y-1.5">
             <Label htmlFor="email" className="text-xs font-medium text-ink">
-              Email address
+              {t("emailLabel")}
             </Label>
             <Input
               id="email"
@@ -82,7 +84,7 @@ export function LoginForm({ returnTo }: { returnTo?: string }) {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <Label htmlFor="password" className="text-xs font-medium text-ink">
-                Password
+                {t("passwordLabel")}
               </Label>
             </div>
             <Input
@@ -111,11 +113,11 @@ export function LoginForm({ returnTo }: { returnTo?: string }) {
             {isPending ? (
               <>
                 <Loader2 className="size-4 animate-spin" />
-                Signing in...
+                {t("signingIn")}
               </>
             ) : (
               <>
-                Sign in
+                {t("signInButton")}
                 <ArrowRight className="size-4" />
               </>
             )}
@@ -124,12 +126,12 @@ export function LoginForm({ returnTo }: { returnTo?: string }) {
       </div>
 
       <p className="text-center text-xs text-muted-foreground">
-        Do not have an account?{" "}
+        {t("noAccount")}{" "}
         <Link
           href="/register"
           className="font-semibold text-brand underline-offset-4 hover:underline"
         >
-          Create one now
+          {t("registerButton")}
         </Link>
       </p>
     </div>

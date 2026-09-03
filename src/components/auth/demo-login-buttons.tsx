@@ -1,6 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
+import { useSafeTranslations } from "@/lib/i18n-client";
 import type { UserRole } from "@prisma/client";
 import { ArrowRight, Briefcase, Building2, ShieldCheck } from "lucide-react";
 import { demoLoginAction } from "@/app/actions/auth";
@@ -42,6 +43,7 @@ const DEMO_ACCOUNTS: DemoAccount[] = [
 ];
 
 export function DemoLoginButtons({ returnTo }: { returnTo?: string }) {
+  const t = useSafeTranslations("auth");
   const [isPending, startTransition] = useTransition();
 
   function handleDemoClick(role: UserRole) {
@@ -50,17 +52,23 @@ export function DemoLoginButtons({ returnTo }: { returnTo?: string }) {
     });
   }
 
+  const roleLabels: Record<UserRole, string> = {
+    BUYER: t("demoBuyer"),
+    SELLER: t("demoSeller"),
+    MANAGER: t("demoManager"),
+  };
+
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          1-Click Demo Login
+          {t("demoLoginTitle")}
         </span>
-        <span className="text-xs text-muted-foreground">No password needed</span>
+        <span className="text-xs text-muted-foreground">Demo profiles</span>
       </div>
 
       <div className="grid gap-2 sm:grid-cols-3">
-        {DEMO_ACCOUNTS.map(({ role, label, name, sub, icon: Icon, badge }) => (
+        {DEMO_ACCOUNTS.map(({ role, name, sub, icon: Icon, badge }) => (
           <button
             key={role}
             type="button"
@@ -78,7 +86,7 @@ export function DemoLoginButtons({ returnTo }: { returnTo?: string }) {
                 </span>
               </div>
               <div className="text-xs font-semibold text-ink group-hover:text-brand">
-                {label}
+                {roleLabels[role]}
               </div>
               <div className="text-[11px] font-medium text-ink/80">{name}</div>
               <div className="text-[10px] text-muted-foreground line-clamp-1">{sub}</div>

@@ -1,4 +1,5 @@
 import { Prisma, LicenseType, BusinessType, BusinessStatus } from "@prisma/client";
+import { getTranslations } from "next-intl/server";
 import { readSession } from "@/lib/auth/session";
 import { prisma } from "@/lib/db/prisma";
 import { AppShell } from "@/components/layout/app-shell";
@@ -14,6 +15,7 @@ export const metadata = {
 };
 
 type Props = {
+  params: Promise<{ locale: string }>;
   searchParams: Promise<{
     q?: string;
     country?: string;
@@ -25,7 +27,9 @@ type Props = {
   }>;
 };
 
-export default async function AssetsPage({ searchParams }: Props) {
+export default async function AssetsPage({ params, searchParams }: Props) {
+  const { locale } = await params;
+  const tMarketplace = await getTranslations({ locale, namespace: "marketplace" });
   const {
     q,
     country,
@@ -219,15 +223,14 @@ export default async function AssetsPage({ searchParams }: Props) {
         <div className="space-y-1">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">
-              Financial Assets Catalogue
+              {tMarketplace("catalogueTitle")}
             </h1>
             <span className="text-xs font-medium text-muted-foreground">
-              {assets.length} {assets.length === 1 ? "opportunity" : "opportunities"}
+              {assets.length}
             </span>
           </div>
           <p className="text-sm text-muted-foreground max-w-2xl leading-relaxed">
-            Curated marketplace of operating financial institutions, licensed entities,
-            and regulated fintech charters across global jurisdictions.
+            {tMarketplace("catalogueSubtitle")}
           </p>
         </div>
 

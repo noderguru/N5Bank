@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSafeTranslations } from "@/lib/i18n-client";
 import { Search, X, RotateCcw } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -61,6 +62,8 @@ export function AssetFilters({
   chipCounts,
   availableCountries,
 }: AssetFiltersProps) {
+  const t = useSafeTranslations("marketplace");
+  const tCommon = useSafeTranslations("common");
   const router = useRouter();
   const searchParams = useSearchParams();
   const [, startTransition] = useTransition();
@@ -124,7 +127,7 @@ export function AssetFilters({
             <Input
               value={currentQ}
               onChange={(e) => updateParam("q", e.target.value)}
-              placeholder="Search assets by title, description, or jurisdiction..."
+              placeholder={tCommon("searchPlaceholder", "Search assets by title, country or licence...")}
               className="pl-9 h-10 rounded-xl border-hairline bg-canvas/30 text-sm focus-visible:ring-brand"
             />
             {currentQ && (
@@ -148,7 +151,7 @@ export function AssetFilters({
               className="h-10 rounded-xl border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
               aria-label="Filter by country"
             >
-              <option value="">All Countries</option>
+              <option value="">{tCommon("all")} {tCommon("country")}</option>
               {availableCountries.map((c) => (
                 <option key={c} value={c}>
                   {c}
@@ -163,7 +166,7 @@ export function AssetFilters({
               className="h-10 rounded-xl border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
               aria-label="Filter by license type"
             >
-              <option value="">All Licenses</option>
+              <option value="">{tCommon("all")} {t("licenseType")}</option>
               {LICENSE_TYPES.map((l) => (
                 <option key={l.value} value={l.value}>
                   {l.label}
@@ -178,7 +181,7 @@ export function AssetFilters({
               className="h-10 rounded-xl border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
               aria-label="Filter by operational status"
             >
-              <option value="">All Statuses</option>
+              <option value="">{tCommon("all")} {tCommon("status")}</option>
               {BUSINESS_STATUSES.map((s) => (
                 <option key={s.value} value={s.value}>
                   {s.label}
@@ -193,7 +196,7 @@ export function AssetFilters({
               className="h-10 rounded-xl border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
               aria-label="Filter by asking price"
             >
-              <option value="">Any Price</option>
+              <option value="">{tCommon("all")} {t("askingPrice")}</option>
               {PRICE_RANGES.map((t) => (
                 <option key={t.value} value={t.value}>
                   {t.label}
@@ -225,7 +228,7 @@ export function AssetFilters({
                 title="Reset all filters"
               >
                 <RotateCcw className="size-3.5" />
-                <span className="hidden sm:inline">Reset</span>
+                <span className="hidden sm:inline">{tCommon("reset")}</span>
               </Button>
             )}
           </div>

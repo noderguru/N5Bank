@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useSafeTranslations } from "@/lib/i18n-client";
 import { Users, FileText, MessageSquare, ShieldAlert, CheckCircle2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -23,22 +26,25 @@ type AdminHeaderProps = {
 };
 
 export function AdminHeader({ stats, activeTab }: AdminHeaderProps) {
+  const t = useSafeTranslations("admin");
+  const tNav = useSafeTranslations("nav");
+
   const tabs = [
     {
       id: "users",
-      label: "Participants & KYC",
+      label: t("tabParticipants", "Participants & KYC"),
       href: "/admin/users",
       count: stats.totalUsers,
     },
     {
       id: "assets",
-      label: "Marketplace Assets",
+      label: t("tabAssets", "Marketplace Assets"),
       href: "/admin/assets",
       count: stats.totalAssets,
     },
     {
       id: "moderation",
-      label: "Moderation Log",
+      label: t("tabModeration", "Moderation Log"),
       href: "/admin/moderation",
       count: stats.totalModerationLogs,
     },
@@ -52,17 +58,17 @@ export function AdminHeader({ stats, activeTab }: AdminHeaderProps) {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-hairline pb-5">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1 rounded-full bg-[#E7F3FF] px-2.5 py-0.5 text-xs font-semibold text-brand">
+            <span className="inline-flex items-center gap-1 rounded-full bg-tint px-2.5 py-0.5 text-xs font-semibold text-brand">
               <CheckCircle2 className="h-3 w-3" />
               Platform Compliance & Governance
             </span>
             <span className="text-xs text-muted-foreground">• Confidential Console</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-ink">
-            Manager Oversight Console
+            {t("oversightTitle")}
           </h1>
           <p className="text-sm text-muted-foreground max-w-2xl leading-relaxed">
-            Direct operational oversight of marketplace participants, regulatory assets, bilateral deal threads, and reversible moderation actions.
+            {t("usersSubtitle")}
           </p>
         </div>
       </div>

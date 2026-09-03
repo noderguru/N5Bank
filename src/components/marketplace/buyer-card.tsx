@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useSafeTranslations } from "@/lib/i18n-client";
 import type { BusinessType, InvestmentHorizon, LicenseType } from "@prisma/client";
 import { Building2, Globe2, Send, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,7 +11,7 @@ import { cn } from "@/lib/utils";
 
 export type BuyerCardData = {
   id: string;
-  name: string;
+  name?: string | null;
   company: string;
   country: string;
   thesis?: string | null;
@@ -18,7 +21,7 @@ export type BuyerCardData = {
   targetCountries?: string[];
   targetLicenseTypes?: LicenseType[];
   targetBusinessTypes?: BusinessType[];
-  horizon?: InvestmentHorizon;
+  horizon?: InvestmentHorizon | null;
   verified?: boolean;
 };
 
@@ -33,6 +36,8 @@ export function BuyerCard({
   className,
   onSendMemo,
 }: BuyerCardProps) {
+  const t = useSafeTranslations("marketplace");
+  const tCommon = useSafeTranslations("common");
   const {
     id,
     name,
@@ -89,10 +94,10 @@ export function BuyerCard({
           </div>
         </div>
 
-        {/* Investment Thesis */}
-        <div className="space-y-1 rounded-xl border border-hairline/60 bg-canvas/30 p-3">
+        {/* Mandate Thesis */}
+        <div className="space-y-1 rounded-xl border border-hairline bg-canvas/30 p-3">
           <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-            Acquisition Thesis
+            {t("investmentThesis")}
           </span>
           <p className="text-xs text-ink/90 leading-relaxed line-clamp-2">
             {thesis || "Actively seeking strategic financial licenses and established fintech infrastructure."}
@@ -103,7 +108,7 @@ export function BuyerCard({
         <div className="grid grid-cols-2 gap-3 text-xs">
           <div className="space-y-1">
             <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-              Target Markets
+              {t("targetJurisdictions")}
             </span>
             <div className="flex flex-wrap gap-1">
               {targetCountries.length > 0 ? (
@@ -128,7 +133,7 @@ export function BuyerCard({
 
           <div className="space-y-1">
             <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-              Target Licences
+              {t("licenseType")}
             </span>
             <div className="flex flex-wrap gap-1">
               {targetLicenseTypes.length > 0 ? (
@@ -170,7 +175,7 @@ export function BuyerCard({
             className="h-8 gap-1.5 rounded-xl bg-brand text-xs font-medium text-surface hover:bg-brand/90 shadow-xs"
           >
             <Send className="size-3.5" />
-            <span>Send deal memo</span>
+            <span>{t("sendDealMemo")}</span>
           </Button>
         ) : (
           <Button
@@ -179,7 +184,7 @@ export function BuyerCard({
           >
             <Link href={`/inbox?recipient=${id}`}>
               <Send className="size-3.5" />
-              <span>Send deal memo</span>
+              <span>{t("sendDealMemo")}</span>
             </Link>
           </Button>
         )}

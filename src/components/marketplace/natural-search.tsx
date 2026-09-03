@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSafeTranslations } from "@/lib/i18n-client";
 import { Sparkles, Loader2, ArrowRight, AlertCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ import { parseSearchQueryAction } from "@/app/actions/ai";
 import type { ParsedSearchFilters } from "@/lib/ai/query-parser";
 
 export function NaturalSearch() {
+  const t = useSafeTranslations("marketplace");
   const router = useRouter();
   const searchParams = useSearchParams();
   const [query, setQuery] = useState("");
@@ -78,7 +80,7 @@ export function NaturalSearch() {
         <Input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder='Natural Search: e.g. "payment licence in Brazil under 5M" or "operating bank in Germany"'
+          placeholder={t("naturalSearchPlaceholder")}
           disabled={isPending}
           className="h-9 border-none bg-transparent shadow-none text-xs sm:text-sm text-ink placeholder:text-muted-foreground/70 focus-visible:ring-0 focus-visible:ring-offset-0"
         />

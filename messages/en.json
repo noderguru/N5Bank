@@ -12,6 +12,7 @@
     "submit": "Submit",
     "back": "Back",
     "search": "Search",
+    "searchPlaceholder": "Search assets by title, country or licence...",
     "filter": "Filter",
     "reset": "Reset",
     "all": "All",
@@ -31,6 +32,7 @@
     "published": "Published",
     "draft": "Draft",
     "verified": "Verified",
+    "validated": "Validated",
     "unverified": "Unverified",
     "priceOnRequest": "Price on request",
     "uponLoi": "Upon LOI",
@@ -134,7 +136,10 @@
     "userRemoved": "This counterparty is no longer available on the platform."
   },
   "admin": {
-    "oversightTitle": "Platform Governance",
+    "oversightTitle": "Manager Oversight Console",
+    "tabParticipants": "Participants & KYC",
+    "tabAssets": "Marketplace Assets",
+    "tabModeration": "Moderation Log",
     "usersSubtitle": "Monitor participant status, KYC compliance, and permissions.",
     "assetsSubtitle": "Review asset listings, publication status, and seller ownership.",
     "moderationSubtitle": "Audit logs and recorded actions across all platform objects.",

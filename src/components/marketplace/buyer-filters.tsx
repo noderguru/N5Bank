@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSafeTranslations } from "@/lib/i18n-client";
 import { FilterX, Search, SlidersHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -37,6 +38,8 @@ const TICKET_RANGES = [
 ];
 
 export function BuyerFilters() {
+  const t = useSafeTranslations("marketplace");
+  const tCommon = useSafeTranslations("common");
   const router = useRouter();
   const searchParams = useSearchParams();
   const [, startTransition] = useTransition();
@@ -78,7 +81,7 @@ export function BuyerFilters() {
           <Input
             value={currentQ}
             onChange={(e) => updateParam("q", e.target.value)}
-            placeholder="Search by buyer company, mandate thesis, or keyword..."
+            placeholder={`${tCommon("search")}...`}
             className="pl-9 h-10 rounded-xl border-hairline bg-canvas/30 text-sm focus-visible:ring-brand"
           />
         </div>
@@ -92,7 +95,7 @@ export function BuyerFilters() {
             className="h-10 rounded-xl border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
             aria-label="Filter by country"
           >
-            <option value="">All Countries</option>
+            <option value="">{tCommon("all")} {tCommon("country")}</option>
             {COMMON_COUNTRIES.map((c) => (
               <option key={c} value={c}>
                 {c}
@@ -107,7 +110,7 @@ export function BuyerFilters() {
             className="h-10 rounded-xl border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
             aria-label="Filter by target licence"
           >
-            <option value="">All Licences</option>
+            <option value="">{tCommon("all")} {t("licenseType")}</option>
             {LICENSE_TYPES.map((l) => (
               <option key={l.value} value={l.value}>
                 {l.label}
@@ -122,7 +125,7 @@ export function BuyerFilters() {
             className="h-10 rounded-xl border border-hairline bg-surface px-3 text-xs font-medium text-ink transition-colors hover:bg-canvas/50 focus:outline-none focus:ring-1 focus:ring-brand"
             aria-label="Filter by ticket size"
           >
-            <option value="">All Tickets</option>
+            <option value="">{tCommon("all")} {t("ticketRange")}</option>
             {TICKET_RANGES.map((t) => (
               <option key={t.value} value={t.value}>
                 {t.label}
@@ -140,7 +143,7 @@ export function BuyerFilters() {
               className="h-10 px-3 rounded-xl text-xs font-medium text-muted-foreground hover:text-ink hover:bg-canvas"
             >
               <FilterX className="mr-1.5 size-3.5" />
-              Clear
+              <span>{tCommon("reset")}</span>
             </Button>
           )}
         </div>

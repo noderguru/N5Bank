@@ -1,4 +1,5 @@
 import { Prisma, LicenseType } from "@prisma/client";
+import { getTranslations } from "next-intl/server";
 import { readSession } from "@/lib/auth/session";
 import { prisma } from "@/lib/db/prisma";
 import { AppShell } from "@/components/layout/app-shell";
@@ -13,6 +14,7 @@ export const metadata = {
 };
 
 type Props = {
+  params: Promise<{ locale: string }>;
   searchParams: Promise<{
     q?: string;
     country?: string;
@@ -21,7 +23,9 @@ type Props = {
   }>;
 };
 
-export default async function BuyersPage({ searchParams }: Props) {
+export default async function BuyersPage({ params, searchParams }: Props) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "marketplace" });
   const { q, country, licenseType, ticket } = await searchParams;
   const session = await readSession();
 
@@ -138,15 +142,15 @@ export default async function BuyersPage({ searchParams }: Props) {
         {/* Page Header */}
         <div className="border-b border-hairline pb-6 space-y-2">
           <span className="text-xs font-semibold uppercase tracking-wider text-brand">
-            Institutional Buyer Directory
+            {t("buyerDemandTitle")}
           </span>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-ink">
-                Verified Buyer Mandates ({buyers.length})
+                {t("buyerDemandTitle")} ({buyers.length})
               </h1>
               <p className="text-sm text-muted-foreground mt-1">
-                Direct counterparty profiles of funds, family offices, and corporate acquirers actively seeking financial licenses.
+                {t("buyerDemandSubtitle")}
               </p>
             </div>
           </div>

@@ -1,11 +1,14 @@
+"use client";
+
 import Link from "next/link";
+import { useSafeTranslations } from "@/lib/i18n-client";
 import type { AssetStatus, BusinessStatus, BusinessType, LicenseType, PriceMode } from "@prisma/client";
 import { CheckCircle2, Globe2, MessageSquare, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { FavoriteButton } from "@/components/marketplace/favorite-button";
-import { formatEnum, formatLicenseType, formatPrice } from "@/lib/formatters";
 import { cn } from "@/lib/utils";
+import { formatEnum, formatLicenseType, formatPrice } from "@/lib/formatters";
 
 export type AssetCardData = {
   id: string;
@@ -26,7 +29,7 @@ export type AssetCardData = {
   isFavorite?: boolean;
 };
 
-export type AssetCardProps = {
+type AssetCardProps = {
   asset: AssetCardData;
   className?: string;
   onContact?: (assetId: string) => void;
@@ -39,6 +42,8 @@ export function AssetCard({
   onContact,
   maxFeatures = 2,
 }: AssetCardProps) {
+  const t = useSafeTranslations("marketplace");
+  const tCommon = useSafeTranslations("common");
   const {
     id,
     title,
@@ -82,7 +87,7 @@ export function AssetCard({
                 className="inline-flex items-center gap-1 rounded-full bg-success-tint px-2 py-0.5 text-[11px] font-semibold text-success"
               >
                 <CheckCircle2 className="size-3 shrink-0" />
-                <span>Validated</span>
+                <span>{tCommon("validated", "Validated")}</span>
               </span>
             )}
           </div>
@@ -91,7 +96,7 @@ export function AssetCard({
             <div className="text-sm font-bold text-ink tracking-tight">{displayPrice}</div>
             {priceMode !== "FIXED" && (
               <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
-                {priceMode === "ON_LOI" ? "Letter of Intent" : "Confidential"}
+                {priceMode === "ON_LOI" ? tCommon("uponLoi") : tCommon("underNda")}
               </div>
             )}
           </div>
@@ -113,7 +118,7 @@ export function AssetCard({
         <div className="grid grid-cols-2 gap-2 rounded-xl border border-hairline bg-canvas/40 p-2.5 sm:grid-cols-4">
           <div className="space-y-0.5">
             <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-              Jurisdiction
+              {tCommon("country")}
             </span>
             <div className="text-xs font-medium text-ink truncate" title={country}>
               {country}
@@ -127,7 +132,7 @@ export function AssetCard({
 
           <div className="space-y-0.5 border-l border-hairline/60 pl-2">
             <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-              Licence
+              {t("licenseType")}
             </span>
             <div className="text-xs font-medium text-ink truncate">
               {formatLicenseType(licenseType)}
@@ -136,7 +141,7 @@ export function AssetCard({
 
           <div className="space-y-0.5 border-l border-hairline/60 pl-2">
             <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-              Structure
+              {t("businessType")}
             </span>
             <div className="text-xs font-medium text-ink truncate">
               {formatEnum(businessType)}
@@ -145,7 +150,7 @@ export function AssetCard({
 
           <div className="space-y-0.5 border-l border-hairline/60 pl-2">
             <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-              Status
+              {tCommon("status")}
             </span>
             <div className="text-xs font-medium text-ink truncate">
               {formatEnum(businessStatus)}
@@ -186,7 +191,7 @@ export function AssetCard({
             className="h-8 gap-1 rounded-xl border-hairline text-xs font-medium hover:border-brand hover:text-brand"
           >
             <Link href={`/assets/${id}`} prefetch={false}>
-              <span>View specs</span>
+              <span>{tCommon("details")}</span>
               <ArrowUpRight className="size-3.5" />
             </Link>
           </Button>
@@ -208,7 +213,7 @@ export function AssetCard({
             className="h-8 gap-1.5 rounded-xl bg-brand text-xs font-medium text-surface hover:bg-brand/90 shadow-xs"
           >
             <MessageSquare className="size-3.5" />
-            <span>Contact seller</span>
+            <span>{t("contactSeller")}</span>
           </Button>
         ) : (
           <Button
@@ -217,7 +222,7 @@ export function AssetCard({
           >
             <Link href={`/assets/${id}?contact=true`} prefetch={false}>
               <MessageSquare className="size-3.5" />
-              <span>Contact seller</span>
+              <span>{t("contactSeller")}</span>
             </Link>
           </Button>
         )}

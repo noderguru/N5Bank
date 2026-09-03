@@ -1,7 +1,12 @@
+"use client";
+
 import Link from "next/link";
+import { useSafeTranslations } from "@/lib/i18n-client";
 import { ShieldCheck } from "lucide-react";
 
 export function Footer() {
+  const t = useSafeTranslations("footer");
+  const tNav = useSafeTranslations("nav");
   return (
     <footer className="mt-20 border-t border-hairline bg-surface/80">
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
@@ -86,13 +91,13 @@ export function Footer() {
         {/* Disclaimer & Copyright */}
         <div className="mt-12 border-t border-hairline pt-6 text-[11px] text-muted-foreground space-y-3">
           <p className="leading-relaxed">
-            Regulatory Notice: N5Deal is an introductions platform and does not act as a licensed broker-dealer, investment advisor, or custodian. Listings do not constitute an offer to buy or sell securities. Deal terms, escrow conditions, and regulatory notifications are subject to local jurisdictional compliance.
+            {t("regulatoryNotice")}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2 pt-2 border-t border-hairline/60">
-            <div>© {new Date().getFullYear()} N5Deal Marketplace. Built with Next.js 15, Neon PostgreSQL & Prisma.</div>
+            <div>{t("copyright")}</div>
             <div className="flex items-center gap-4">
-              <Link href="/login" className="hover:text-brand">Sign in</Link>
-              <Link href="/register" className="hover:text-brand">Register</Link>
+              <Link href="/login" className="hover:text-brand">{tNav("signIn")}</Link>
+              <Link href="/register" className="hover:text-brand">{tNav("register")}</Link>
             </div>
           </div>
         </div>
