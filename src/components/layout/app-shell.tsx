@@ -4,7 +4,7 @@ import { PillNav } from "./pill-nav";
 import { Footer } from "./footer";
 
 export type AppShellProps = {
-  children: ReactNode;
+  children?: ReactNode;
   user?: {
     id: string;
     email: string;
@@ -23,11 +23,19 @@ export function AppShell({
 }: AppShellProps) {
   return (
     <div className="min-h-screen flex flex-col bg-canvas text-ink font-sans selection:bg-brand/20 selection:text-brand">
+      {/* Accessible Skip Link for Keyboard Navigation */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-brand focus:text-white focus:rounded-xl focus:shadow-floating focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand font-medium text-xs"
+      >
+        Skip to main content
+      </a>
+
       {/* Floating Pill Nav */}
       <PillNav user={user} unreadCount={unreadCount} />
 
       {/* Main Content Area */}
-      <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 pt-6 pb-12">
+      <main id="main-content" tabIndex={-1} className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 pt-6 pb-12 outline-none">
         {children}
       </main>
 

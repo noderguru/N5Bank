@@ -39,7 +39,7 @@ export type PillNavProps = {
 };
 
 export function PillNav({ user, unreadCount = 0 }: PillNavProps) {
-  const pathname = usePathname();
+  const pathname = usePathname() || "";
   const [mobileOpen, setMobileOpen] = useState(false);
 
   let tFunc: ((k: string) => string) | undefined;
