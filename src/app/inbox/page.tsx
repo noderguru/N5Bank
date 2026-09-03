@@ -5,7 +5,7 @@ import { InboxConversation, InboxView } from "@/components/inbox/inbox-view";
 
 export const metadata = {
   title: "Inbox | N5Deal Marketplace",
-  description: "Bilateral deal inquiries and counterparty conversations.",
+  description: "Bilateral deal inquiries, NDA exchanges, and counterparty conversations.",
 };
 
 type Props = {
@@ -18,6 +18,7 @@ export default async function InboxPage({ searchParams }: Props) {
   const { conversationId } = await searchParams;
   const session = await requireUser();
 
+  // 1. Fetch conversations for user
   const rawConversations = await prisma.conversation.findMany({
     where: {
       OR: [
@@ -57,12 +58,46 @@ export default async function InboxPage({ searchParams }: Props) {
     orderBy: { updatedAt: "desc" },
   });
 
+  const activeConversationId = conversationId || rawConversations[0]?.id;
+
+  // Criterion: "Непрочитанные сбрасываются при открытии треда"
+  if (activeConversationId) {
+    await prisma.message.updateMany({
+      where: {
+        conversationId: activeConversationId,
+        senderId: { not: session.userId },
+        readAt: null,
+      },
+      data: {
+        readAt: new Date(),
+      },
+    });
+  }
+
+  // Criterion: "readAt на сообщении, счётчик считается одним запросом" (N5B-75)
+  const totalUnreadCount = await prisma.message.count({
+    where: {
+      conversation: {
+        OR: [{ buyerId: session.userId }, { sellerId: session.userId }],
+      },
+      senderId: { not: session.userId },
+      readAt: null,
+    },
+  });
+
   const conversations: InboxConversation[] = rawConversations.map((c) => {
     const isBuyer = c.buyerId === session.userId;
     const counterparty = isBuyer ? c.seller : c.buyer;
     const company = isBuyer
       ? c.seller.sellerProfile?.company
       : c.buyer.buyerProfile?.company;
+
+    const unread =
+      c.id === activeConversationId
+        ? 0
+        : c.messages.filter(
+            (m) => m.senderId !== session.userId && m.readAt === null
+          ).length;
 
     return {
       id: c.id,
@@ -73,6 +108,7 @@ export default async function InboxPage({ searchParams }: Props) {
       counterpartyRole: counterparty.role,
       counterpartyStatus: counterparty.status,
       updatedAt: c.updatedAt,
+      unreadCount: unread,
       messages: c.messages.map((m) => ({
         id: m.id,
         senderId: m.senderId,
@@ -89,24 +125,25 @@ export default async function InboxPage({ searchParams }: Props) {
         email: session.userId,
         role: session.role,
       }}
+      unreadCount={totalUnreadCount}
     >
       <div className="py-8 space-y-6 max-w-6xl mx-auto">
-        <div className="border-b border-[#D9D9D9] pb-6 space-y-1">
-          <span className="text-xs font-semibold uppercase tracking-wider text-[#383BFE]">
+        <div className="border-b border-hairline pb-6 space-y-1">
+          <span className="text-xs font-semibold uppercase tracking-wider text-brand">
             Deal Communications
           </span>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-ink">
             Messages &amp; Deal Memos
           </h1>
-          <p className="text-sm text-neutral-500">
-            Direct communication with counterparties, NDA requests, and indicative acquisition proposals.
+          <p className="text-sm text-muted-foreground">
+            Direct bilateral inquiries, NDAs, and confidential counterparty negotiations.
           </p>
         </div>
 
         <InboxView
           currentUserId={session.userId}
           conversations={conversations}
-          selectedConversationId={conversationId}
+          selectedConversationId={activeConversationId}
         />
       </div>
     </AppShell>
