@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -12,9 +12,18 @@ import {
   ShieldAlert,
   Building2,
   Globe,
+  MoreHorizontal,
+  Trash2,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -24,6 +33,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { NoResultsState } from "@/components/marketplace/no-results-state";
+import { ModerationDialog } from "@/components/admin/moderation-dialog";
 import { cn } from "@/lib/utils";
 
 export type AdminUserRow = {
@@ -44,6 +54,7 @@ export type AdminUserRow = {
 type UsersTableProps = {
   users: AdminUserRow[];
   totalCount: number;
+  currentUserId?: string;
 };
 
 const ROLES = [
@@ -67,10 +78,22 @@ const SORTS = [
   { value: "name_desc", label: "Name: Z to A" },
 ];
 
-export function UsersTable({ users, totalCount }: UsersTableProps) {
+export function UsersTable({ users, totalCount, currentUserId }: UsersTableProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [, startTransition] = useTransition();
+
+  const [dialogState, setDialogState] = useState<{
+    open: boolean;
+    targetId: string;
+    targetTitle: string;
+    action: "SUSPEND" | "RESTORE" | "REMOVE";
+  }>({
+    open: false,
+    targetId: "",
+    targetTitle: "",
+    action: "SUSPEND",
+  });
 
   const currentQ = searchParams.get("q") || "";
   const currentRole = searchParams.get("role") || "ALL";
@@ -113,6 +136,19 @@ export function UsersTable({ users, totalCount }: UsersTableProps) {
     } catch {
       return iso;
     }
+  };
+
+  const openModeration = (
+    id: string,
+    name: string,
+    action: "SUSPEND" | "RESTORE" | "REMOVE"
+  ) => {
+    setDialogState({
+      open: true,
+      targetId: id,
+      targetTitle: name,
+      action,
+    });
   };
 
   return (
@@ -209,29 +245,29 @@ export function UsersTable({ users, totalCount }: UsersTableProps) {
       {users.length > 0 ? (
         <div className="rounded-2xl border border-hairline bg-white shadow-xs overflow-hidden">
           <div className="overflow-x-auto">
-            <Table className="min-w-[760px]">
+            <Table className="min-w-[840px]">
               <TableHeader>
                 <TableRow className="bg-canvas/50 hover:bg-canvas/50 border-hairline">
-                  <TableHead className="w-[240px] text-xs font-semibold uppercase text-muted-foreground tracking-wider py-3">
+                  <TableHead className="w-[220px] text-xs font-semibold uppercase text-muted-foreground tracking-wider py-3">
                     Participant
                   </TableHead>
-                  <TableHead className="w-[110px] text-xs font-semibold uppercase text-muted-foreground tracking-wider">
+                  <TableHead className="w-[100px] text-xs font-semibold uppercase text-muted-foreground tracking-wider">
                     Role
                   </TableHead>
-                  <TableHead className="w-[120px] text-xs font-semibold uppercase text-muted-foreground tracking-wider">
+                  <TableHead className="w-[110px] text-xs font-semibold uppercase text-muted-foreground tracking-wider">
                     Status
                   </TableHead>
-                  <TableHead className="min-w-[180px] text-xs font-semibold uppercase text-muted-foreground tracking-wider">
+                  <TableHead className="min-w-[160px] text-xs font-semibold uppercase text-muted-foreground tracking-wider">
                     Entity / Country
                   </TableHead>
-                  <TableHead className="w-[130px] text-xs font-semibold uppercase text-muted-foreground tracking-wider">
+                  <TableHead className="w-[120px] text-xs font-semibold uppercase text-muted-foreground tracking-wider">
                     Activity
                   </TableHead>
-                  <TableHead className="w-[120px] text-xs font-semibold uppercase text-muted-foreground tracking-wider">
+                  <TableHead className="w-[110px] text-xs font-semibold uppercase text-muted-foreground tracking-wider">
                     Joined
                   </TableHead>
-                  <TableHead className="w-[100px] text-right text-xs font-semibold uppercase text-muted-foreground tracking-wider pr-4">
-                    Action
+                  <TableHead className="w-[170px] text-right text-xs font-semibold uppercase text-muted-foreground tracking-wider pr-4">
+                    Moderation / Actions
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -239,6 +275,7 @@ export function UsersTable({ users, totalCount }: UsersTableProps) {
                 {users.map((user) => {
                   const isSuspended = user.status === "SUSPENDED";
                   const isRemoved = user.status === "REMOVED";
+                  const isSelf = currentUserId === user.id;
 
                   return (
                     <TableRow
@@ -360,27 +397,97 @@ export function UsersTable({ users, totalCount }: UsersTableProps) {
                         {formatDate(user.createdAt)}
                       </TableCell>
 
-                      {/* Action Link */}
+                      {/* N5B-34: Moderation Actions & Dialog Trigger */}
                       <TableCell className="text-right pr-4">
-                        {user.role === "BUYER" ? (
-                          <Link
-                            href={`/buyers/${user.id}`}
-                            className="inline-flex items-center gap-1 text-xs font-medium text-brand hover:underline"
-                          >
-                            <span>Profile</span>
-                            <ExternalLink className="h-3 w-3" />
-                          </Link>
-                        ) : user.role === "SELLER" ? (
-                          <Link
-                            href={`/admin/assets?sellerId=${user.id}`}
-                            className="inline-flex items-center gap-1 text-xs font-medium text-brand hover:underline"
-                          >
-                            <span>Listings</span>
-                            <ExternalLink className="h-3 w-3" />
-                          </Link>
-                        ) : (
-                          <span className="text-xs text-muted-foreground">—</span>
-                        )}
+                        <div className="inline-flex items-center justify-end gap-1.5">
+                          {isSelf ? (
+                            <span className="text-[11px] font-medium text-muted-foreground italic px-2">
+                              Your Account
+                            </span>
+                          ) : (
+                            <>
+                              {/* Primary Quick Action Button */}
+                              {user.status === "ACTIVE" ? (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => openModeration(user.id, user.name, "SUSPEND")}
+                                  className="h-7 px-2 text-xs font-medium border-amber-200 text-amber-800 hover:bg-amber-50 rounded-lg"
+                                >
+                                  Suspend
+                                </Button>
+                              ) : isSuspended ? (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => openModeration(user.id, user.name, "RESTORE")}
+                                  className="h-7 px-2 text-xs font-medium border-emerald-200 text-emerald-800 hover:bg-emerald-50 rounded-lg"
+                                >
+                                  Reinstate
+                                </Button>
+                              ) : (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => openModeration(user.id, user.name, "RESTORE")}
+                                  className="h-7 px-2 text-xs font-medium border-neutral-200 text-neutral-800 hover:bg-canvas rounded-lg"
+                                >
+                                  Restore
+                                </Button>
+                              )}
+
+                              {/* Dropdown for Secondary Actions */}
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="h-7 w-7 p-0 rounded-lg text-muted-foreground hover:text-ink"
+                                    aria-label="More options"
+                                  >
+                                    <MoreHorizontal className="h-3.5 w-3.5" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end" className="w-44">
+                                  {user.role === "BUYER" && (
+                                    <DropdownMenuItem asChild>
+                                      <Link
+                                        href={`/buyers/${user.id}`}
+                                        className="flex items-center gap-2 cursor-pointer"
+                                      >
+                                        <ExternalLink className="h-3.5 w-3.5 text-muted-foreground" />
+                                        <span>View Mandate</span>
+                                      </Link>
+                                    </DropdownMenuItem>
+                                  )}
+                                  {user.role === "SELLER" && (
+                                    <DropdownMenuItem asChild>
+                                      <Link
+                                        href={`/admin/assets?sellerId=${user.id}`}
+                                        className="flex items-center gap-2 cursor-pointer"
+                                      >
+                                        <ExternalLink className="h-3.5 w-3.5 text-muted-foreground" />
+                                        <span>View Listings ({user.assetsCount})</span>
+                                      </Link>
+                                    </DropdownMenuItem>
+                                  )}
+
+                                  <DropdownMenuSeparator />
+
+                                  {user.status !== "REMOVED" && (
+                                    <DropdownMenuItem
+                                      onClick={() => openModeration(user.id, user.name, "REMOVE")}
+                                      className="flex items-center gap-2 text-rose-700 cursor-pointer focus:text-rose-700 focus:bg-rose-50"
+                                    >
+                                      <Trash2 className="h-3.5 w-3.5" />
+                                      <span>Remove Participant</span>
+                                    </DropdownMenuItem>
+                                  )}
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </>
+                          )}
+                        </div>
                       </TableCell>
                     </TableRow>
                   );
@@ -398,6 +505,16 @@ export function UsersTable({ users, totalCount }: UsersTableProps) {
           resetLabel="Clear all filters"
         />
       )}
+
+      {/* Moderation Confirmation Dialog - N5B-88 */}
+      <ModerationDialog
+        open={dialogState.open}
+        onOpenChange={(open) => setDialogState((prev) => ({ ...prev, open }))}
+        targetType="USER"
+        targetId={dialogState.targetId}
+        targetTitle={dialogState.targetTitle}
+        action={dialogState.action}
+      />
     </div>
   );
 }

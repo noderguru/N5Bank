@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -13,9 +13,19 @@ import {
   Eye,
   Building2,
   Globe,
+  MoreHorizontal,
+  Trash2,
+  CheckCircle2,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -25,6 +35,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { NoResultsState } from "@/components/marketplace/no-results-state";
+import { ModerationDialog } from "@/components/admin/moderation-dialog";
 import { formatPrice, formatLicenseType, formatEnum } from "@/lib/formatters";
 import { cn } from "@/lib/utils";
 import type { PriceMode, AssetStatus, LicenseType, BusinessType } from "@prisma/client";
@@ -83,6 +94,18 @@ export function AssetsTable({ assets, totalCount, sellers }: AssetsTableProps) {
   const searchParams = useSearchParams();
   const [, startTransition] = useTransition();
 
+  const [dialogState, setDialogState] = useState<{
+    open: boolean;
+    targetId: string;
+    targetTitle: string;
+    action: "SUSPEND" | "RESTORE" | "REMOVE" | "VALIDATE";
+  }>({
+    open: false,
+    targetId: "",
+    targetTitle: "",
+    action: "SUSPEND",
+  });
+
   const currentQ = searchParams.get("q") || "";
   const currentStatus = searchParams.get("status") || "ALL";
   const currentSellerId = searchParams.get("sellerId") || "ALL";
@@ -124,6 +147,19 @@ export function AssetsTable({ assets, totalCount, sellers }: AssetsTableProps) {
     } catch {
       return iso;
     }
+  };
+
+  const openModeration = (
+    id: string,
+    title: string,
+    action: "SUSPEND" | "RESTORE" | "REMOVE" | "VALIDATE"
+  ) => {
+    setDialogState({
+      open: true,
+      targetId: id,
+      targetTitle: title,
+      action,
+    });
   };
 
   return (
@@ -221,16 +257,16 @@ export function AssetsTable({ assets, totalCount, sellers }: AssetsTableProps) {
       {assets.length > 0 ? (
         <div className="rounded-2xl border border-hairline bg-white shadow-xs overflow-hidden">
           <div className="overflow-x-auto">
-            <Table className="min-w-[860px]">
+            <Table className="min-w-[880px]">
               <TableHeader>
                 <TableRow className="bg-canvas/50 hover:bg-canvas/50 border-hairline">
-                  <TableHead className="w-[280px] text-xs font-semibold uppercase text-muted-foreground tracking-wider py-3">
+                  <TableHead className="w-[260px] text-xs font-semibold uppercase text-muted-foreground tracking-wider py-3">
                     Asset Title & Details
                   </TableHead>
-                  <TableHead className="min-w-[170px] text-xs font-semibold uppercase text-muted-foreground tracking-wider">
+                  <TableHead className="min-w-[160px] text-xs font-semibold uppercase text-muted-foreground tracking-wider">
                     Seller
                   </TableHead>
-                  <TableHead className="w-[120px] text-xs font-semibold uppercase text-muted-foreground tracking-wider">
+                  <TableHead className="w-[110px] text-xs font-semibold uppercase text-muted-foreground tracking-wider">
                     Status
                   </TableHead>
                   <TableHead className="w-[130px] text-xs font-semibold uppercase text-muted-foreground tracking-wider">
@@ -245,8 +281,8 @@ export function AssetsTable({ assets, totalCount, sellers }: AssetsTableProps) {
                   <TableHead className="w-[100px] text-xs font-semibold uppercase text-muted-foreground tracking-wider">
                     Listed
                   </TableHead>
-                  <TableHead className="w-[110px] text-right text-xs font-semibold uppercase text-muted-foreground tracking-wider pr-4">
-                    Public Page
+                  <TableHead className="w-[160px] text-right text-xs font-semibold uppercase text-muted-foreground tracking-wider pr-4">
+                    Actions
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -254,7 +290,8 @@ export function AssetsTable({ assets, totalCount, sellers }: AssetsTableProps) {
                 {assets.map((asset) => {
                   const isSuspended = asset.status === "SUSPENDED";
                   const isRemoved = asset.status === "REMOVED";
-                  const isSellerSuspended = asset.sellerStatus === "SUSPENDED" || asset.sellerStatus === "REMOVED";
+                  const isSellerSuspended =
+                    asset.sellerStatus === "SUSPENDED" || asset.sellerStatus === "REMOVED";
 
                   return (
                     <TableRow
@@ -290,7 +327,9 @@ export function AssetsTable({ assets, totalCount, sellers }: AssetsTableProps) {
                         <div className="space-y-0.5">
                           <div className="flex items-center gap-1 text-xs font-medium text-ink truncate">
                             <Building2 className="h-3 w-3 text-muted-foreground shrink-0" />
-                            <span className="truncate">{asset.sellerCompany || asset.sellerName}</span>
+                            <span className="truncate">
+                              {asset.sellerCompany || asset.sellerName}
+                            </span>
                           </div>
                           <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
                             <span>{asset.sellerName}</span>
@@ -359,15 +398,95 @@ export function AssetsTable({ assets, totalCount, sellers }: AssetsTableProps) {
                         {formatDate(asset.createdAt)}
                       </TableCell>
 
-                      {/* Public Page Action Link - N5B-78 */}
+                      {/* Actions Column: View Link + Moderation Controls */}
                       <TableCell className="text-right pr-4">
-                        <Link
-                          href={`/assets/${asset.id}`}
-                          className="inline-flex items-center gap-1 rounded-lg border border-hairline px-2 py-1 text-xs font-medium text-brand hover:bg-canvas transition-colors"
-                        >
-                          <span>View</span>
-                          <ExternalLink className="h-3 w-3" />
-                        </Link>
+                        <div className="inline-flex items-center justify-end gap-1.5">
+                          <Link
+                            href={`/assets/${asset.id}`}
+                            className="inline-flex items-center gap-1 rounded-lg border border-hairline px-2 py-1 text-xs font-medium text-brand hover:bg-canvas transition-colors"
+                          >
+                            <span>View</span>
+                            <ExternalLink className="h-3 w-3" />
+                          </Link>
+
+                          {/* Quick Moderation Button */}
+                          {asset.status === "SUSPENDED" ? (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() =>
+                                openModeration(asset.id, asset.title, "RESTORE")
+                              }
+                              className="h-7 px-2 text-xs font-medium border-emerald-200 text-emerald-800 hover:bg-emerald-50 rounded-lg"
+                            >
+                              Reinstate
+                            </Button>
+                          ) : asset.status !== "REMOVED" ? (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() =>
+                                openModeration(asset.id, asset.title, "SUSPEND")
+                              }
+                              className="h-7 px-2 text-xs font-medium border-amber-200 text-amber-800 hover:bg-amber-50 rounded-lg"
+                            >
+                              Suspend
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() =>
+                                openModeration(asset.id, asset.title, "RESTORE")
+                              }
+                              className="h-7 px-2 text-xs font-medium border-neutral-200 text-neutral-800 hover:bg-canvas rounded-lg"
+                            >
+                              Restore
+                            </Button>
+                          )}
+
+                          {/* More Options Dropdown */}
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-7 w-7 p-0 rounded-lg text-muted-foreground hover:text-ink"
+                                aria-label="More options"
+                              >
+                                <MoreHorizontal className="h-3.5 w-3.5" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-44">
+                              {!asset.validated && (
+                                <DropdownMenuItem
+                                  onClick={() =>
+                                    openModeration(asset.id, asset.title, "VALIDATE")
+                                  }
+                                  className="flex items-center gap-2 cursor-pointer text-emerald-700"
+                                >
+                                  <CheckCircle2 className="h-3.5 w-3.5" />
+                                  <span>Verify Charter</span>
+                                </DropdownMenuItem>
+                              )}
+
+                              {asset.status !== "REMOVED" && (
+                                <>
+                                  {!asset.validated && <DropdownMenuSeparator />}
+                                  <DropdownMenuItem
+                                    onClick={() =>
+                                      openModeration(asset.id, asset.title, "REMOVE")
+                                    }
+                                    className="flex items-center gap-2 text-rose-700 cursor-pointer focus:text-rose-700 focus:bg-rose-50"
+                                  >
+                                    <Trash2 className="h-3.5 w-3.5" />
+                                    <span>Remove Listing</span>
+                                  </DropdownMenuItem>
+                                </>
+                              )}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
                       </TableCell>
                     </TableRow>
                   );
@@ -385,6 +504,16 @@ export function AssetsTable({ assets, totalCount, sellers }: AssetsTableProps) {
           resetLabel="Clear all filters"
         />
       )}
+
+      {/* Moderation Confirmation Dialog - N5B-88 */}
+      <ModerationDialog
+        open={dialogState.open}
+        onOpenChange={(open) => setDialogState((prev) => ({ ...prev, open }))}
+        targetType="ASSET"
+        targetId={dialogState.targetId}
+        targetTitle={dialogState.targetTitle}
+        action={dialogState.action}
+      />
     </div>
   );
 }

@@ -142,7 +142,11 @@ export default async function AdminUsersPage({ searchParams }: Props) {
     >
       <div className="max-w-7xl mx-auto py-8 space-y-6">
         <AdminHeader stats={stats} activeTab="users" />
-        <UsersTable users={users} totalCount={totalUsersCount} />
+        <UsersTable
+          users={users}
+          totalCount={totalUsersCount}
+          currentUserId={session.userId}
+        />
       </div>
     </AppShell>
   );
