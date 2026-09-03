@@ -2,9 +2,10 @@ import { describe, expect, it, vi } from "vitest";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-// Mock next/navigation
 vi.mock("next/navigation", () => ({
   usePathname: () => "/assets",
+  useRouter: () => ({ push: vi.fn(), refresh: vi.fn() }),
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 import { Footer, getRoleNavConfig, PillNav } from "./index";

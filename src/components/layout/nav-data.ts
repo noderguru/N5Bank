@@ -20,17 +20,20 @@ export type RoleNavConfig = {
 
 export function getRoleNavConfig(
   role: UserRole | null | undefined,
-  unreadCount = 0
+  unreadCount = 0,
+  t?: (key: string) => string
 ): RoleNavConfig {
+  const tr = (key: string, fallback: string) => (t ? t(key) : fallback);
+
   if (!role) {
     return {
       items: [
-        { label: "Assets", href: "/assets" },
-        { label: "Buyer Demand", href: "/buyers" },
-        { label: "How it works", href: "/#how-it-works" },
+        { label: tr("nav.assets", "Assets"), href: "/assets" },
+        { label: tr("nav.buyerDemand", "Buyer Demand"), href: "/buyers" },
+        { label: tr("nav.howItWorks", "How it works"), href: "/#how-it-works" },
       ],
-      cta: { label: "Sign in", href: "/login", variant: "primary" },
-      secondaryCta: { label: "List Asset", href: "/register?role=seller", variant: "outline" },
+      cta: { label: tr("nav.signIn", "Sign in"), href: "/login", variant: "primary" },
+      secondaryCta: { label: tr("nav.listAsset", "List Asset"), href: "/register?role=seller", variant: "outline" },
     };
   }
 
@@ -38,35 +41,35 @@ export function getRoleNavConfig(
     case "BUYER":
       return {
         items: [
-          { label: "Catalogue", href: "/assets" },
-          { label: "My Matches", href: "/buyer/matches" },
-          { label: "Saved Assets", href: "/buyer/saved" },
-          { label: "Inbox", href: "/inbox", badge: unreadCount },
+          { label: tr("nav.catalogue", "Catalogue"), href: "/assets" },
+          { label: tr("nav.myMatches", "My Matches"), href: "/buyer/matches" },
+          { label: tr("nav.savedAssets", "Saved Assets"), href: "/buyer/saved" },
+          { label: tr("nav.inbox", "Inbox"), href: "/inbox", badge: unreadCount },
         ],
-        cta: { label: "+ Post Buy Mandate", href: "/buyer/mandates/new", variant: "primary" },
+        cta: { label: tr("nav.postBuyMandate", "+ Post Buy Mandate"), href: "/buyer/mandates/new", variant: "primary" },
       };
 
     case "SELLER":
       return {
         items: [
-          { label: "My Listings", href: "/seller/assets" },
-          { label: "Buyer Demand", href: "/buyers" },
-          { label: "Inquiries", href: "/seller/inquiries" },
-          { label: "Inbox", href: "/inbox", badge: unreadCount },
+          { label: tr("nav.myListings", "My Listings"), href: "/seller/assets" },
+          { label: tr("nav.buyerDemand", "Buyer Demand"), href: "/buyers" },
+          { label: tr("nav.inquiries", "Inquiries"), href: "/seller/inquiries" },
+          { label: tr("nav.inbox", "Inbox"), href: "/inbox", badge: unreadCount },
         ],
-        cta: { label: "+ List Asset", href: "/seller/assets/new", variant: "primary" },
+        cta: { label: tr("nav.listAsset", "+ List Asset"), href: "/seller/assets/new", variant: "primary" },
       };
 
     case "MANAGER":
       return {
         items: [
-          { label: "Dashboard", href: "/admin" },
-          { label: "Users & KYC", href: "/admin/users" },
-          { label: "Moderation", href: "/admin/moderation" },
-          { label: "Deals & Escrow", href: "/admin/deals" },
-          { label: "Inbox", href: "/inbox", badge: unreadCount },
+          { label: tr("nav.dashboard", "Dashboard"), href: "/admin" },
+          { label: tr("nav.usersKyc", "Users & KYC"), href: "/admin/users" },
+          { label: tr("nav.moderation", "Moderation"), href: "/admin/moderation" },
+          { label: tr("nav.dealsEscrow", "Deals & Escrow"), href: "/admin/deals" },
+          { label: tr("nav.inbox", "Inbox"), href: "/inbox", badge: unreadCount },
         ],
-        cta: { label: "Audit Logs", href: "/admin/audit", variant: "outline" },
+        cta: { label: tr("nav.auditLogs", "Audit Logs"), href: "/admin/audit", variant: "outline" },
       };
   }
 }

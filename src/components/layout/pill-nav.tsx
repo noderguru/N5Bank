@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
+import { useTranslations } from "next-intl";
 import { LocaleSwitcher } from "./locale-switcher";
 import { getRoleNavConfig } from "./nav-data";
 import { logoutAction } from "@/app/actions/auth";
@@ -40,7 +41,16 @@ export type PillNavProps = {
 export function PillNav({ user, unreadCount = 0 }: PillNavProps) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { items, cta, secondaryCta } = getRoleNavConfig(user?.role, unreadCount);
+
+  let tFunc: ((k: string) => string) | undefined;
+  try {
+    const t = useTranslations();
+    tFunc = (key: string) => t(key as never);
+  } catch {
+    tFunc = undefined;
+  }
+
+  const { items, cta, secondaryCta } = getRoleNavConfig(user?.role, unreadCount, tFunc);
 
   return (
     <header className="sticky top-4 z-40 mx-auto w-full max-w-6xl px-3 sm:px-6">
