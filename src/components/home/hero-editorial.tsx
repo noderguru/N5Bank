@@ -29,7 +29,7 @@ export function HeroEditorial({ t }: HeroEditorialProps) {
           </span>
         </div>
 
-        {/* Monolithic Typographic Wall matching newformcap.com */}
+        {/* Monolithic Typographic Wall */}
         <div className="space-y-3 sm:space-y-4">
           
           {/* Line 1: Advancing + [Large Tile 1] + the Capital */}
@@ -38,7 +38,7 @@ export function HeroEditorial({ t }: HeroEditorialProps) {
               Advancing
             </h1>
 
-            {/* Photo Tile 1 (322px x 135px in original) */}
+            {/* Photo Tile 1 (322px x 135px) */}
             <div className="relative inline-flex h-[56px] w-[130px] sm:h-[84px] sm:w-[210px] md:h-[110px] md:w-[270px] lg:h-[135px] lg:w-[322px] overflow-hidden rounded-[14px] border border-[#232924]/15 shadow-md align-middle shrink-0 bg-[#161b17]">
               <Image
                 src="/static/Hero-CRYPTO-01-f02c7b2ef403195aaa3970a8f942f3c3.webp"
@@ -63,60 +63,24 @@ export function HeroEditorial({ t }: HeroEditorialProps) {
             </h1>
           </div>
 
-          {/* Line 2: [Square Tile 2] + Networks of + [Tile 3] + M&A */}
-          <div className="flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-3">
-            {/* Photo Tile 2 (135px x 135px square in original) */}
-            <div className="relative inline-flex h-[56px] w-[56px] sm:h-[84px] sm:w-[84px] md:h-[110px] md:w-[110px] lg:h-[135px] lg:w-[135px] overflow-hidden rounded-[14px] border border-[#232924]/15 shadow-md align-middle shrink-0 bg-[#161b17]">
-              <Image
-                src="/static/Hero-CRYPTO-02-74411fc1db6623826e129e6bd93ffc7b.webp"
-                alt="Server infrastructure"
-                fill
-                sizes="140px"
-                className="object-cover editorial-filter hero-img-swap"
-                priority
-              />
-              <Image
-                src="/static/Hero-NYSE-02-f68100766baf1c98fe5716d6b3f4ace5.webp"
-                alt="Wall street sign"
-                fill
-                sizes="140px"
-                className="object-cover editorial-filter"
-                priority
-              />
-            </div>
-
+          {/* Line 2: Networks of + M&A (images removed per user request) */}
+          <div className="flex flex-wrap items-baseline gap-x-4 sm:gap-x-6 gap-y-3">
             <h1 className="font-mondwest text-5xl sm:text-7xl md:text-8xl lg:text-[105px] xl:text-[118px] font-normal tracking-tight leading-[0.92] text-[#121613]">
               Networks of
             </h1>
-
-            {/* Photo Tile 3 (249px x 135px in original) */}
-            <div className="relative inline-flex h-[56px] w-[105px] sm:h-[84px] sm:w-[160px] md:h-[110px] md:w-[210px] lg:h-[135px] lg:w-[249px] overflow-hidden rounded-[14px] border border-[#232924]/15 shadow-md align-middle shrink-0 bg-[#161b17]">
-              <Image
-                src="/static/Hero-CRYPTO-03-981c7cbe612acff9ab0287487d5085b8.webp"
-                alt="Data center server"
-                fill
-                sizes="250px"
-                className="object-cover editorial-filter hero-img-swap"
-                priority
-              />
-              <Image
-                src="/static/Hero-NYSE-03-eeae7c86cc7b53e6c302cc4d46f1e1dd.webp"
-                alt="Wall street bull"
-                fill
-                sizes="250px"
-                className="object-cover editorial-filter"
-                priority
-              />
-            </div>
 
             <h1 className="font-lausanne text-5xl sm:text-7xl md:text-8xl lg:text-[105px] xl:text-[118px] font-semibold uppercase tracking-tighter leading-[0.92] text-[#121613]">
               M&A
             </h1>
           </div>
 
-          {/* Line 3: [Tile 4] + and Regulated Financial Assets */}
+          {/* Line 3: and Regulated Financial Assets + [Tile 4 moved after Assets] */}
           <div className="flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-3">
-            {/* Photo Tile 4 (375px x 135px in original) */}
+            <h1 className="font-editorial text-4xl sm:text-6xl md:text-7xl lg:text-[92px] xl:text-[105px] font-light italic tracking-tight leading-[0.92] text-[#516254]">
+              and Regulated Financial Assets
+            </h1>
+
+            {/* Photo Tile 4 placed after Assets */}
             <div className="relative inline-flex h-[56px] w-[140px] sm:h-[84px] sm:w-[230px] md:h-[110px] md:w-[300px] lg:h-[135px] lg:w-[375px] overflow-hidden rounded-[14px] border border-[#232924]/15 shadow-md align-middle shrink-0 bg-[#161b17]">
               <Image
                 src="/static/Hero-CRYPTO-04-0ecd9362de52a808c35ead4c9338c025.webp"
@@ -135,10 +99,6 @@ export function HeroEditorial({ t }: HeroEditorialProps) {
                 priority
               />
             </div>
-
-            <h1 className="font-editorial text-4xl sm:text-6xl md:text-7xl lg:text-[92px] xl:text-[105px] font-light italic tracking-tight leading-[0.92] text-[#516254]">
-              and Regulated Financial Assets
-            </h1>
           </div>
         </div>
 
