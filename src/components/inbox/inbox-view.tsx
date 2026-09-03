@@ -262,7 +262,7 @@ export function InboxView({
                   return (
                     <div
                       key={msg.id}
-                      className={`flex flex-col ${
+                      className={`flex flex-col animate-in fade-in-50 slide-in-from-bottom-1 duration-150 ease-out ${
                         isOwn ? "items-end" : "items-start"
                       }`}
                       data-testid="chat-message"
