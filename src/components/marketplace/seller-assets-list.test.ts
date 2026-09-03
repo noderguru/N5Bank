@@ -4,10 +4,13 @@ import { renderWithIntl } from "@/lib/render-test";
 import { SellerAssetsList, type SellerAssetItem } from "./seller-assets-list";
 
 vi.mock("next/navigation", () => ({
-  useRouter: () => ({
-    push: vi.fn(),
-    refresh: vi.fn(),
-  }),
+  useRouter: () => ({ push: vi.fn(), replace: vi.fn(), refresh: vi.fn() }),
+  useSearchParams: () => new URLSearchParams(),
+  usePathname: () => "/en",
+  useParams: () => ({ locale: "en" }),
+  redirect: vi.fn(),
+  permanentRedirect: vi.fn(),
+  notFound: vi.fn(),
 }));
 
 describe("SellerAssetsList", () => {

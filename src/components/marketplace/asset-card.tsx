@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import type { AssetStatus, BusinessStatus, BusinessType, LicenseType, PriceMode } from "@prisma/client";
 import { CheckCircle2, Globe2, MessageSquare, ArrowUpRight } from "lucide-react";

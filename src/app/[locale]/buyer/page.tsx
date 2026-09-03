@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { ArrowRight, Bookmark, MessageSquare, Search } from "lucide-react";
 import { readSession } from "@/lib/auth/session";
 import { prisma } from "@/lib/db/prisma";

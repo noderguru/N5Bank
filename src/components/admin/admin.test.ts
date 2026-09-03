@@ -8,8 +8,13 @@ import { ModerationTable } from "./moderation-table";
 
 // Mock next/navigation
 vi.mock("next/navigation", () => ({
-  useRouter: () => ({ push: vi.fn() }),
+  useRouter: () => ({ push: vi.fn(), replace: vi.fn(), refresh: vi.fn() }),
   useSearchParams: () => new URLSearchParams(),
+  usePathname: () => "/en",
+  useParams: () => ({ locale: "en" }),
+  redirect: vi.fn(),
+  permanentRedirect: vi.fn(),
+  notFound: vi.fn(),
 }));
 
 describe("Manager Console Components", () => {

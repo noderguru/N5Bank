@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { FilterX, RotateCcw } from "lucide-react";
 import { Button } from "../ui/button";

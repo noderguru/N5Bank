@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { FolderOpen, type LucideIcon } from "lucide-react";
 import { Button } from "../ui/button";
 

@@ -6,8 +6,13 @@ import { NoResultsState } from "./no-results-state";
 
 // Mock next/navigation
 vi.mock("next/navigation", () => ({
-  useRouter: () => ({ push: vi.fn() }),
+  useRouter: () => ({ push: vi.fn(), replace: vi.fn(), refresh: vi.fn() }),
   useSearchParams: () => new URLSearchParams(),
+  usePathname: () => "/en",
+  useParams: () => ({ locale: "en" }),
+  redirect: vi.fn(),
+  permanentRedirect: vi.fn(),
+  notFound: vi.fn(),
 }));
 
 describe("AssetFilters component", () => {
@@ -54,7 +59,7 @@ describe("AssetFilters component", () => {
 
     expect(html).toContain("No matching assets found");
     expect(html).toContain("NonExistentBank");
-    expect(html).toContain('href="/assets"');
+    expect(html).toContain('href="/en/assets"');
     expect(html).toContain("Clear all filters");
   });
 });

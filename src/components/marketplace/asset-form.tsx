@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { useEnumLabel } from "@/lib/i18n-format";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { ArrowLeft, Check, Info, Loader2, Sparkles, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { AlertCircle, ArrowRight, Briefcase, Building2, Check, Loader2 } from "lucide-react";
 import { registerAction, type AuthFormState } from "@/app/actions/auth";
 import { Button } from "@/components/ui/button";

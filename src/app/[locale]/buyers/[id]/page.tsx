@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { ArrowLeft, Building2, CheckCircle2, Globe, Shield, Tag } from "lucide-react";
 import { readSession } from "@/lib/auth/session";
 import { prisma } from "@/lib/db/prisma";

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { Users, FileText, MessageSquare, ShieldAlert, CheckCircle2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";

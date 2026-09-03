@@ -6,6 +6,10 @@ vi.mock("next/navigation", () => ({
   usePathname: () => "/assets",
   useRouter: () => ({ push: vi.fn(), refresh: vi.fn() }),
   useSearchParams: () => new URLSearchParams(),
+  redirect: vi.fn(),
+  permanentRedirect: vi.fn(),
+  notFound: vi.fn(),
+  useParams: () => ({ locale: "en" }),
 }));
 
 import { Footer, getRoleNavConfig, PillNav } from "./index";

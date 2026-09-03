@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { AlertCircle, ArrowRight, Loader2 } from "lucide-react";
 import { loginAction, type AuthFormState } from "@/app/actions/auth";
