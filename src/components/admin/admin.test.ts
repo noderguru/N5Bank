@@ -4,6 +4,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { AdminHeader, type PlatformSummaryStats } from "./admin-header";
 import { UsersTable, type AdminUserRow } from "./users-table";
 import { AssetsTable, type AdminAssetRow, type SellerOption } from "./assets-table";
+import { ModerationTable } from "./moderation-table";
 
 // Mock next/navigation
 vi.mock("next/navigation", () => ({
@@ -201,4 +202,68 @@ describe("Manager Console Components", () => {
       expect(html).toContain("Clear all filters");
     });
   });
+
+  describe("ModerationTable", () => {
+    const mockLogs = [
+      {
+        id: "log_test_1",
+        actorId: "usr_mgr_1",
+        actorName: "Morgan Reed",
+        actorEmail: "manager@demo",
+        targetType: "USER" as const,
+        targetId: "usr_seller_1",
+        targetTitle: "Leon Fischer",
+        targetSubtitle: "Fischer Fintech Holdings (SELLER)",
+        targetHref: "/admin/users?q=seller.europe%40n5deal.demo",
+        action: "SUSPEND" as const,
+        reason: "Compliance verification audit on licensing passporting",
+        createdAt: "2026-09-03T12:30:00.000Z",
+      },
+      {
+        id: "log_test_2",
+        actorId: "usr_mgr_1",
+        actorName: "Morgan Reed",
+        actorEmail: "manager@demo",
+        targetType: "ASSET" as const,
+        targetId: "asset_1",
+        targetTitle: "Lithuania e money opportunity",
+        targetSubtitle: "Lithuania • PUBLISHED",
+        targetHref: "/assets/asset_1",
+        action: "RESTORE" as const,
+        reason: "Regulatory status re-verified by Central Bank of Lithuania",
+        createdAt: "2026-09-03T12:45:00.000Z",
+      },
+    ];
+
+    it("renders moderation log table with action badges, targets, and quotes", () => {
+      const html = renderToStaticMarkup(
+        React.createElement(ModerationTable, {
+          logs: mockLogs,
+          totalCount: 2,
+        })
+      );
+
+      expect(html).toContain("Suspend");
+      expect(html).toContain("Leon Fischer");
+      expect(html).toContain("Compliance verification audit");
+      expect(html).toContain("Morgan Reed");
+
+      expect(html).toContain("Reinstate");
+      expect(html).toContain("Lithuania e money opportunity");
+      expect(html).toContain("Regulatory status re-verified");
+    });
+
+    it("renders meaningful empty state when no actions have occurred (N5B-31)", () => {
+      const html = renderToStaticMarkup(
+        React.createElement(ModerationTable, {
+          logs: [],
+          totalCount: 0,
+        })
+      );
+
+      expect(html).toContain("No compliance actions recorded yet");
+      expect(html).toContain("Explore Participants Directory");
+    });
+  });
 });
+
