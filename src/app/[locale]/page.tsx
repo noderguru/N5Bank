@@ -1,98 +1,94 @@
 import { Link } from "@/i18n/routing";
 import { getTranslations } from "next-intl/server";
 import { readSession } from "@/lib/auth/session";
+import { prisma } from "@/lib/db/prisma";
 import { AppShell } from "@/components/layout/app-shell";
 import { HeroEditorial } from "@/components/home/hero-editorial";
 import { StoriesSection } from "@/components/home/stories-section";
 import { MarqueeBanner } from "@/components/home/marquee-banner";
 import { PillarsSection } from "@/components/home/pillars-section";
 import { StatsEditorial } from "@/components/home/stats-editorial";
-import { AssetCard } from "@/components/marketplace/asset-card";
-import { BuyerCard } from "@/components/marketplace/buyer-card";
+import { AssetCard, type AssetCardData } from "@/components/marketplace/asset-card";
+import { BuyerCard, type BuyerCardData } from "@/components/marketplace/buyer-card";
 import { PixelArrow } from "@/components/layout/candlestick";
 
-const FEATURED_ASSETS = [
+const FALLBACK_FEATURED_ASSETS: AssetCardData[] = [
   {
-    id: "ast_demo_1",
-    title: "Operating EMI Institution with Direct SEPA & Multi-currency IBANs",
-    summary:
-      "Fully operational European Electronic Money Institution with Tier-1 correspondent banking relationships, Mastercard issuing BIN, and passporting rights across all 30 EEA member states.",
-    country: "Lithuania",
-    licenseType: "E_MONEY" as const,
-    businessType: "FINTECH" as const,
-    businessStatus: "OPERATING" as const,
-    askingPrice: 2850000,
-    priceMode: "FIXED" as const,
+    id: "asset_01",
+    title: "Germany banking opportunity",
+    summary: "A regulated bank business operating from Germany.",
+    country: "Germany",
+    licenseType: "BANKING",
+    businessType: "BANK",
+    businessStatus: "OPERATING",
+    askingPrice: 1175000,
+    priceMode: "FIXED",
     currency: "EUR",
-    features: ["Direct SEPA Instant", "SWIFT Participant", "Core Banking API", "Card Issuing BIN"],
+    features: ["Regulated operation", "Established client portfolio", "Documented compliance process"],
+    validated: true,
+    regulator: "BaFin",
+  },
+  {
+    id: "asset_02",
+    title: "Lithuania e money opportunity",
+    summary: "A regulated payment institution business operating from Lithuania.",
+    country: "Lithuania",
+    licenseType: "E_MONEY",
+    businessType: "PAYMENT_INSTITUTION",
+    businessStatus: "PRE_LAUNCH",
+    askingPrice: 1900000,
+    priceMode: "FIXED",
+    currency: "EUR",
+    features: ["Regulated operation", "Remote onboarding", "Documented compliance process"],
     validated: true,
     regulator: "Bank of Lithuania",
   },
   {
-    id: "ast_demo_2",
-    title: "Licensed Crypto Asset Service Provider (CASP / VASP)",
-    summary:
-      "Turnkey digital asset custody and exchange license with compliant KYC/AML procedures, proprietary liquidity connectivity, and active operational bank accounts in Tier-1 EU institutions.",
-    country: "Czech Republic",
-    licenseType: "CRYPTO" as const,
-    businessType: "CRYPTO_BUSINESS" as const,
-    businessStatus: "OPERATING" as const,
-    askingPrice: null,
-    priceMode: "ON_LOI" as const,
-    currency: "EUR",
-    features: ["Crypto-Fiat Rails", "Custody Infrastructure", "Zero Historical Sanctions", "MiCA Ready"],
+    id: "asset_03",
+    title: "United Kingdom payment opportunity",
+    summary: "A regulated brokerage business operating from United Kingdom.",
+    country: "United Kingdom",
+    licenseType: "PAYMENT",
+    businessType: "BROKERAGE",
+    businessStatus: "DORMANT",
+    askingPrice: 2625000,
+    priceMode: "FIXED",
+    currency: "GBP",
+    features: ["Regulated operation", "Established client portfolio", "Multi-currency accounts"],
     validated: true,
-    regulator: "FAU Czechia",
-  },
-  {
-    id: "ast_demo_3",
-    title: "Specialised Brokerage & Asset Management License (MiFID II)",
-    summary:
-      "MiFID II compliant investment firm authorization permitting execution, portfolio management, and safeguarding across European financial instruments and FX liquidity.",
-    country: "Cyprus",
-    licenseType: "BROKERAGE" as const,
-    businessType: "BROKERAGE" as const,
-    businessStatus: "OPERATING" as const,
-    askingPrice: null,
-    priceMode: "NDA" as const,
-    currency: "USD",
-    features: ["MiFID II Passport", "Omnibus Accounts", "MT4/MT5 Integration", "Tier-1 Prime Broker"],
-    validated: true,
-    regulator: "CySEC",
+    regulator: "FCA",
   },
 ];
 
-const FEATURED_BUYERS = [
+const FALLBACK_FEATURED_BUYERS: BuyerCardData[] = [
   {
-    id: "byr_demo_1",
-    name: "Alexander Vance",
-    company: "Nordic Fintech Holdings",
-    country: "Sweden",
-    thesis:
-      "Seeking operational EMI and payment institutions with established correspondent accounts to expand cross-border merchant acquiring across Northern Europe.",
-    ticketMin: 2000000,
-    ticketMax: 8000000,
+    id: "usr_buyer_02",
+    name: "Sofia Weber",
+    company: "Rhein Growth Partners",
+    country: "Germany",
+    thesis: "Profitable fintech infrastructure serving regulated institutions in the DACH region.",
+    ticketMin: 3000000,
+    ticketMax: 15000000,
     currency: "EUR",
-    targetCountries: ["Lithuania", "Estonia", "Malta", "Cyprus"],
-    targetLicenseTypes: ["E_MONEY" as const, "PAYMENT" as const],
-    targetBusinessTypes: ["FINTECH" as const, "PAYMENT_INSTITUTION" as const],
-    horizon: "SHORT_TERM" as const,
+    targetCountries: ["Germany", "Switzerland", "Poland"],
+    targetLicenseTypes: ["PAYMENT", "BROKERAGE"],
+    targetBusinessTypes: ["FINTECH", "BROKERAGE"],
+    horizon: "LONG_TERM",
     verified: true,
   },
   {
-    id: "byr_demo_2",
-    name: "Marcus Sterling",
-    company: "Apex Capital Partners",
-    country: "United Kingdom",
-    thesis:
-      "Institutional private equity mandate seeking pre-launch Tier-2 banking assets or distressed electronic money charters for full recapitalisation and digital core modernisation.",
-    ticketMin: 5000000,
-    ticketMax: 25000000,
-    currency: "USD",
-    targetCountries: ["United Kingdom", "Switzerland", "Luxembourg"],
-    targetLicenseTypes: ["BANKING" as const, "BROKERAGE" as const],
-    targetBusinessTypes: ["BANK" as const],
-    horizon: "MEDIUM_TERM" as const,
+    id: "usr_buyer_03",
+    name: "Marta Jankowska",
+    company: "Vistula Ventures",
+    country: "Poland",
+    thesis: "Early-stage payment institutions and e-money platforms ready for European expansion.",
+    ticketMin: 500000,
+    ticketMax: 4000000,
+    currency: "EUR",
+    targetCountries: ["Poland", "Lithuania", "Spain"],
+    targetLicenseTypes: ["E_MONEY", "PAYMENT"],
+    targetBusinessTypes: ["PAYMENT_INSTITUTION", "FINTECH"],
+    horizon: "SHORT_TERM",
     verified: true,
   },
 ];
@@ -100,6 +96,108 @@ const FEATURED_BUYERS = [
 export default async function Home() {
   const session = await readSession();
   const t = await getTranslations("home");
+
+  let featuredAssets: AssetCardData[] = [];
+  let featuredBuyers: BuyerCardData[] = [];
+
+  try {
+    const dbAssets = await prisma.asset.findMany({
+      where: {
+        status: "PUBLISHED",
+        seller: {
+          status: "ACTIVE",
+        },
+      },
+      orderBy: [
+        { validated: "desc" },
+        { views: "desc" },
+        { createdAt: "desc" },
+      ],
+      take: 3,
+      select: {
+        id: true,
+        title: true,
+        summary: true,
+        country: true,
+        licenseType: true,
+        businessType: true,
+        businessStatus: true,
+        askingPrice: true,
+        priceMode: true,
+        currency: true,
+        features: true,
+        validated: true,
+        views: true,
+        regulator: true,
+      },
+    });
+
+    if (dbAssets.length > 0) {
+      featuredAssets = dbAssets.map((asset) => ({
+        id: asset.id,
+        title: asset.title,
+        summary: asset.summary,
+        country: asset.country,
+        licenseType: asset.licenseType,
+        businessType: asset.businessType,
+        businessStatus: asset.businessStatus,
+        askingPrice: asset.askingPrice ? Number(asset.askingPrice) : null,
+        priceMode: asset.priceMode,
+        currency: asset.currency,
+        features: asset.features,
+        validated: asset.validated,
+        views: asset.views,
+        regulator: asset.regulator,
+      }));
+    }
+
+    const dbBuyers = await prisma.buyerProfile.findMany({
+      where: {
+        user: {
+          status: "ACTIVE",
+        },
+      },
+      take: 2,
+      include: {
+        user: {
+          select: {
+            name: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    if (dbBuyers.length > 0) {
+      featuredBuyers = dbBuyers.map((buyer) => ({
+        id: buyer.userId,
+        name: buyer.user.name,
+        company: buyer.company,
+        country: buyer.country,
+        thesis: buyer.thesis,
+        ticketMin: buyer.ticketMin ? Number(buyer.ticketMin) : null,
+        ticketMax: buyer.ticketMax ? Number(buyer.ticketMax) : null,
+        currency: buyer.currency,
+        targetCountries: buyer.targetCountries,
+        targetLicenseTypes: buyer.targetLicenseTypes,
+        targetBusinessTypes: buyer.targetBusinessTypes,
+        horizon: buyer.horizon,
+        verified: true,
+      }));
+    }
+  } catch (err) {
+    console.error("[Home] Error fetching featured data from database:", err);
+  }
+
+  if (featuredAssets.length === 0) {
+    featuredAssets = FALLBACK_FEATURED_ASSETS;
+  }
+
+  if (featuredBuyers.length === 0) {
+    featuredBuyers = FALLBACK_FEATURED_BUYERS;
+  }
 
   return (
     <AppShell
@@ -165,7 +263,7 @@ export default async function Home() {
           </div>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {FEATURED_ASSETS.map((asset) => (
+            {featuredAssets.map((asset) => (
               <AssetCard key={asset.id} asset={asset} />
             ))}
           </div>
@@ -200,7 +298,7 @@ export default async function Home() {
           </div>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {FEATURED_BUYERS.map((buyer) => (
+            {featuredBuyers.map((buyer) => (
               <BuyerCard key={buyer.id} buyer={buyer} />
             ))}
           </div>
