@@ -507,8 +507,8 @@ export function AssetForm({
 
         <div className="space-y-4">
           <div>
-            <div className="flex justify-between items-center mb-1.5">
-              <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center justify-between gap-y-1 gap-x-2 mb-1.5">
+              <div className="flex flex-wrap items-center gap-2">
                 <Label htmlFor="summary" className="text-sm font-medium text-ink">
                   {tForm("shortSummary")} <span className="text-rose-500">*</span>
                 </Label>
