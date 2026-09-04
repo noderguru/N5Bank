@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test } from "@playwright/test";
 import fs from "fs";
 import path from "path";
 
@@ -34,7 +34,6 @@ test.describe("Cross-Device Multi-Resolution Visual Verification", () => {
         const overflowData = await page.evaluate(() => {
           const docEl = document.documentElement;
           const scrollW = docEl.scrollWidth;
-          const clientW = docEl.clientWidth;
           const innerW = window.innerWidth;
           
           if (scrollW > innerW + 1) {
