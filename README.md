@@ -145,9 +145,9 @@ To deliver a working, thoroughly tested product within a 24-hour development bud
 This project was developed with transparent AI pair-programming across distinct phases:
 
 ### Tooling Breakdown
-- **Architecture, Data Modeling & Linear Breakdown**: Claude Code CLI with Claude 3.7 / Opus (high reasoning effort) — used for domain design, Prisma schema normalization, state transitions, and structuring 10 milestones into actionable sub-issues.
-- **Core Implementation & Comprehensive Verification**: Antigravity CLI with Gemini 3.8 (~85% of codebase) — used for full-stack Next.js App Router development, Server Actions, shadcn UI components, responsive layout adaptation, and automated Vitest/Playwright test suites.
-- **Grok Build / GPT Sol**: Targeted assistance on specific utility algorithms and mock data generation.
+- **Architecture, Data Modeling & Linear Breakdown**: Claude Code CLI with Claude Opus5 (xhigh reasoning effort) — used for domain design, Prisma schema normalization, state transitions, and structuring 10 milestones into actionable sub-issues.
+- **Core Implementation & Comprehensive Verification**: Antigravity CLI with Gemini 3.8 medium (~85% of codebase) — used for full-stack Next.js App Router development, Server Actions, shadcn UI components, responsive layout adaptation, and automated Vitest/Playwright test suites.
+- **Grok Build / GPT Sol 5.6 medium**: Targeted assistance on specific utility algorithms and mock data generation.
 
 ### Where Human Oversight Was Essential
 - **Responsive Layout & Visual Calibration**: AI models frequently generate flex layouts that overflow on narrow viewports (such as 320px iPhone SE) or netbook screens (1024px). Real browser automated audits with Playwright caught and fixed header container overflows and action button wrapping.
