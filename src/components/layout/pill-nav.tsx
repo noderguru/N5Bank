@@ -86,7 +86,7 @@ export function PillNav({ user, unreadCount = 0 }: PillNavProps) {
           </div>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden items-center gap-1 lg:flex">
+          <div className="hidden items-center gap-1 xl:flex">
             {items.map((item) => {
               const isActive =
                 pathname === item.href || (item.href !== "/" && pathname.startsWith(`${item.href}/`));
