@@ -51,7 +51,7 @@ test.describe("Seller End-to-End Journey", () => {
 
     // 3. Browse buyers catalog and test URL-persisted filter
     await page.goto("/buyers");
-    const searchInput = page.getByPlaceholder(/Search by buyer company/i);
+    const searchInput = page.getByPlaceholder(/Search/i);
     await searchInput.fill("Rhein");
     await expect(page).toHaveURL(/q=Rhein/);
     await page.reload();
@@ -69,14 +69,14 @@ test.describe("Seller End-to-End Journey", () => {
     await expect(page).toHaveURL(/\/inbox\?conversationId=/);
 
     // 6. Send message and verify persistence across reload
-    const messageInput = page.getByPlaceholder(/Type your message/i);
+    const messageInput = page.getByTestId("message-input");
     const testMessage = `Deal memorandum regarding asset ${Date.now()}`;
     await messageInput.fill(testMessage);
-    await page.getByRole("button", { name: /Send Message/i }).click();
+    await page.getByTestId("send-message-button").click();
 
     const streamMsg = page.getByTestId("messages-stream").getByText(testMessage);
     await expect(streamMsg).toBeVisible();
-    await expect(page.getByText("Sending...")).not.toBeVisible();
+    await expect(page.getByText("Sending...")).toHaveCount(0);
     await page.reload();
     await expect(streamMsg).toBeVisible();
 
