@@ -61,3 +61,4 @@ notes/
 scratch/
 .playwright-mcp/
 _private/
+.env*
