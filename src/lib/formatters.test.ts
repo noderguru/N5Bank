@@ -22,6 +22,28 @@ describe("Intl formatters (N5B-89)", () => {
       expect(formattedEur).toContain("2,500,000");
     });
 
+    it("formats amounts correctly across different locales (uk-UA, ru-RU)", () => {
+      const formattedUk = formatCurrency(5000000, "USD", "uk-UA");
+      expect(formattedUk).toContain("USD");
+      // Ukrainian locale formats 5 000 000 with non-breaking space
+      expect(formattedUk.replace(/\s+/g, " ")).toMatch(/5\s000\s000/);
+
+      const formattedRu = formatCurrency(2500000, "EUR", "ru-RU");
+      expect(formattedRu).toContain("EUR");
+      expect(formattedRu.replace(/\s+/g, " ")).toMatch(/2\s500\s000/);
+    });
+
+    it("supports custom translated labels", () => {
+      const ukLabels = {
+        onRequest: "Ціна за запитом",
+        uponLoi: "За LOI",
+        underNda: "Під NDA",
+      };
+      expect(formatCurrency(null, "USD", "uk-UA", ukLabels)).toBe("Ціна за запитом");
+      expect(formatPrice(null, "ON_LOI", "USD", "uk-UA", ukLabels)).toBe("За LOI");
+      expect(formatPrice(null, "NDA", "USD", "uk-UA", ukLabels)).toBe("Під NDA");
+    });
+
     it("supports string amounts", () => {
       const formatted = formatCurrency("1250000", "USD", "en-US");
       expect(formatted).toContain("USD");
